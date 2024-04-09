@@ -11,13 +11,14 @@ import SwiftData
 
 struct ActiveTaskView: View {
     @Query var tasks: [UserTask]
-    @EnvironmentObject var vm: ActiveTaskViewModel
+    @Environment(ActiveTaskViewModel.self) var vm
     @Environment(\.dismiss) private var dismiss
     
     @Bindable var task: UserTask
     @State var isBreak: Bool = false
     
     var body: some View {
+        @Bindable var vm = vm
         NavigationStack {
             VStack {
                 Text(task.name)
@@ -335,6 +336,6 @@ struct ActiveTaskView: View {
 
 #Preview {
     ActiveTaskView(task: mockTask)
-        .modelContainer(for: UserTask.self, inMemory: true)
-        .environmentObject(ActiveTaskViewModel())
+        .modelContainer(for: [UserTask.self, BlendedTask.self], inMemory: true)
+        .environment(ActiveTaskViewModel())
 }

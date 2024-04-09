@@ -12,8 +12,8 @@ import SwiftData
 struct FocusAssistantApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
-            UserTask.self
+            UserTask.self,
+            BlendedTask.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -32,9 +32,16 @@ struct FocusAssistantApp: App {
     var body: some Scene {
         WindowGroup {
             FocusAssistantTabs()
+                .environment(activeTaskModel)
+                .environment(\.scenePhase, phase)
+                .onReceive(activeTaskModel.timer) { _ in
+                    if activeTaskModel.isStarted && !activeTaskModel.isShowing {
+                        activeTaskModel.updateTimer()
+                    }
+                }
         }
-        .environmentObject(activeTaskModel)
         .modelContainer(sharedModelContainer)
+        
         .onChange(of: phase) { oldValue, newValue in
             if activeTaskModel.isStarted {
                 if newValue == .background {
@@ -54,4 +61,5 @@ struct FocusAssistantApp: App {
             }
         }
     }
+    
 }

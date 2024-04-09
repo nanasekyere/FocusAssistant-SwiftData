@@ -7,9 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		390FDF852BC47E6C0064015C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDF832BC47E6C0064015C /* HomeView.swift */; };
+		390FDF862BC47E6C0064015C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDF842BC47E6C0064015C /* HomeViewModel.swift */; };
+		390FDF8E2BC484110064015C /* BlenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDF8C2BC484110064015C /* BlenderView.swift */; };
+		390FDF8F2BC484110064015C /* BlenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDF8D2BC484110064015C /* BlenderViewModel.swift */; };
+		390FDF912BC484690064015C /* BlendedTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDF902BC484690064015C /* BlendedTask.swift */; };
+		390FDF942BC490060064015C /* OpenAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDF932BC490060064015C /* OpenAI.swift */; };
+		390FDFA12BC4931E0064015C /* OpenAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 390FDFA02BC4931E0064015C /* OpenAI-Info.plist */; };
+		390FDFA42BC49E9B0064015C /* BlendedTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFA22BC49E9B0064015C /* BlendedTaskView.swift */; };
+		390FDFA72BC4A04C0064015C /* XDismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFA62BC4A04C0064015C /* XDismissButton.swift */; };
 		39A4D39D2BC2C83000E89C81 /* FocusAssistantApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */; };
-		39A4D39F2BC2C83000E89C81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D39E2BC2C83000E89C81 /* ContentView.swift */; };
-		39A4D3A12BC2C83000E89C81 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3A02BC2C83000E89C81 /* Item.swift */; };
 		39A4D3A32BC2C83100E89C81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39A4D3A22BC2C83100E89C81 /* Assets.xcassets */; };
 		39A4D3A62BC2C83100E89C81 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39A4D3A52BC2C83100E89C81 /* Preview Assets.xcassets */; };
 		39A4D3AE2BC2C8B000E89C81 /* SwiftOpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = 39A4D3AD2BC2C8B000E89C81 /* SwiftOpenAI */; };
@@ -37,10 +44,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		390FDF832BC47E6C0064015C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		390FDF842BC47E6C0064015C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		390FDF8C2BC484110064015C /* BlenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlenderView.swift; sourceTree = "<group>"; };
+		390FDF8D2BC484110064015C /* BlenderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlenderViewModel.swift; sourceTree = "<group>"; };
+		390FDF902BC484690064015C /* BlendedTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendedTask.swift; sourceTree = "<group>"; };
+		390FDF932BC490060064015C /* OpenAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAI.swift; sourceTree = "<group>"; };
+		390FDFA02BC4931E0064015C /* OpenAI-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OpenAI-Info.plist"; sourceTree = "<group>"; };
+		390FDFA22BC49E9B0064015C /* BlendedTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendedTaskView.swift; sourceTree = "<group>"; };
+		390FDFA62BC4A04C0064015C /* XDismissButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XDismissButton.swift; sourceTree = "<group>"; };
 		39A4D3992BC2C83000E89C81 /* FocusAssistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusAssistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAssistantApp.swift; sourceTree = "<group>"; };
-		39A4D39E2BC2C83000E89C81 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		39A4D3A02BC2C83000E89C81 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		39A4D3A22BC2C83100E89C81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		39A4D3A52BC2C83100E89C81 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		39A4D3B32BC2C95800E89C81 /* UserTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTask.swift; sourceTree = "<group>"; };
@@ -63,6 +77,8 @@
 		39A4D3EF2BC2E56D00E89C81 /* AddTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewModel.swift; sourceTree = "<group>"; };
 		39A4D3F22BC324AB00E89C81 /* Int+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Ext.swift"; sourceTree = "<group>"; };
 		39A4D3F42BC349A400E89C81 /* ActiveTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveTaskView.swift; sourceTree = "<group>"; };
+		39A4D3F62BC3576D00E89C81 /* FocusAssistant.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusAssistant.entitlements; sourceTree = "<group>"; };
+		39A4D3F72BC357A500E89C81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +94,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		390FDF812BC47E330064015C /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				390FDF832BC47E6C0064015C /* HomeView.swift */,
+				390FDF842BC47E6C0064015C /* HomeViewModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		390FDF822BC47E400064015C /* Blender */ = {
+			isa = PBXGroup;
+			children = (
+				390FDF8C2BC484110064015C /* BlenderView.swift */,
+				390FDF8D2BC484110064015C /* BlenderViewModel.swift */,
+				390FDFA22BC49E9B0064015C /* BlendedTaskView.swift */,
+			);
+			path = Blender;
+			sourceTree = "<group>";
+		};
+		390FDF922BC48FC40064015C /* OpenAI */ = {
+			isa = PBXGroup;
+			children = (
+				390FDF932BC490060064015C /* OpenAI.swift */,
+				390FDFA02BC4931E0064015C /* OpenAI-Info.plist */,
+			);
+			path = OpenAI;
+			sourceTree = "<group>";
+		};
 		39A4D3902BC2C83000E89C81 = {
 			isa = PBXGroup;
 			children = (
@@ -97,13 +141,13 @@
 		39A4D39B2BC2C83000E89C81 /* FocusAssistant */ = {
 			isa = PBXGroup;
 			children = (
+				39A4D3F72BC357A500E89C81 /* Info.plist */,
+				39A4D3F62BC3576D00E89C81 /* FocusAssistant.entitlements */,
 				39A4D3CC2BC2D51E00E89C81 /* Utilites */,
 				39A4D3B22BC2C92900E89C81 /* Models */,
 				39A4D3CD2BC2D52A00E89C81 /* Views */,
 				39A4D3B52BC2CAF400E89C81 /* Screens */,
 				39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */,
-				39A4D39E2BC2C83000E89C81 /* ContentView.swift */,
-				39A4D3A02BC2C83000E89C81 /* Item.swift */,
 				39A4D3A22BC2C83100E89C81 /* Assets.xcassets */,
 				39A4D3A42BC2C83100E89C81 /* Preview Content */,
 			);
@@ -122,6 +166,7 @@
 			isa = PBXGroup;
 			children = (
 				39A4D3B32BC2C95800E89C81 /* UserTask.swift */,
+				390FDF902BC484690064015C /* BlendedTask.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -130,7 +175,9 @@
 			isa = PBXGroup;
 			children = (
 				39A4D3B62BC2CB0B00E89C81 /* FocusAssistantTabs.swift */,
+				390FDF812BC47E330064015C /* Home */,
 				39A4D3B82BC2CB1B00E89C81 /* Tasks */,
+				390FDF822BC47E400064015C /* Blender */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -163,6 +210,7 @@
 		39A4D3CC2BC2D51E00E89C81 /* Utilites */ = {
 			isa = PBXGroup;
 			children = (
+				390FDF922BC48FC40064015C /* OpenAI */,
 				39A4D3BF2BC2D3DE00E89C81 /* Extensions */,
 			);
 			path = Utilites;
@@ -174,6 +222,7 @@
 				39A4D3CE2BC2D56300E89C81 /* CustomModifiers.swift */,
 				39A4D3CF2BC2D56300E89C81 /* DurationPicker.swift */,
 				39A4D3D02BC2D56300E89C81 /* WeightingIndicator.swift */,
+				390FDFA62BC4A04C0064015C /* XDismissButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -280,6 +329,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				390FDFA12BC4931E0064015C /* OpenAI-Info.plist in Resources */,
 				39A4D3A62BC2C83100E89C81 /* Preview Assets.xcassets in Resources */,
 				39A4D3A32BC2C83100E89C81 /* Assets.xcassets in Resources */,
 			);
@@ -297,23 +347,29 @@
 				39A4D3F52BC349A400E89C81 /* ActiveTaskView.swift in Sources */,
 				39A4D3DA2BC2D89D00E89C81 /* TaskDetailViewModel.swift in Sources */,
 				39A4D3BC2BC2CEF400E89C81 /* TaskViewModel.swift in Sources */,
+				390FDFA72BC4A04C0064015C /* XDismissButton.swift in Sources */,
 				39A4D3D22BC2D56300E89C81 /* DurationPicker.swift in Sources */,
 				39A4D3F32BC324AB00E89C81 /* Int+Ext.swift in Sources */,
-				39A4D39F2BC2C83000E89C81 /* ContentView.swift in Sources */,
+				390FDF852BC47E6C0064015C /* HomeView.swift in Sources */,
+				390FDF862BC47E6C0064015C /* HomeViewModel.swift in Sources */,
 				39A4D3CA2BC2D3DE00E89C81 /* UserDefaults+Ext.swift in Sources */,
+				390FDF942BC490060064015C /* OpenAI.swift in Sources */,
 				39A4D3C72BC2D3DE00E89C81 /* Duration++Ext.swift in Sources */,
 				39A4D3D12BC2D56300E89C81 /* CustomModifiers.swift in Sources */,
 				39A4D3D82BC2D83F00E89C81 /* TaskDetailView.swift in Sources */,
 				39A4D3F12BC2E56D00E89C81 /* AddTaskViewModel.swift in Sources */,
-				39A4D3A12BC2C83000E89C81 /* Item.swift in Sources */,
 				39A4D3F02BC2E56D00E89C81 /* AddTaskView.swift in Sources */,
 				39A4D3BA2BC2CB2300E89C81 /* TaskView.swift in Sources */,
 				39A4D3C92BC2D3DE00E89C81 /* String+Ext.swift in Sources */,
 				39A4D3C82BC2D3DE00E89C81 /* Date+Ext.swift in Sources */,
 				39A4D3C62BC2D3DE00E89C81 /* Optional+Ext.swift in Sources */,
+				390FDFA42BC49E9B0064015C /* BlendedTaskView.swift in Sources */,
+				390FDF912BC484690064015C /* BlendedTask.swift in Sources */,
 				39A4D39D2BC2C83000E89C81 /* FocusAssistantApp.swift in Sources */,
 				39A4D3D32BC2D56300E89C81 /* WeightingIndicator.swift in Sources */,
 				39A4D3B42BC2C95800E89C81 /* UserTask.swift in Sources */,
+				390FDF8E2BC484110064015C /* BlenderView.swift in Sources */,
+				390FDF8F2BC484110064015C /* BlenderViewModel.swift in Sources */,
 				39A4D3BE2BC2D32800E89C81 /* ActiveTaskViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -445,13 +501,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FocusAssistant/FocusAssistant.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"FocusAssistant/Preview Content\"";
 				DEVELOPMENT_TEAM = 4TMP5JL59R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Focus Assistant";
+				INFOPLIST_FILE = FocusAssistant/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusAssistant;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -477,13 +535,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FocusAssistant/FocusAssistant.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"FocusAssistant/Preview Content\"";
 				DEVELOPMENT_TEAM = 4TMP5JL59R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Focus Assistant";
+				INFOPLIST_FILE = FocusAssistant/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusAssistant;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

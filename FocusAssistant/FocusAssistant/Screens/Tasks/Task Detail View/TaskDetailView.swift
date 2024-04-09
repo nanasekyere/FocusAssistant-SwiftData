@@ -10,7 +10,7 @@ import SwiftUI
 struct TaskDetailView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @State var task: UserTask
+    @Bindable var task: UserTask
     @State var viewModel = TaskDetailViewModel()
     @State private var isAnimated = false
     
@@ -52,7 +52,7 @@ struct TaskDetailView: View {
                     Spacer()
                     Button("Start Task") {
                         if task.pomodoro {
-                            viewModel.isDisplayingActiveTask = true
+                            viewModel.taskToActivate = task
                         } else {
                             switch task.priority {
                             case .low:

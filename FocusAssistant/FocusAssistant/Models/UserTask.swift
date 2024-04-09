@@ -7,9 +7,12 @@
 
 import Foundation
 import SwiftData
+import UserNotifications
 
 @Model
 final class UserTask {
+    var id = UUID()
+    
     var name = ""
     var duration: Int = 0
     var startTime: Date?
@@ -33,7 +36,8 @@ final class UserTask {
         }
     }
     
-    init(name: String = "", duration: Int = 0, startTime: Date? = nil, priority: Priority = .low, imageURL: String? = nil, details: String? = nil, pomodoro: Bool = false,  pomodoroCounter: Int? = nil) {
+    init(name: String = "", duration: Int = 0, startTime: Date? = nil, priority: Priority = .low, 
+         imageURL: String? = nil, details: String? = nil, pomodoro: Bool = false,  pomodoroCounter: Int? = nil) {
         self.name = name
         self.duration = duration
         self.startTime = startTime
@@ -43,6 +47,56 @@ final class UserTask {
         self.pomodoro = pomodoro
         self.pomodoroCounter = pomodoroCounter
     }
+    
+    init(id: UUID, name: String = "", duration: Int = 0, startTime: Date? = nil, priority: Priority = .low, 
+         imageURL: String? = nil, details: String? = nil, pomodoro: Bool = false,  pomodoroCounter: Int? = nil, blended: Bool) {
+        self.id = id
+        self.name = name
+        self.duration = duration
+        self.startTime = startTime
+        self.priority = priority
+        self.imageURL = imageURL
+        self.details = details
+        self.pomodoro = pomodoro
+        self.pomodoroCounter = pomodoroCounter
+        self.blended = blended
+    }
+    
+    func scheduleNotification() {
+        guard !self.pomodoro, let startTime = self.startTime, startTime > Date() else { return }
+        
+        let timeDifference = startTime.timeIntervalSinceNow
+        guard timeDifference >= 300 else {
+            // If the start time is less than 5 minutes away, don't schedule the notification
+            return
+        }
+        
+        let notificationTime = startTime.addingTimeInterval(-300) // 5 minutes before start time
+        let content = UNMutableNotificationContent()
+        content.title = "Task Reminder"
+        content.body = "Your task \(self.name) is starting in 5 minutes!"
+        content.sound = UNNotificationSound.default
+        content.interruptionLevel = .timeSensitive
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: notificationTime.timeIntervalSinceNow, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: self.id.entityName, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error.localizedDescription)")
+            } else {
+                print("Notification scheduled for task \(self.name) at \(notificationTime.formatted(date: .omitted, time: .shortened))")
+            }
+        }
+    }
+    
+    func descheduleNotification() {
+            let notificationCenter = UNUserNotificationCenter.current()
+            
+            // Remove the notification request associated with the task ID
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: [self.id.entityName])
+        }
 }
 
 enum Priority: String, CaseIterable, Codable {

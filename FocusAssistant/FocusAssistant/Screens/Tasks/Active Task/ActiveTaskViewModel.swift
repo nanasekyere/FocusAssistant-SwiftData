@@ -6,25 +6,26 @@
 //
 
 import SwiftUI
-final class ActiveTaskViewModel: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
+
+@Observable final class ActiveTaskViewModel: NSObject, UNUserNotificationCenterDelegate {
     
-    @Published var progress = CGFloat(1)
-    @Published var timerStringValue = "00:00"
-    @Published var isStarted = false
-    @Published var addNewTimer = false
-    @Published var hour = 0
-    @Published var minutes = 0
-    @Published var seconds = 0
-    @Published var totalSeconds = 0
-    @Published var staticTotalSeconds = 0
-    @Published var isFinished = false
-    @Published var isBreak = false
-//    @Published var user = Profile()
-    @Published var alertMessage = ""
-    @Published var isShowing = false
-    @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    var progress = CGFloat(1)
+    var timerStringValue = "00:00"
+    var isStarted = false
+    var addNewTimer = false
+    var hour = 0
+    var minutes = 0
+    var seconds = 0
+    var totalSeconds = 0
+    var staticTotalSeconds = 0
+    var isFinished = false
+    var isBreak = false
+    var alertMessage = ""
+    var isShowing = false
+    var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var activeTask: UserTask?
+    
     init(activeTask: UserTask) {
         self.activeTask = activeTask
         super.init()
@@ -43,8 +44,8 @@ final class ActiveTaskViewModel: NSObject, ObservableObject, UNUserNotificationC
                 if isBreak {
                     alertMessage = "Break time is finished."
                 } else if task.isCompleted {
-                    alertMessage = "You have completed the pomodoro cycles of this task"
-                } else { alertMessage = "Pomodoro cycle number \(task.pomodoroCounter!). Continue?" }
+                    alertMessage = "You have completed the pomodoro cycles for task \(task.name)"
+                } else { alertMessage = "Pomodoro cycle number \(task.pomodoroCounter! + 1) completed. Continue?" }
             }
         }
     }
@@ -61,10 +62,6 @@ final class ActiveTaskViewModel: NSObject, ObservableObject, UNUserNotificationC
         self.minutes = (activeTask!.duration / 60) % 60
         self.seconds = activeTask!.duration % 60
     }
-    
-//    func setup(_ user: Profile) {
-////        self.user = user.readData()
-//    }
     
     func startPomodoroBreak() {
         self.hour = 0
@@ -135,14 +132,31 @@ final class ActiveTaskViewModel: NSObject, ObservableObject, UNUserNotificationC
     
     
     func addNotification(){
-        let content = UNMutableNotificationContent()
-        content.title = "Task Timer"
-        content.subtitle = "Task time finished"
-        content.sound = UNNotificationSound.default
+        guard let task = self.activeTask else {
+            print("There was an error setting notification for the task")
+            return
+        }
         
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(staticTotalSeconds), repeats: false))
+        if task.pomodoro {
+            let content = UNMutableNotificationContent()
+            content.title = isBreak ? "Break Timer" : "Task Timer"
+            content.subtitle = isBreak ? "Break time for \(task.name) finished" : "Task time for task \(task.name) finished"
+            content.sound = UNNotificationSound.default
+            
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(staticTotalSeconds), repeats: false))
+            
+            UNUserNotificationCenter.current().add(request)
+        } else {
+            let content = UNMutableNotificationContent()
+            content.title = "Task Timer"
+            content.subtitle = "Task time for task \(task.name) finished"
+            content.sound = UNNotificationSound.default
+            
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(staticTotalSeconds), repeats: false))
+            
+            UNUserNotificationCenter.current().add(request)
+        }
         
-        UNUserNotificationCenter.current().add(request)
     }
     
     

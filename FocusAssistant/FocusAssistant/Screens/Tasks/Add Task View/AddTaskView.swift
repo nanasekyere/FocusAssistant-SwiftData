@@ -36,7 +36,8 @@ struct AddTaskView: View {
                             
                                 .onChange(of: vm.pomodoro) { oldValue, newValue in
                                     if newValue == true {
-                                        vm.duration = 1500
+                                        vm.pomodoroCounter = 0
+                                        vm.duration = 5
                                         vm.startTime = nil
                                     }
                                 }
@@ -89,6 +90,7 @@ struct AddTaskView: View {
                                 Button("Save changes") {
                                     if vm.isComplete {
                                         let newTask = UserTask(name: vm.name, duration: vm.duration, startTime: vm.startTime, priority: vm.priority, imageURL: vm.imageURL, details: vm.details, pomodoro: vm.pomodoro, pomodoroCounter: vm.pomodoroCounter)
+                                        newTask.scheduleNotification()
                                         context.insert(newTask)
                                         
                                         dismiss()
@@ -116,7 +118,6 @@ struct AddTaskView: View {
             .navigationTitle("New Task")
         }
     }
-    
     
 }
 
@@ -196,6 +197,8 @@ struct EditTaskView: View {
                             .focused($isFocused)
                             Section {
                                 Button("Save changes") {
+                                    task.descheduleNotification()
+                                    task.scheduleNotification()
                                     dismiss()
                                 }
                                 .tint(.white)
@@ -222,5 +225,5 @@ struct EditTaskView: View {
 #Preview {
     
     AddTaskView()
-        .modelContainer(for: UserTask.self, inMemory: true)
+        .modelContainer(for: [UserTask.self, BlendedTask.self], inMemory: true)
 }

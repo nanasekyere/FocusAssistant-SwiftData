@@ -17,6 +17,7 @@ import Observation
     var isShowingCompletedTasks = false
     var isShowingExpiredTasks = false
     var isShowingActiveView = false
+    var isShowingBlendedTasks = true
     
     var taskDetail: UserTask?
     var taskToEdit: UserTask?

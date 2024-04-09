@@ -10,20 +10,24 @@ import SwiftData
 
 struct TaskView: View {
     @Query var tasks: [UserTask]
+    @Query var bTasks: [BlendedTask]
     @Query(filter: #Predicate<UserTask> { task in
-        task.isCompleted
+        task.isCompleted && !task.isExpired
     })
     var completedTasks: [UserTask]
+    
     @Query(filter: #Predicate<UserTask> { task in
-        !(task.isCompleted && task.isExpired)
+        !task.isCompleted && !task.isExpired
     })
     var availableTasks: [UserTask]
+    
     @Query(filter: #Predicate<UserTask> { task in
         task.isExpired
     })
     var expiredTasks: [UserTask]
     
-    @EnvironmentObject var activeVM: ActiveTaskViewModel
+    @Environment(\.modelContext) var context
+    @Environment(ActiveTaskViewModel.self) var activeVM
     
     @State var vm = TaskViewModel()
     @State private var currentDay: Date = .init()
@@ -42,6 +46,13 @@ struct TaskView: View {
                 } else {
                     
                     List {
+                        
+                        if let activeTask = activeVM.activeTask, tasks.contains(activeTask) {
+                            Section("Active Task") {
+                                ActiveTaskCell(task: activeTask)
+                            }
+                        }
+                        
                         switch vm.status {
                         case .showAll:
                             allTasksView()
@@ -49,6 +60,11 @@ struct TaskView: View {
                             dailyTasksView()
                         case .showWeekly:
                             weeklyTasksView()
+                        }
+                        Section("Blended Tasks (\(bTasks.count))", isExpanded: $vm.isShowingBlendedTasks) {
+                            ForEach(bTasks) { task in
+                                BlendedTaskCell(blendedTask: task)
+                            }
                         }
                         
                         Section("Completed Tasks (\(completedTasks.count))", isExpanded: $vm.isShowingCompleted) {
@@ -99,7 +115,9 @@ struct TaskView: View {
                         Button(vm.isShowingExpiredTasks ? "Hide Expired tasks" : "Show Expired tasks", action: {vm.isShowingExpiredTasks.toggle()})
                         
                         Button("Clear Completed", role: .destructive) {
-//                            vm.user.clearCompleted()
+                            try! context.delete(model: UserTask.self, where: #Predicate<UserTask> { task in
+                                task.isCompleted
+                            })
                         }
                         .disabled(completedTasks.count < 1)
                     }, label: {
@@ -109,7 +127,7 @@ struct TaskView: View {
                             .frame(width: 40, height: 40)
                             .foregroundStyle(.primary)
                     })
-                    .padding()
+                    .padding(5)
                 }
                 
                 .padding()
@@ -135,88 +153,14 @@ struct TaskView: View {
     func allTasksView() -> some View {
         Section("To-do") {
             ForEach(availableTasks) { task in
-//                if activeVM.activeTask != task {
+                if activeVM.activeTask != task {
                     TaskCell(task: task)
-//                }
+                }
             }
             
         }
     }
-    
-    @ViewBuilder
-    func TaskCell(task: UserTask) -> some View {
-        
-        HStack(spacing: 20) {
-            Image(systemName: task.imageURL ?? "note.text")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 40, height: 40)
-                .foregroundStyle(.white)
-            
-            VStack(alignment: .leading) {
-                Text(task.name)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white)
-                    .frame(alignment: .leading)
-                Text("\(task.duration.timeString())")
-                    .foregroundStyle(.white)
-            }
-            Spacer()
-            
-            if task.pomodoro {
-                Image(systemName: "repeat.circle")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 20, height: 20)
-                    .foregroundStyle(.white)
-                Text(String(task.pomodoroCounter!))
-                    .foregroundStyle(.white)
-            } else {
-                WeightingIndicator(weight: task.priority)
-                    .frame(alignment: .trailing)
-            }
-            
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            vm.taskDetail = task
-        }
-        .listRowBackground(
-            ZStack {
-                if task.priority == .high {
-                    LinearGradient(colors: [.faPurple, priorityAnimator ? .red : .faPurple], startPoint: .topLeading, endPoint: .bottomTrailing)
-                    .animation(.easeInOut(duration: 2), value: priorityAnimator)
-                    
-                } else if task.blended {
-                    Color.darkPurple
-                } else {
-                    Color.faPurple
-                }
-            }
-                
-                
-        )
-        .onAppear {
-            if task.priority == .high {
-                Timer.scheduledTimer(withTimeInterval: 1.25, repeats: true) { timer in
-                    priorityAnimator.toggle()
-                }
-            }
-        }
-        .swipeActions() {
-            Button(role: .destructive) {  } label: {
-                Label("Delete", systemImage: "trash")
-            }
-            if !task.blended {
-                Button(action: {
-                    vm.taskToEdit = task
-                }, label: {
-                    Label("Edit", systemImage: "square.and.pencil")
-                })
-            }
-        }
-    }
+
     
     @ViewBuilder
     func weeklyTasksView() -> some View {
@@ -266,10 +210,213 @@ struct TaskView: View {
             }
         }
     }
+    
+    @ViewBuilder
+    func TaskCell(task: UserTask) -> some View {
+        
+        HStack(spacing: 20) {
+            Image(systemName: task.imageURL ?? "note.text")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 40, height: 40)
+                .foregroundStyle(.white)
+            
+            VStack(alignment: .leading) {
+                Text(task.name)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .frame(alignment: .leading)
+                Text(task.pomodoro ? "\(task.pomodoroCounter ?? 0)" : "\(task.duration.timeString())")
+                    .foregroundStyle(.white)
+            }
+            Spacer()
+            
+            if task.pomodoro {
+                Image(systemName: "repeat.circle")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20, height: 20)
+                    .foregroundStyle(.white)
+                Text(String(task.pomodoroCounter!))
+                    .foregroundStyle(.white)
+            } else {
+                WeightingIndicator(weight: task.priority)
+                    .frame(alignment: .trailing)
+            }
+            
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            vm.taskDetail = task
+        }
+        .listRowBackground(
+            ZStack {
+                if task.priority == .high {
+                    LinearGradient(colors: [.faPurple, priorityAnimator ? .red : .faPurple], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .animation(.easeInOut(duration: 2), value: priorityAnimator)
+                    
+                } else if task.blended {
+                    Color.darkPurple
+                } else {
+                    Color.faPurple
+                }
+            }
+                
+                
+        )
+        .onAppear {
+            if task.priority == .high {
+                Timer.scheduledTimer(withTimeInterval: 1.25, repeats: true) { timer in
+                    priorityAnimator.toggle()
+                }
+            }
+        }
+        .swipeActions() {
+            Button(role: .destructive) { 
+                task.descheduleNotification()
+                context.delete(task)
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+            if !task.blended {
+                Button(action: {
+                    vm.taskToEdit = task
+                }, label: {
+                    Label("Edit", systemImage: "square.and.pencil")
+                })
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func ActiveTaskCell(task: UserTask) -> some View {
+        
+        HStack(spacing: 20) {
+            Image(systemName: task.imageURL ?? "note.text")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 40, height: 40)
+                .foregroundStyle(.white)
+            
+            VStack(alignment: .leading) {
+                Text(task.name)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .frame(alignment: .leading)
+                Text(activeVM.timerStringValue)
+                    .foregroundStyle(.white)
+            }
+            Spacer()
+            
+            Image(systemName: "deskclock.fill")
+                .resizable()
+                .frame(width: 20, height: 20)
+                .foregroundStyle(.white)
+            
+        }
+        
+        .contentShape(Rectangle())
+        .onAppear {
+            Timer.scheduledTimer(withTimeInterval: 0.75, repeats: true) { timer in
+                activeAnimator.toggle()
+            }
+        
+        }
+        .onTapGesture {
+            vm.isShowingActiveView = true
+        }
+        .listRowBackground(
+            ZStack {
+                Rectangle()
+                    .fill(Color.faPurple)
+                    .opacity(activeAnimator ? 1 : 0)
+                
+                Rectangle()
+                    .fill(Color.activeFaPurple)
+                    .opacity(activeAnimator ? 0 : 1)
+                
+            }
+                .animation(.easeInOut(duration: 0.75), value: activeAnimator)
+        )
+        .swipeActions() {
+            Button(role: .destructive) {
+                activeVM.endTimer()
+                task.descheduleNotification()
+                context.delete(task)
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        }
+        
+        
+    }
+    
+    @ViewBuilder
+    func BlendedTaskCell(blendedTask: BlendedTask) -> some View {
+        let task = blendedTask.task
+        
+        HStack(spacing: 20) {
+            Image(systemName: task.imageURL ?? "tornado")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 40, height: 40)
+                .foregroundStyle(.white)
+            
+            VStack(alignment: .leading) {
+                Text(task.name)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .frame(alignment: .leading)
+                Text(task.duration.timeString())
+                    .foregroundStyle(.white)
+            }
+            
+            Spacer()
+            
+            if task.pomodoro {
+                Image(systemName: "repeat.circle")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20, height: 20)
+                    .foregroundStyle(.white)
+                Text(String(task.pomodoroCounter!))
+                    .foregroundStyle(.white)
+            } else {
+                WeightingIndicator(weight: task.priority)
+                    .frame(alignment: .trailing)
+            }
+            
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            vm.taskDetail = task
+        }
+        .listRowBackground(
+            ZStack {
+                Color.darkPurple
+            }
+                
+                
+        )
+        .onAppear {
+            Timer.scheduledTimer(withTimeInterval: 1.25, repeats: true) { timer in
+                priorityAnimator.toggle()
+            }
+        }
+        .swipeActions() {
+            Button(role: .destructive) { context.delete(blendedTask) } label: {
+                Label("Delete", systemImage: "trash")
+            }
+            
+        }
+    }
 }
 
 #Preview {
     TaskView()
         .modelContainer(for: UserTask.self, inMemory: true)
-        .environmentObject(ActiveTaskViewModel(activeTask: mockTask))
+        .environment(ActiveTaskViewModel(activeTask: mockTask))
 }

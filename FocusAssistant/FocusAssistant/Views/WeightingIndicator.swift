@@ -24,9 +24,9 @@ func getImageURL(_ weight: Priority) -> String {
     case .low:
         return "exclamationmark"
     case .medium:
-        return "exclamationmark.square"
+        return "exclamationmark.circle"
     case .high:
-        return "exclamationmark.square.fill"
+        return "exclamationmark.circle.fill"
     }
 }
 
