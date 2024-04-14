@@ -17,7 +17,6 @@
 		390FDFA42BC49E9B0064015C /* BlendedTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFA22BC49E9B0064015C /* BlendedTaskView.swift */; };
 		390FDFA72BC4A04C0064015C /* XDismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFA62BC4A04C0064015C /* XDismissButton.swift */; };
 		390FDFAE2BC4F7730064015C /* BlendedTaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFAC2BC4F7730064015C /* BlendedTaskDetailView.swift */; };
-		390FDFAF2BC4F7730064015C /* BlendedTaskDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFAD2BC4F7730064015C /* BlendedTaskDetailViewModel.swift */; };
 		393DDFCC2BCAB9D8000285A6 /* SwiftData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393DDFCB2BCAB9D8000285A6 /* SwiftData.swift */; };
 		39A4D39D2BC2C83000E89C81 /* FocusAssistantApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */; };
 		39A4D3A32BC2C83100E89C81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39A4D3A22BC2C83100E89C81 /* Assets.xcassets */; };
@@ -44,6 +43,10 @@
 		39A4D3F12BC2E56D00E89C81 /* AddTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3EF2BC2E56D00E89C81 /* AddTaskViewModel.swift */; };
 		39A4D3F32BC324AB00E89C81 /* Int+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3F22BC324AB00E89C81 /* Int+Ext.swift */; };
 		39A4D3F52BC349A400E89C81 /* ActiveTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3F42BC349A400E89C81 /* ActiveTaskView.swift */; };
+		39FC39B22BCC0667009110EE /* NewBlendedTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC39B02BCC0667009110EE /* NewBlendedTaskView.swift */; };
+		39FC39B32BCC0667009110EE /* NewBlendedTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC39B12BCC0667009110EE /* NewBlendedTaskViewModel.swift */; };
+		39FC39B52BCC1D60009110EE /* BlenderChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC39B42BCC1D60009110EE /* BlenderChoiceView.swift */; };
+		39FC39B82BCC22F6009110EE /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC39B72BCC22F6009110EE /* HelpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,7 +60,6 @@
 		390FDFA22BC49E9B0064015C /* BlendedTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendedTaskView.swift; sourceTree = "<group>"; };
 		390FDFA62BC4A04C0064015C /* XDismissButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XDismissButton.swift; sourceTree = "<group>"; };
 		390FDFAC2BC4F7730064015C /* BlendedTaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendedTaskDetailView.swift; sourceTree = "<group>"; };
-		390FDFAD2BC4F7730064015C /* BlendedTaskDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendedTaskDetailViewModel.swift; sourceTree = "<group>"; };
 		393DDFCB2BCAB9D8000285A6 /* SwiftData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftData.swift; sourceTree = "<group>"; };
 		39A4D3992BC2C83000E89C81 /* FocusAssistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusAssistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAssistantApp.swift; sourceTree = "<group>"; };
@@ -85,6 +87,10 @@
 		39A4D3F42BC349A400E89C81 /* ActiveTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveTaskView.swift; sourceTree = "<group>"; };
 		39A4D3F62BC3576D00E89C81 /* FocusAssistant.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusAssistant.entitlements; sourceTree = "<group>"; };
 		39A4D3F72BC357A500E89C81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		39FC39B02BCC0667009110EE /* NewBlendedTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBlendedTaskView.swift; sourceTree = "<group>"; };
+		39FC39B12BCC0667009110EE /* NewBlendedTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBlendedTaskViewModel.swift; sourceTree = "<group>"; };
+		39FC39B42BCC1D60009110EE /* BlenderChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlenderChoiceView.swift; sourceTree = "<group>"; };
+		39FC39B72BCC22F6009110EE /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,9 +118,9 @@
 		390FDF822BC47E400064015C /* Blender */ = {
 			isa = PBXGroup;
 			children = (
-				390FDF8C2BC484110064015C /* BlenderView.swift */,
-				390FDF8D2BC484110064015C /* BlenderViewModel.swift */,
-				390FDFA22BC49E9B0064015C /* BlendedTaskView.swift */,
+				39FC39AB2BCC063A009110EE /* User Blender */,
+				39FC39A62BCC05F7009110EE /* AI Blender */,
+				39FC39B42BCC1D60009110EE /* BlenderChoiceView.swift */,
 			);
 			path = Blender;
 			sourceTree = "<group>";
@@ -185,6 +191,7 @@
 				390FDF812BC47E330064015C /* Home */,
 				39A4D3B82BC2CB1B00E89C81 /* Tasks */,
 				390FDF822BC47E400064015C /* Blender */,
+				39FC39B62BCC22D2009110EE /* Help */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -258,7 +265,6 @@
 				39A4D3D72BC2D83F00E89C81 /* TaskDetailView.swift */,
 				39A4D3D92BC2D89D00E89C81 /* TaskDetailViewModel.swift */,
 				390FDFAC2BC4F7730064015C /* BlendedTaskDetailView.swift */,
-				390FDFAD2BC4F7730064015C /* BlendedTaskDetailViewModel.swift */,
 			);
 			path = "Task Detail View";
 			sourceTree = "<group>";
@@ -270,6 +276,33 @@
 				39A4D3EF2BC2E56D00E89C81 /* AddTaskViewModel.swift */,
 			);
 			path = "Add Task View";
+			sourceTree = "<group>";
+		};
+		39FC39A62BCC05F7009110EE /* AI Blender */ = {
+			isa = PBXGroup;
+			children = (
+				390FDF8C2BC484110064015C /* BlenderView.swift */,
+				390FDF8D2BC484110064015C /* BlenderViewModel.swift */,
+				390FDFA22BC49E9B0064015C /* BlendedTaskView.swift */,
+			);
+			path = "AI Blender";
+			sourceTree = "<group>";
+		};
+		39FC39AB2BCC063A009110EE /* User Blender */ = {
+			isa = PBXGroup;
+			children = (
+				39FC39B02BCC0667009110EE /* NewBlendedTaskView.swift */,
+				39FC39B12BCC0667009110EE /* NewBlendedTaskViewModel.swift */,
+			);
+			path = "User Blender";
+			sourceTree = "<group>";
+		};
+		39FC39B62BCC22D2009110EE /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				39FC39B72BCC22F6009110EE /* HelpView.swift */,
+			);
+			path = Help;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -351,15 +384,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39FC39B52BCC1D60009110EE /* BlenderChoiceView.swift in Sources */,
 				39A4D3B72BC2CB0B00E89C81 /* FocusAssistantTabs.swift in Sources */,
 				390FDFAE2BC4F7730064015C /* BlendedTaskDetailView.swift in Sources */,
-				390FDFAF2BC4F7730064015C /* BlendedTaskDetailViewModel.swift in Sources */,
+				39FC39B82BCC22F6009110EE /* HelpView.swift in Sources */,
 				39A4D3CB2BC2D3DE00E89C81 /* Calendar++Ext.swift in Sources */,
 				39A4D3F52BC349A400E89C81 /* ActiveTaskView.swift in Sources */,
 				39A4D3DA2BC2D89D00E89C81 /* TaskDetailViewModel.swift in Sources */,
 				39A4D3BC2BC2CEF400E89C81 /* TaskViewModel.swift in Sources */,
 				393DDFCC2BCAB9D8000285A6 /* SwiftData.swift in Sources */,
 				390FDFA72BC4A04C0064015C /* XDismissButton.swift in Sources */,
+				39FC39B22BCC0667009110EE /* NewBlendedTaskView.swift in Sources */,
+				39FC39B32BCC0667009110EE /* NewBlendedTaskViewModel.swift in Sources */,
 				39A4D3D22BC2D56300E89C81 /* DurationPicker.swift in Sources */,
 				39A4D3F32BC324AB00E89C81 /* Int+Ext.swift in Sources */,
 				390FDF852BC47E6C0064015C /* HomeView.swift in Sources */,

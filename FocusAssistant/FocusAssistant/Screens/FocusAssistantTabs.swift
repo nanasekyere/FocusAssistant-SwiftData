@@ -12,11 +12,6 @@ import SwiftOpenAI
 struct FocusAssistantTabs: View {
     @Query var tasks: [UserTask]
     
-    @Query(filter: #Predicate<UserTask> { task in
-        !task.isCompleted && !task.isExpired && !task.pomodoro
-    })
-    var expirableTasks: [UserTask]
-    
     @Environment(ActiveTaskViewModel.self) var activeTaskModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) var context
@@ -32,9 +27,12 @@ struct FocusAssistantTabs: View {
             TaskView()
                 .tabItem { Label("Tasks", systemImage: "note.text") }
             
-            BlenderView(service: OpenAIServiceFactory.service(apiKey: serviceInfo.APIKey))
+            BlenderChoiceView()
                 .tabItem { Label("Task Blender", systemImage: "tornado") }
-            
+
+            HelpView()
+                .tabItem { Label("Help", systemImage: "questionmark") }
+
         }
         .onAppear {
             startBackgroundTask()
@@ -135,49 +133,24 @@ struct FocusAssistantTabs: View {
                 Task {
                     let count = try? await actor.fetchCount(fetchDescriptor: FetchDescriptor<UserTask>())
                     if count != 0 {
-                        self.checkHighPriorityTasks()
-                        self.checkExpiredTasks()
-                    }
-                }
-                
-                
-            }
-        }
-    }
-    
-    private func checkHighPriorityTasks() {
-        
-        for task in tasks {
-            if task.priority == .high && !task.pomodoro {
-                if let startTime = task.startTime, Calendar.current.isDate(Date(), equalTo: startTime, toGranularity: .minute) {
-                    print("task should start now")
-                    if !activeTaskIDs.contains(task.id) {
-                        DispatchQueue.main.async {
-                            print("Starting Task")
+                        try? await actor.checkExpiredTasks(activeTaskIDs: activeTaskIDs)
+                        if let taskToActivate = try? await actor.checkHighPriorityTasks(activeTaskIDs: activeTaskIDs) {
                             // Set the task as the active task
-                            activeTaskModel.setActiveTask(task)
-                            activeTaskIDs.insert(task.id)
+                            activeTaskModel.setActiveTask(taskToActivate)
+                            activeTaskIDs.insert(taskToActivate.id)
                             // Start the timer
                             activeTaskModel.startTimer()
                             // Notify the user
-                            notifyUser(for: task)
+                            notifyUser(for: taskToActivate)
                         }
                     }
                 }
+                
+                
             }
         }
     }
-    
-    private func checkExpiredTasks() {
-        let currentTime = Date.now
-        
-        for task in expirableTasks  {
-            if task.startTime! < currentTime && !activeTaskIDs.contains(task.id) {
-                task.isExpired = true
-            }
-        }
-    }
-    
+
     
     private func notifyUser(for task: UserTask) {
         let content = UNMutableNotificationContent()
@@ -200,6 +173,6 @@ struct FocusAssistantTabs: View {
 
 #Preview {
     FocusAssistantTabs()
-        .modelContainer(for: [UserTask.self, BlendedTask.self], inMemory: true)
+        .modelContainer(DataController.previewContainer)
         .environment(ActiveTaskViewModel(activeTask: mockTask))
 }

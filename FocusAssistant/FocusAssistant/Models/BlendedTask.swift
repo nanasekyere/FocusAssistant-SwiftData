@@ -104,14 +104,19 @@ struct DummyTask: Codable {
     }
 }
 
-struct DummySubtask: Codable {
+struct DummySubtask: Codable, Hashable {
     var name: String
     var details = [DummyDetail]()
-    
+
+    init(name: String) {
+        self.name = name
+        self.details = []
+    }
+
     private enum CodingKeys: String, CodingKey {
         case name, details
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
@@ -123,12 +128,26 @@ struct DummySubtask: Codable {
         try container.encode(name, forKey: .name)
         try container.encode(details, forKey: .details)
     }
+
+    static func == (lhs: DummySubtask, rhs: DummySubtask) -> Bool {
+        return lhs.name == rhs.name && lhs.details == rhs.details
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(details)
+    }
 }
 
-struct DummyDetail: Codable {
+struct DummyDetail: Codable, Equatable, Hashable {
     var desc: String
     var isCompleted: Bool
-    
+
+    init(desc: String) {
+        self.desc = desc
+        self.isCompleted = false
+    }
+
     private enum CodingKeys: String, CodingKey {
         case desc
         case isCompleted
@@ -144,6 +163,15 @@ struct DummyDetail: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(desc, forKey: .desc)
         try container.encode(isCompleted, forKey: .isCompleted)
+    }
+
+    static func == (lhs: DummyDetail, rhs: DummyDetail) -> Bool {
+        return lhs.desc == rhs.desc && lhs.isCompleted == rhs.isCompleted
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(desc)
+        hasher.combine(isCompleted)
     }
 }
 

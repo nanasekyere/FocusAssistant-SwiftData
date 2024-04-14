@@ -260,7 +260,7 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
-        .modelContainer(for: [UserTask.self, BlendedTask.self], inMemory: true)
+        .modelContainer(DataController.previewContainer)
 }
 
 extension View {

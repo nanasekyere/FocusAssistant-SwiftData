@@ -30,7 +30,7 @@ struct BlenderView: View {
     }
     
     var body: some View {
-        ZStack {
+        NavigationStack {
             ZStack {
                 Rectangle().fill(Color.BG)
                     .ignoresSafeArea(.all)
@@ -75,16 +75,17 @@ struct BlenderView: View {
                     .animation(.default, value: vm.completedTask == nil)
                     .ignoresSafeArea(.all)
                 }
-            
-            
-            
+            .navigationTitle("AI Blender")
         }
         .onAppear {
             vm.context = context
         }
         .buttonStyle(.borderedProminent)
         .animation(.bouncy, value: isShowingTask)
-        .fullScreenCover(item: $vm.completedTask, onDismiss: { vm.isLoading = nil }) { bTask in
+        .fullScreenCover(item: $vm.completedTask, onDismiss: { 
+            vm.isLoading = nil
+            vm.userPrompt = ""
+        }) { bTask in
             BlendedTaskView(blendedTask: bTask)
                 .frame(width: 325, height: 675)
                 .shadow(radius: 30)
