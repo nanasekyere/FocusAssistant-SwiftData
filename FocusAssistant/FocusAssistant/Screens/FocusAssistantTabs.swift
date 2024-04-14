@@ -127,13 +127,20 @@ struct FocusAssistantTabs: View {
    }
 
     private func startBackgroundTask() {
+        let actor = BackgroundSerialPersistenceActor(modelContainer: context.container)
         DispatchQueue.global(qos: .background).async {
             while true {
                 // Sleep for 15 seconds before checking again
                 Thread.sleep(forTimeInterval: 15)
-                self.checkHighPriorityTasks()
-                self.checkExpiredTasks()
-               
+                Task {
+                    let count = try? await actor.fetchCount(fetchDescriptor: FetchDescriptor<UserTask>())
+                    if count != 0 {
+                        self.checkHighPriorityTasks()
+                        self.checkExpiredTasks()
+                    }
+                }
+                
+                
             }
         }
     }

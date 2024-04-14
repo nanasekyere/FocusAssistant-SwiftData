@@ -12,6 +12,7 @@ import SwiftData
 import SwiftOpenAI
 
 struct BlenderView: View {
+    @Environment(\.modelContext) var context
     private let service: OpenAIService
     @Bindable private var vm: BlenderViewModel
     
@@ -31,8 +32,7 @@ struct BlenderView: View {
     var body: some View {
         ZStack {
             ZStack {
-                Rectangle().fill(vm.blendedTask == nil ? Color(.BG) : Color(.gray).opacity(0.4))
-                    .animation(.default, value: vm.blendedTask == nil)
+                Rectangle().fill(Color.BG)
                     .ignoresSafeArea(.all)
     
                     VStack {
@@ -47,8 +47,6 @@ struct BlenderView: View {
                                 blendingTask = Task {
                                     await vm.blendTask()
                                 }
-                                
-                                
                             }
                         }
                         .padding()
@@ -71,15 +69,22 @@ struct BlenderView: View {
                         }
                         
                     }
-                    .animation(.easeInOut, value: vm.blendedTask == nil)
+                    .animation(.easeInOut, value: vm.completedTask == nil)
+                Rectangle().fill(vm.completedTask == nil ? Color(.BG).opacity(0) : Color(.gray).opacity(0.4))
+                    .blur(radius: vm.completedTask == nil ? 0 : 30)
+                    .animation(.default, value: vm.completedTask == nil)
+                    .ignoresSafeArea(.all)
                 }
             
             
             
         }
+        .onAppear {
+            vm.context = context
+        }
         .buttonStyle(.borderedProminent)
         .animation(.bouncy, value: isShowingTask)
-        .fullScreenCover(item: $vm.blendedTask, onDismiss: { vm.isLoading = nil }) { bTask in
+        .fullScreenCover(item: $vm.completedTask, onDismiss: { vm.isLoading = nil }) { bTask in
             BlendedTaskView(blendedTask: bTask)
                 .frame(width: 325, height: 675)
                 .shadow(radius: 30)
@@ -87,7 +92,7 @@ struct BlenderView: View {
                 .presentationBackground(Color.white.opacity(0))
         }
         
-        
+
         
         
         

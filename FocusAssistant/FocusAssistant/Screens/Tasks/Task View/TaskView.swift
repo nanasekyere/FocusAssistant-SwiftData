@@ -41,7 +41,7 @@ struct TaskView: View {
             VStack {
                 
                 
-                if tasks.isEmpty {
+                if tasks.isEmpty && bTasks.isEmpty {
                     ContentUnavailableView("No Tasks", systemImage: "tag.slash.fill", description: Text("You don't have any tasks currently, press the button to create one"))
                 } else {
                     
@@ -110,6 +110,9 @@ struct TaskView: View {
                             vm.status = .showDaily
                         })
                         .disabled(vm.status == .showDaily)
+                        
+                        Button(vm.isShowingBlendedTasks ? "Hide Blended tasks" : "Show Blended tasks", action: {vm.isShowingCompleted.toggle()})
+                        
                         Button(vm.isShowingCompleted ? "Hide Completed tasks" : "Show Completed tasks", action: {vm.isShowingCompleted.toggle()})
                         
                         Button(vm.isShowingExpiredTasks ? "Hide Expired tasks" : "Show Expired tasks", action: {vm.isShowingExpiredTasks.toggle()})
@@ -142,6 +145,10 @@ struct TaskView: View {
             
             .sheet(item: $vm.taskDetail) { task in
                 TaskDetailView(task: task)
+            }
+            
+            .sheet(item: $vm.bTaskDetail) { task in
+                BlendedTaskDetailView(blendedTask: task)
             }
         }
         
@@ -355,7 +362,7 @@ struct TaskView: View {
     
     @ViewBuilder
     func BlendedTaskCell(blendedTask: BlendedTask) -> some View {
-        let task = blendedTask.task
+        let task = blendedTask.toTask()
         
         HStack(spacing: 20) {
             Image(systemName: task.imageURL ?? "tornado")
@@ -392,7 +399,7 @@ struct TaskView: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            vm.taskDetail = task
+            vm.bTaskDetail = blendedTask
         }
         .listRowBackground(
             ZStack {
@@ -417,6 +424,7 @@ struct TaskView: View {
 
 #Preview {
     TaskView()
-        .modelContainer(for: UserTask.self, inMemory: true)
+        .modelContainer(for: [UserTask.self, BlendedTask.self], inMemory: true)
         .environment(ActiveTaskViewModel(activeTask: mockTask))
+    
 }

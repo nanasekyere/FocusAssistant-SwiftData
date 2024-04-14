@@ -3,9 +3,187 @@
 <plist version="1.0">
 <dict>
 	<key>JSON2</key>
-	<string>{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Write a movie analysis&quot;,&quot;subtasks&quot;:[{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Watch the movie&quot;,&quot;details&quot;:[&quot;Select a movie to analyze&quot;,&quot;Take notes on the plot, characters, and themes&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Identify key themes&quot;,&quot;details&quot;:[&quot;Analyze the underlying messages and themes in the movie&quot;,&quot;Explore the symbolic elements and motifs used to convey the themes&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Analyze the characters&quot;,&quot;details&quot;:[&quot;Evaluate the character development and motivations&quot;,&quot;Discuss the significance of each character in relation to the plot and themes&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Examine the plot structure&quot;,&quot;details&quot;:[&quot;Break down the plot into key arcs and plot points&quot;,&quot;Analyze the narrative structure and pacing of the story&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Evaluate filmmaking techniques&quot;,&quot;details&quot;:[&quot;Assess the use of cinematography, editing, and sound in conveying the story&quot;,&quot;Explore the visual and auditory elements that contribute to the movie&apos;s impact&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Discuss the impact on the audience&quot;,&quot;details&quot;:[&quot;Consider the emotional and intellectual impact on the audience&quot;,&quot;Evaluate the overall significance and relevance of the movie&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Write the analysis&quot;,&quot;details&quot;:[&quot;Organize the information into an analytical essay or report&quot;,&quot;Include an introduction, body paragraphs, and a conclusion&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Edit and refine the analysis&quot;,&quot;details&quot;:[&quot;Review and revise the analysis for clarity and coherence&quot;,&quot;Ensure the analysis effectively conveys your insights and interpretations&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Cite sources and references&quot;,&quot;details&quot;:[&quot;If applicable, provide citations for any external sources used in the analysis&quot;,&quot;Give credit to other critics and scholars who have contributed to your understanding&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Publish or present the analysis&quot;,&quot;details&quot;:[&quot;Share your analysis through a written publication, presentation, or online platform&quot;,&quot;Engage with others to discuss and exchange perspectives on the movie analysis&quot;]}]}</string>
+	<string>{
+  &quot;name&quot;: &quot;Write a movie analysis&quot;,
+  &quot;subtasks&quot;: [
+    {
+      &quot;name&quot;: &quot;Watch the movie&quot;,
+      &quot;details&quot;: [
+        {
+          &quot;desc&quot;: &quot;Select the movie to analyze&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Find a quiet and comfortable place to watch&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Take notes while watching the movie&quot;,
+          &quot;isCompleted&quot;: false
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;Analyze the plot&quot;,
+      &quot;details&quot;: [
+        {
+          &quot;desc&quot;: &quot;Summarize the main storyline&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Identify key plot points and turning points&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Analyze the character arcs&quot;,
+          &quot;isCompleted&quot;: false
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;Analyze the themes&quot;,
+      &quot;details&quot;: [
+        {
+          &quot;desc&quot;: &quot;Identify the main themes of the movie&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Explore how the themes are developed throughout the movie&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Consider the deeper messages and symbolism&quot;,
+          &quot;isCompleted&quot;: false
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;Analyze the cinematography&quot;,
+      &quot;details&quot;: [
+        {
+          &quot;desc&quot;: &quot;Evaluate the use of camera angles and shots&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Consider the lighting and color schemes&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Analyze the use of visual effects and editing&quot;,
+          &quot;isCompleted&quot;: false
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;Write the analysis&quot;,
+      &quot;details&quot;: [
+        {
+          &quot;desc&quot;: &quot;Organize the analysis into an outline&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Write an introduction, body, and conclusion&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Incorporate evidence and examples from the movie&quot;,
+          &quot;isCompleted&quot;: false
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;Edit and revise&quot;,
+      &quot;details&quot;: [
+        {
+          &quot;desc&quot;: &quot;Review the analysis for clarity and coherence&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Check for grammar and spelling errors&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Revise as needed for a polished final draft&quot;,
+          &quot;isCompleted&quot;: false
+        }
+      ]
+    }
+  ]
+}</string>
 	<key>JSON</key>
-	<string>{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Make a salad&quot;,&quot;subtasks&quot;:[{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Prepare the vegetables&quot;,&quot;details&quot;:[&quot;Wash the lettuce&quot;,&quot;Chop the cucumber&quot;,&quot;Dice the tomatoes&quot;,&quot;Slice the onion&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Prepare the dressing&quot;,&quot;details&quot;:[&quot;Mix olive oil and vinegar&quot;,&quot;Add salt and pepper to taste&quot;,&quot;Whisk the ingredients together&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Toss the salad&quot;,&quot;details&quot;:[&quot;Combine the prepared vegetables in a bowl&quot;,&quot;Drizzle the dressing over the vegetables&quot;,&quot;Gently toss the salad to coat it with the dressing&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Garnish the salad&quot;,&quot;details&quot;:[&quot;Add croutons for extra crunch&quot;,&quot;Sprinkle some shredded cheese on top&quot;,&quot;Garnish with fresh herbs for flavor&quot;]},{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Serve the salad&quot;,&quot;details&quot;:[&quot;Transfer the salad to a serving bowl&quot;,&quot;Serve immediately and enjoy!&quot;]}]}</string>
+	<string>{
+  &quot;name&quot;: &quot;Make a salad&quot;,
+  &quot;subtasks&quot;: [
+    {
+      &quot;name&quot;: &quot;Prepare the vegetables&quot;,
+      &quot;details&quot;: [
+        {
+          &quot;desc&quot;: &quot;Wash the lettuce&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Chop the tomatoes&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Slice the cucumbers&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Dice the bell peppers&quot;,
+          &quot;isCompleted&quot;: false
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;Prepare the dressing&quot;,
+      &quot;details&quot;: [
+        {
+          &quot;desc&quot;: &quot;Mix olive oil and vinegar&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Add salt and pepper&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Whisk until well combined&quot;,
+          &quot;isCompleted&quot;: false
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;Combine the ingredients&quot;,
+      &quot;details&quot;: [
+        {
+          &quot;desc&quot;: &quot;Place the prepared vegetables in a large bowl&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Drizzle the dressing over the vegetables&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Toss the salad until the dressing is evenly distributed&quot;,
+          &quot;isCompleted&quot;: false
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;Serve the salad&quot;,
+      &quot;details&quot;: [
+        {
+          &quot;desc&quot;: &quot;Transfer the salad to a serving dish&quot;,
+          &quot;isCompleted&quot;: false
+        },
+        {
+          &quot;desc&quot;: &quot;Garnish with fresh herbs (optional)&quot;,
+          &quot;isCompleted&quot;: false
+        }
+      ]
+    }
+  ]
+}</string>
 	<key>API_KEY</key>
 	<string>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</string>
 </dict>

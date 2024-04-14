@@ -16,6 +16,9 @@
 		390FDFA12BC4931E0064015C /* OpenAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 390FDFA02BC4931E0064015C /* OpenAI-Info.plist */; };
 		390FDFA42BC49E9B0064015C /* BlendedTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFA22BC49E9B0064015C /* BlendedTaskView.swift */; };
 		390FDFA72BC4A04C0064015C /* XDismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFA62BC4A04C0064015C /* XDismissButton.swift */; };
+		390FDFAE2BC4F7730064015C /* BlendedTaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFAC2BC4F7730064015C /* BlendedTaskDetailView.swift */; };
+		390FDFAF2BC4F7730064015C /* BlendedTaskDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFAD2BC4F7730064015C /* BlendedTaskDetailViewModel.swift */; };
+		393DDFCC2BCAB9D8000285A6 /* SwiftData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393DDFCB2BCAB9D8000285A6 /* SwiftData.swift */; };
 		39A4D39D2BC2C83000E89C81 /* FocusAssistantApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */; };
 		39A4D3A32BC2C83100E89C81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39A4D3A22BC2C83100E89C81 /* Assets.xcassets */; };
 		39A4D3A62BC2C83100E89C81 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39A4D3A52BC2C83100E89C81 /* Preview Assets.xcassets */; };
@@ -53,6 +56,9 @@
 		390FDFA02BC4931E0064015C /* OpenAI-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OpenAI-Info.plist"; sourceTree = "<group>"; };
 		390FDFA22BC49E9B0064015C /* BlendedTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendedTaskView.swift; sourceTree = "<group>"; };
 		390FDFA62BC4A04C0064015C /* XDismissButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XDismissButton.swift; sourceTree = "<group>"; };
+		390FDFAC2BC4F7730064015C /* BlendedTaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendedTaskDetailView.swift; sourceTree = "<group>"; };
+		390FDFAD2BC4F7730064015C /* BlendedTaskDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendedTaskDetailViewModel.swift; sourceTree = "<group>"; };
+		393DDFCB2BCAB9D8000285A6 /* SwiftData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftData.swift; sourceTree = "<group>"; };
 		39A4D3992BC2C83000E89C81 /* FocusAssistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusAssistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAssistantApp.swift; sourceTree = "<group>"; };
 		39A4D3A22BC2C83100E89C81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -167,6 +173,7 @@
 			children = (
 				39A4D3B32BC2C95800E89C81 /* UserTask.swift */,
 				390FDF902BC484690064015C /* BlendedTask.swift */,
+				393DDFCB2BCAB9D8000285A6 /* SwiftData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -250,6 +257,8 @@
 			children = (
 				39A4D3D72BC2D83F00E89C81 /* TaskDetailView.swift */,
 				39A4D3D92BC2D89D00E89C81 /* TaskDetailViewModel.swift */,
+				390FDFAC2BC4F7730064015C /* BlendedTaskDetailView.swift */,
+				390FDFAD2BC4F7730064015C /* BlendedTaskDetailViewModel.swift */,
 			);
 			path = "Task Detail View";
 			sourceTree = "<group>";
@@ -343,10 +352,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				39A4D3B72BC2CB0B00E89C81 /* FocusAssistantTabs.swift in Sources */,
+				390FDFAE2BC4F7730064015C /* BlendedTaskDetailView.swift in Sources */,
+				390FDFAF2BC4F7730064015C /* BlendedTaskDetailViewModel.swift in Sources */,
 				39A4D3CB2BC2D3DE00E89C81 /* Calendar++Ext.swift in Sources */,
 				39A4D3F52BC349A400E89C81 /* ActiveTaskView.swift in Sources */,
 				39A4D3DA2BC2D89D00E89C81 /* TaskDetailViewModel.swift in Sources */,
 				39A4D3BC2BC2CEF400E89C81 /* TaskViewModel.swift in Sources */,
+				393DDFCC2BCAB9D8000285A6 /* SwiftData.swift in Sources */,
 				390FDFA72BC4A04C0064015C /* XDismissButton.swift in Sources */,
 				39A4D3D22BC2D56300E89C81 /* DurationPicker.swift in Sources */,
 				39A4D3F32BC324AB00E89C81 /* Int+Ext.swift in Sources */,

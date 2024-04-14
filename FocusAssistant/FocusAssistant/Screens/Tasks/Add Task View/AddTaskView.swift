@@ -37,7 +37,7 @@ struct AddTaskView: View {
                                 .onChange(of: vm.pomodoro) { oldValue, newValue in
                                     if newValue == true {
                                         vm.pomodoroCounter = 0
-                                        vm.duration = 5
+                                        vm.duration = 1500
                                         vm.startTime = nil
                                     }
                                 }

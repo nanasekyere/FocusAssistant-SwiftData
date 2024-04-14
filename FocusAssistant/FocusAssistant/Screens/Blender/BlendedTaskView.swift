@@ -49,12 +49,12 @@ struct BlendedTaskView: View {
                 
                 HStack {
                     Button("Create Task") {
-                        context.insert(blendedTask)
                         dismiss()
                     }
                     .buttonStyle(.borderedProminent)
                     
                     Button("Reset response", role: .destructive) {
+                        context.delete(blendedTask)
                         dismiss()
                     }
                     .buttonStyle(.borderedProminent)
@@ -65,7 +65,10 @@ struct BlendedTaskView: View {
         }
     
         .overlay(alignment: .topTrailing, content: {
-            Button(action: { dismiss() }, label: {
+            Button(action: { 
+                context.delete(blendedTask)
+                dismiss()
+            }, label: {
                 XDismissButton()
             })
             .padding()
@@ -94,9 +97,9 @@ struct BlendedTaskView: View {
                 
                 if isExpanded {
                     
-                    ForEach(0...subtask.details.count - 1, id: \.self) { index in
+                    ForEach(subtask.details) { detail in
                         VStack(alignment: .leading, spacing: 5) {
-                            Text(subtask.details[index].description)
+                            Text(detail.desc)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
                                 .background(Color.darkPurple)
@@ -114,8 +117,12 @@ struct BlendedTaskView: View {
     }
 }
 
+
 #Preview {
-    BlendedTaskView(blendedTask: mockBlendedTask)
-        .modelContainer(for: BlendedTask.self, inMemory: true)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: UserTask.self, BlendedTask.self, configurations: config)
+    
+    return BlendedTaskView(blendedTask: try! decodeBlendedTask(from: serviceInfo.mockTask, modelContext: container.mainContext))
+        .modelContainer(container)
 }
 

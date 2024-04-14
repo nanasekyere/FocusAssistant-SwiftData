@@ -10,6 +10,7 @@
 import Foundation
 import UIKit
 import SwiftOpenAI
+import SwiftData
 
 @Observable class BlenderViewModel {
     private let service: OpenAIService
@@ -17,18 +18,22 @@ import SwiftOpenAI
    
     var isShowingTask = false
     var userPrompt = ""
-    var blendedTask: BlendedTask?
+    
+    var completedTask: BlendedTask?
     var isLoading: Bool?
+    var context: ModelContext?
     
     init(service: OpenAIService) {
         self.service = service
     }
     
+    @MainActor
     func blendTask() async {
             isLoading = true
             let prompt = userPrompt
         
             do {
+                guard let modelContext = context else { throw APIError.requestFailed(description: "Could not find model context") }
                 guard (try await getAssistant()) != nil else { return }
                 
                 let thread = try await createThread()
@@ -50,8 +55,34 @@ import SwiftOpenAI
                 let response = runObject.requiredAction?.submitToolsOutputs.toolCalls.first?.function.arguments
 
                 guard let data = response else { throw APIError.jsonDecodingFailure(description: "Could not get response from AI") }
-                blendedTask = try .init(data)
-                await UINotificationFeedbackGenerator().notificationOccurred(.success)
+                
+                let dummyTask = try DummyTask.init(data)
+                let blendedTask = BlendedTask(from: dummyTask)
+                modelContext.insert(blendedTask)
+                var subtasks = [Subtask]()
+                
+                
+                for subtask in dummyTask.subtasks.reversed() {
+                    var details = [Detail]()
+                    let newSubtask = Subtask(from: subtask)
+                    modelContext.insert(newSubtask)
+                    newSubtask.blendedTask = blendedTask
+                    
+                    for detail in subtask.details.reversed() {
+                        let newDetail = Detail(from: detail)
+                        modelContext.insert(newDetail)
+                        newDetail.subtask = newSubtask
+                        details.append(newDetail)
+                    }
+                    newSubtask.details = details
+                    subtasks.append(newSubtask)
+                }
+                
+                blendedTask.subtasks = subtasks
+                
+                completedTask = blendedTask
+                
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
                 isLoading = false
                 
             } catch {

@@ -21,6 +21,7 @@ import Observation
     
     var taskDetail: UserTask?
     var taskToEdit: UserTask?
+    var bTaskDetail: BlendedTask?
 
     var status = Status.showAll
     

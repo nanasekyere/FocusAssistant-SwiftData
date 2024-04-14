@@ -9,7 +9,8 @@
 
 import Foundation
 import Observation
+import SwiftUI
 
 @Observable class BlendedTaskDetailViewModel {
-    
+    var subtasks = [Subtask]()
 }
