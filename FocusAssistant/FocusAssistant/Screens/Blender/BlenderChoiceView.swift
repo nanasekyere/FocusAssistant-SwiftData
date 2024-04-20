@@ -7,9 +7,11 @@
 
 import SwiftUI
 import SwiftOpenAI
+import SwiftData
 
 struct BlenderChoiceView: View {
-    
+    @Environment(\.modelContext) var modelContext
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -52,6 +54,14 @@ struct BlenderChoiceView: View {
                         }
                     }
                     .padding()
+
+                    Button("add example task") {
+                        let actor = BackgroundSerialPersistenceActor(modelContainer: modelContext.container)
+                        Task {
+                            let _ = try! await actor.safeDecodeBlendedTask(from: serviceInfo.mockTask)
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
                 .frame(width: 300)
             }

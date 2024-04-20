@@ -9,19 +9,23 @@ import Foundation
 import SwiftData
 
 @Model class BlendedTask {
-    var id = UUID()
+    var identity = UUID()
     var name: String
+
     @Relationship(deleteRule: .cascade, inverse: \Subtask.blendedTask)
     var subtasks = [Subtask]()
     var isCompleted = false
-    
+
+    @Relationship(deleteRule: .cascade, inverse: \UserTask.blendedTask)
+    var correspondingTask: UserTask?
+
     init(from dummyTask: DummyTask) {
         self.name = dummyTask.name
         self.subtasks = []
     }
     
     func toTask() -> UserTask {
-        return UserTask(id: id, name: name, duration: 3, priority: .medium, pomodoro: true, pomodoroCounter: 0, blended: true)
+        return UserTask(identity: identity, name: name, duration: 7, priority: .medium, pomodoro: true, pomodoroCounter: 0, blendedTask: self)
     }
     
     

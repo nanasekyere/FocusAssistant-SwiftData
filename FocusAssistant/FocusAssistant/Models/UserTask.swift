@@ -11,8 +11,8 @@ import UserNotifications
 
 @Model
 final class UserTask {
-    var id = UUID()
-    
+    var identity = UUID()
+
     var name = ""
     var duration: Int = 0
     var startTime: Date?
@@ -23,8 +23,9 @@ final class UserTask {
     var isCompleted = false
     var pomodoroCounter: Int?
     var isExpired = false
-    private(set) var blended: Bool = false
-    
+
+    var blendedTask: BlendedTask?
+
     func increaseCounter() {
         if pomodoro {
             pomodoroCounter! += 1
@@ -48,9 +49,9 @@ final class UserTask {
         self.pomodoroCounter = pomodoroCounter
     }
     
-    init(id: UUID, name: String = "", duration: Int = 0, startTime: Date? = nil, priority: Priority = .low, 
-         imageURL: String? = nil, details: String? = nil, pomodoro: Bool = false,  pomodoroCounter: Int? = nil, blended: Bool) {
-        self.id = id
+    init(identity: UUID, name: String = "", duration: Int = 0, startTime: Date? = nil, priority: Priority = .low,
+         imageURL: String? = nil, details: String? = nil, pomodoro: Bool = false,  pomodoroCounter: Int? = nil, blendedTask: BlendedTask? = nil) {
+        self.identity = identity
         self.name = name
         self.duration = duration
         self.startTime = startTime
@@ -59,7 +60,7 @@ final class UserTask {
         self.details = details
         self.pomodoro = pomodoro
         self.pomodoroCounter = pomodoroCounter
-        self.blended = blended
+        self.blendedTask = blendedTask
     }
     
     func scheduleNotification() {
@@ -104,20 +105,20 @@ enum Priority: String, CaseIterable, Codable {
 }
 
 //Samples
-var sampleTasks: [UserTask] = [ UserTask(name: "Brush Teeth", duration: 12, startTime: Date.now.customFutureDate(daysAhead: 2), priority: .medium, imageURL: "drop.fill"),
-                                           UserTask(name: "Shower", duration: 30, startTime: Date.now.customFutureDate(daysAhead: 1), priority: .medium, imageURL: "shower.fill"),
+var sampleTasks: [UserTask] = [ UserTask(name: "Brush Teeth", duration: 120, startTime: Date.now.customFutureDate(daysAhead: 2), priority: .medium, imageURL: "drop.fill"),
+                                           UserTask(name: "Shower", duration: 300, startTime: Date.now.customFutureDate(daysAhead: 1), priority: .medium, imageURL: "shower.fill"),
                                            mockPomodoroTask,
-                                           UserTask(name: "Brush Teeth", duration: 12, startTime: Date.now.customFutureDate(daysAhead: 3), priority: .medium, imageURL: "drop.fill"),
-                                           UserTask(name: "Shower", duration: 30, startTime: Date.now.customFutureDate(daysAhead: 4), priority: .medium, imageURL: "shower.fill"),
-                                        
-                                           UserTask(name: "Brush Teeth", duration: 12, startTime: Date.now, priority: .medium, imageURL: "drop.fill"),
-                                           UserTask(name: "Shower", duration: 30, startTime: Date.now.customFutureDate(daysAhead: 6), priority: .medium, imageURL: "shower.fill"),
+                                           UserTask(name: "Clean Desk", duration: 120, startTime: Date.now.customFutureDate(daysAhead: 3), priority: .medium, imageURL: "drop.fill"),
+                                           UserTask(name: "Shower", duration: 300, startTime: Date.now.customFutureDate(daysAhead: 4), priority: .medium, imageURL: "shower.fill"),
+
+                                           UserTask(name: "Brush Teeth", duration: 120, startTime: Date.now, priority: .medium, imageURL: "drop.fill"),
+                                           UserTask(name: "Shower", duration: 300, startTime: Date.now.customFutureDate(daysAhead: 6), priority: .medium, imageURL: "shower.fill"),
                                            mockPomodoroTask,
-                                           UserTask(name: "Brush Teeth", duration: 12, startTime: Date.now.customFutureDate(daysAhead: 7), priority: .medium, imageURL: "drop.fill"),
-                                           UserTask(name: "Shower", duration: 30, startTime: Date.now, priority: .high, imageURL: "shower.fill"),
+                                           UserTask(name: "Brush Teeth", duration: 120, startTime: Date.now.customFutureDate(daysAhead: 7), priority: .medium, imageURL: "drop.fill"),
+                                           UserTask(name: "Shower", duration: 300, startTime: Date.now, priority: .high, imageURL: "shower.fill"),
                                            mockPomodoroTask
 ]
 
-var mockTask = UserTask(name: "Shower", duration: 30, startTime: Date.now.customFutureDate(daysAhead: 2), priority: .high, imageURL: "shower.fill", details: "Don't forget to put the shampoo back in the cabinet. Remember to clean sink after brushing teeth")
+var mockTask = UserTask(name: "Clean Desk", duration: 120, startTime: Date.now.customFutureDate(daysAhead: 3), priority: .medium, imageURL: "drop.fill")
 
 var mockPomodoroTask = UserTask(name: "Work on assignment", priority: .medium, imageURL: "book.pages.fill", details: "Don't forget to save file after each change you make in the IDE", pomodoro: true, pomodoroCounter: 0)

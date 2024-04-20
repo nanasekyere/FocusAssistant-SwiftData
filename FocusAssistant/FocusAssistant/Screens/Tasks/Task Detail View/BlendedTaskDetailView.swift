@@ -14,7 +14,8 @@ struct BlendedTaskDetailView: View {
     @Query var bTasks: [BlendedTask]
     
     @State private var isAnimated = false
-    
+
+    @State private var taskToActivate: UserTask?
     @Bindable var blendedTask: BlendedTask
     
     var body: some View {
@@ -81,7 +82,11 @@ struct BlendedTaskDetailView: View {
 
                         ToolbarItem(placement: .topBarTrailing) {
                             Button("Start") {
-
+                                if let task = blendedTask.correspondingTask {
+                                    taskToActivate = task
+                                } else {
+                                    print("error")
+                                }
                             }
                             .buttonStyle(.bordered)
                             .tint(.activeFaPurple)
@@ -96,6 +101,9 @@ struct BlendedTaskDetailView: View {
                 
             }
             .navigationTitle("\(blendedTask.name)")
+        }
+        .fullScreenCover(item: $taskToActivate) { task in
+            ActiveTaskView(task: task)
         }
     }
     

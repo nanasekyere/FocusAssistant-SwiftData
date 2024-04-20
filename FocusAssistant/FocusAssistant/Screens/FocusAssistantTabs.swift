@@ -17,7 +17,9 @@ struct FocusAssistantTabs: View {
     @Environment(\.modelContext) var context
     
     @State private var activeTaskIDs: Set<PersistentIdentifier> = []
-    
+
+
+
     var body: some View {
         @Bindable var activeTaskModel = activeTaskModel
         TabView {
@@ -31,7 +33,7 @@ struct FocusAssistantTabs: View {
                 .tabItem { Label("Task Blender", systemImage: "tornado") }
 
             HelpView()
-                .tabItem { Label("Help", systemImage: "questionmark") }
+                .tabItem { Label("Help & Settings", systemImage: "questionmark") }
 
         }
         .onAppear {

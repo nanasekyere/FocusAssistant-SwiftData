@@ -10,6 +10,7 @@ import SwiftData
 
 @ModelActor
 public actor BackgroundSerialPersistenceActor {
+
     public func fetchData<T: PersistentModel>(
         predicate: Predicate<T>? = nil,
         sortBy: [SortDescriptor<T>] = []
@@ -59,7 +60,7 @@ public actor BackgroundSerialPersistenceActor {
     public func checkExpiredTasks(activeTaskIDs: Set<PersistentIdentifier>) throws {
         let currentTime = Date.now
 
-        var tasks = try modelContext.fetch(FetchDescriptor<UserTask>(predicate: #Predicate<UserTask> { task in
+        let tasks = try modelContext.fetch(FetchDescriptor<UserTask>(predicate: #Predicate<UserTask> { task in
             !task.isCompleted && !task.isExpired && !task.pomodoro
         }))
 
@@ -71,8 +72,9 @@ public actor BackgroundSerialPersistenceActor {
 
     }
 
+
     func checkHighPriorityTasks(activeTaskIDs: Set<PersistentIdentifier>) throws -> UserTask? {
-        var tasks = try modelContext.fetch(FetchDescriptor(predicate: #Predicate<UserTask> { task in
+        let tasks = try modelContext.fetch(FetchDescriptor(predicate: #Predicate<UserTask> { task in
             !task.isCompleted && !task.isExpired && !task.pomodoro
         }))
 
@@ -87,6 +89,38 @@ public actor BackgroundSerialPersistenceActor {
             }
         }
         return nil
+    }
+
+    func safeDecodeBlendedTask(from JSONString: String) throws -> BlendedTask {
+        let dummyTask = try DummyTask.init(JSONString)
+        let blendedTask = BlendedTask(from: dummyTask)
+        modelContext.insert(blendedTask)
+        blendedTask.correspondingTask = blendedTask.toTask()
+        var subtasks = [Subtask]()
+
+
+        for subtask in dummyTask.subtasks {
+            var details = [Detail]()
+
+            let newSubtask = Subtask(from: subtask)
+            modelContext.insert(newSubtask)
+            //Assign the relationship after inserting into context
+            newSubtask.blendedTask = blendedTask
+
+            for detail in subtask.details {
+                let newDetail = Detail(from: detail)
+                modelContext.insert(newDetail)
+                //Assign the relationship after inserting into context
+                newDetail.subtask = newSubtask
+                details.append(newDetail)
+            }
+            newSubtask.details = details
+            subtasks.append(newSubtask)
+        }
+
+        blendedTask.subtasks = subtasks
+
+        return blendedTask
     }
 
 }
@@ -116,6 +150,8 @@ func decodeBlendedTask(from JSONString: String, modelContext: ModelContext) thro
     let dummyTask = try DummyTask.init(JSONString)
     let blendedTask = BlendedTask(from: dummyTask)
     modelContext.insert(blendedTask)
+    blendedTask.correspondingTask = blendedTask.toTask()
+
     var subtasks = [Subtask]()
     
     
@@ -139,7 +175,7 @@ func decodeBlendedTask(from JSONString: String, modelContext: ModelContext) thro
     }
     
     blendedTask.subtasks = subtasks
-    
+
     return blendedTask
 }
 
@@ -169,4 +205,7 @@ func createTask(from dummyTask: DummyTask, modelContext: ModelContext) throws {
     }
 
     blendedTask.subtasks = subtasks
+
+    modelContext.insert(blendedTask.toTask())
+    blendedTask.correspondingTask = blendedTask.toTask()
 }

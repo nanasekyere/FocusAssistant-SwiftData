@@ -17,6 +17,8 @@
 		390FDFA42BC49E9B0064015C /* BlendedTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFA22BC49E9B0064015C /* BlendedTaskView.swift */; };
 		390FDFA72BC4A04C0064015C /* XDismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFA62BC4A04C0064015C /* XDismissButton.swift */; };
 		390FDFAE2BC4F7730064015C /* BlendedTaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFAC2BC4F7730064015C /* BlendedTaskDetailView.swift */; };
+		3924630B2BD45CFC00EAC4D0 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3924630A2BD45CFC00EAC4D0 /* Launch Screen.storyboard */; };
+		3924630E2BD46D9A00EAC4D0 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924630D2BD46D9A00EAC4D0 /* OnboardingView.swift */; };
 		393DDFCC2BCAB9D8000285A6 /* SwiftData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393DDFCB2BCAB9D8000285A6 /* SwiftData.swift */; };
 		39A4D39D2BC2C83000E89C81 /* FocusAssistantApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */; };
 		39A4D3A32BC2C83100E89C81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39A4D3A22BC2C83100E89C81 /* Assets.xcassets */; };
@@ -60,6 +62,8 @@
 		390FDFA22BC49E9B0064015C /* BlendedTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendedTaskView.swift; sourceTree = "<group>"; };
 		390FDFA62BC4A04C0064015C /* XDismissButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XDismissButton.swift; sourceTree = "<group>"; };
 		390FDFAC2BC4F7730064015C /* BlendedTaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendedTaskDetailView.swift; sourceTree = "<group>"; };
+		3924630A2BD45CFC00EAC4D0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		3924630D2BD46D9A00EAC4D0 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		393DDFCB2BCAB9D8000285A6 /* SwiftData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftData.swift; sourceTree = "<group>"; };
 		39A4D3992BC2C83000E89C81 /* FocusAssistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusAssistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAssistantApp.swift; sourceTree = "<group>"; };
@@ -134,6 +138,14 @@
 			path = OpenAI;
 			sourceTree = "<group>";
 		};
+		3924630C2BD4680100EAC4D0 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				3924630D2BD46D9A00EAC4D0 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		39A4D3902BC2C83000E89C81 = {
 			isa = PBXGroup;
 			children = (
@@ -187,11 +199,13 @@
 		39A4D3B52BC2CAF400E89C81 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				3924630C2BD4680100EAC4D0 /* Onboarding */,
+				3924630A2BD45CFC00EAC4D0 /* Launch Screen.storyboard */,
 				39A4D3B62BC2CB0B00E89C81 /* FocusAssistantTabs.swift */,
 				390FDF812BC47E330064015C /* Home */,
 				39A4D3B82BC2CB1B00E89C81 /* Tasks */,
 				390FDF822BC47E400064015C /* Blender */,
-				39FC39B62BCC22D2009110EE /* Help */,
+				39FC39B62BCC22D2009110EE /* Help and Settings */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -297,12 +311,12 @@
 			path = "User Blender";
 			sourceTree = "<group>";
 		};
-		39FC39B62BCC22D2009110EE /* Help */ = {
+		39FC39B62BCC22D2009110EE /* Help and Settings */ = {
 			isa = PBXGroup;
 			children = (
 				39FC39B72BCC22F6009110EE /* HelpView.swift */,
 			);
-			path = Help;
+			path = "Help and Settings";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -373,6 +387,7 @@
 			files = (
 				390FDFA12BC4931E0064015C /* OpenAI-Info.plist in Resources */,
 				39A4D3A62BC2C83100E89C81 /* Preview Assets.xcassets in Resources */,
+				3924630B2BD45CFC00EAC4D0 /* Launch Screen.storyboard in Resources */,
 				39A4D3A32BC2C83100E89C81 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -405,6 +420,7 @@
 				39A4D3C72BC2D3DE00E89C81 /* Duration++Ext.swift in Sources */,
 				39A4D3D12BC2D56300E89C81 /* CustomModifiers.swift in Sources */,
 				39A4D3D82BC2D83F00E89C81 /* TaskDetailView.swift in Sources */,
+				3924630E2BD46D9A00EAC4D0 /* OnboardingView.swift in Sources */,
 				39A4D3F12BC2E56D00E89C81 /* AddTaskViewModel.swift in Sources */,
 				39A4D3F02BC2E56D00E89C81 /* AddTaskView.swift in Sources */,
 				39A4D3BA2BC2CB2300E89C81 /* TaskView.swift in Sources */,
@@ -562,6 +578,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -596,6 +613,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;

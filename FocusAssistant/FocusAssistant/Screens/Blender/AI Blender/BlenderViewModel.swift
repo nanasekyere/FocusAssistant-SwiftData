@@ -59,6 +59,7 @@ import SwiftData
                 let dummyTask = try DummyTask.init(data)
                 let blendedTask = BlendedTask(from: dummyTask)
                 modelContext.insert(blendedTask)
+                blendedTask.correspondingTask = blendedTask.toTask()
                 var subtasks = [Subtask]()
                 
                 

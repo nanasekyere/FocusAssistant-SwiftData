@@ -12,14 +12,24 @@ struct TaskView: View {
     @Query var tasks: [UserTask]
     @Query var bTasks: [BlendedTask]
     @Query(filter: #Predicate<UserTask> { task in
-        task.isCompleted && !task.isExpired
+        task.isCompleted && !task.isExpired && task.blendedTask == nil
     })
     var completedTasks: [UserTask]
 
     @Query(filter: #Predicate<UserTask> { task in
-        !task.isCompleted && !task.isExpired
+        task.isCompleted && !task.isExpired && task.blendedTask != nil
+    })
+    var completedBlendedTasks: [UserTask]
+
+    @Query(filter: #Predicate<UserTask> { task in
+        !task.isCompleted && !task.isExpired && task.blendedTask == nil
     }, sort: \.startTime)
     var availableTasks: [UserTask]
+
+    @Query(filter: #Predicate<BlendedTask> { task in
+        !((task.correspondingTask?.isCompleted) == nil)
+    })
+    var availableBlendedTasks: [BlendedTask]
 
     @Query(filter: #Predicate<UserTask> { task in
         task.isExpired
@@ -35,73 +45,95 @@ struct TaskView: View {
     @State var priorityAnimator = true
 
     var body: some View {
-        ZStack {
-            Color.BG
-                .ignoresSafeArea()
-            VStack {
+        NavigationStack {
+            ZStack {
+                Color.BG
+                    .ignoresSafeArea()
+                VStack {
+                    if tasks.isEmpty && bTasks.isEmpty {
+                        ContentUnavailableView("No Tasks", systemImage: "tag.slash.fill", description: Text("You don't have any tasks currently, press the button to create one"))
+                    } else {
 
+                        List {
 
-                if tasks.isEmpty && bTasks.isEmpty {
-                    ContentUnavailableView("No Tasks", systemImage: "tag.slash.fill", description: Text("You don't have any tasks currently, press the button to create one"))
-                } else {
+                            if let activeTask = activeVM.activeTask, tasks.contains(activeTask) {
+                                Section("Active Task") {
+                                    ActiveTaskCell(task: activeTask)
+                                }
+                            }
 
-                    List {
+                            switch vm.status {
+                                case .showAll:
+                                    allTasksView()
+                                case .showDaily:
+                                    dailyTasksView()
+                                case .showWeekly:
+                                    weeklyTasksView()
+                            }
+                            Section("Blended Tasks (\(bTasks.count))", isExpanded: $vm.isShowingBlendedTasks) {
+                                ForEach(availableBlendedTasks) { task in
+                                    TaskCell(task: task.correspondingTask!)
+                                }
+                            }
 
-                        if let activeTask = activeVM.activeTask, tasks.contains(activeTask) {
-                            Section("Active Task") {
-                                ActiveTaskCell(task: activeTask)
+                            if !completedTasks.isEmpty {
+                                Section("Completed Tasks (\(completedTasks.count))", isExpanded: $vm.isShowingCompleted) {
+                                    ForEach(completedTasks) {task in
+                                        TaskCell(task: task)
+                                    }
+                                }
+                            }
+
+                            if !completedBlendedTasks.isEmpty {
+                                Section("Completed Tasks (\(completedBlendedTasks.count))", isExpanded: $vm.isShowingCompleted) {
+                                    ForEach(completedBlendedTasks) {task in
+                                        TaskCell(task: task)
+                                    }
+                                }
+                            }
+
+                            if !expiredTasks.isEmpty {
+                                Section("Expired Tasks (\(expiredTasks.count))", isExpanded: $vm.isShowingExpiredTasks) {
+                                    ForEach(expiredTasks) {task in
+                                        TaskCell(task: task)
+                                    }
+                                }
                             }
                         }
 
-                        switch vm.status {
-                            case .showAll:
-                                allTasksView()
-                            case .showDaily:
-                                dailyTasksView()
-                            case .showWeekly:
-                                weeklyTasksView()
-                        }
-                        Section("Blended Tasks (\(bTasks.count))", isExpanded: $vm.isShowingBlendedTasks) {
-                            ForEach(bTasks) { task in
-                                BlendedTaskCell(blendedTask: task)
-                                
-                            }
-                        }
-                        
+                        .listRowSpacing(10)
+                        .scrollContentBackground(.hidden)
 
-                        Section("Completed Tasks (\(completedTasks.count))", isExpanded: $vm.isShowingCompleted) {
-                            ForEach(completedTasks) {task in
-                                TaskCell(task: task)
-                            }
-                        }
-
-                        Section("Expired Tasks (\(expiredTasks.count))", isExpanded: $vm.isShowingExpiredTasks) {
-                            ForEach(expiredTasks) {task in
-                                TaskCell(task: task)
-                            }
-                        }
                     }
-                    
-                    .listRowSpacing(10)
-                    .scrollContentBackground(.hidden)
 
                 }
+                .sheet(isPresented: $vm.isDisplayingAddView, content: {
+                    AddTaskView()
+                })
 
-                Spacer()
+                .sheet(item: $vm.taskToEdit) { task in
+                    EditTaskView(task: task)
+                }
 
-                HStack {
-                    Button {
+                .sheet(item: $vm.taskDetail) { task in
+                    TaskDetailView(task: task)
+                }
+
+                .sheet(item: $vm.bTaskDetail) { task in
+                    BlendedTaskDetailView(blendedTask: task)
+                }
+            }
+            .navigationTitle("Tasks")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button("Add", systemImage: "plus") {
                         vm.isDisplayingAddView = true
-                    } label: {
-                        Text("Add new task")
                     }
-                    .buttonStyle(.borderedProminent)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 5)
+                    .tint(.activeFaPurple)
+                }
 
-                    Spacer()
-
-                    Menu(content: {
+                ToolbarItem(placement: .secondaryAction) {
+                    Menu("Filters", content: {
                         Button("Show All tasks", action: {
                             vm.status = .showAll
                         })
@@ -116,7 +148,7 @@ struct TaskView: View {
                         })
                         .disabled(vm.status == .showDaily)
 
-                        Button(vm.isShowingBlendedTasks ? "Hide Blended tasks" : "Show Blended tasks", action: {vm.isShowingCompleted.toggle()})
+                        Button(vm.isShowingBlendedTasks ? "Hide Blended tasks" : "Show Blended tasks", action: {vm.isShowingBlendedTasks.toggle()})
 
                         Button(vm.isShowingCompleted ? "Hide Completed tasks" : "Show Completed tasks", action: {vm.isShowingCompleted.toggle()})
 
@@ -128,42 +160,13 @@ struct TaskView: View {
                             })
                         }
                         .disabled(completedTasks.count < 1)
-                    }, label: {
-                        Image(systemName: "line.3.horizontal.circle")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 40, height: 40)
-                            .foregroundStyle(.primary)
                     })
                     .padding(.horizontal, 20)
                     .padding(.top, 5)
 
                 }
-                .padding(.top, 5)
-                .background {
-                    Color.clear.ignoresSafeArea()
-                }
-
-
-            }
-            .sheet(isPresented: $vm.isDisplayingAddView, content: {
-                AddTaskView()
-            })
-
-            .sheet(item: $vm.taskToEdit) { task in
-                EditTaskView(task: task)
-            }
-
-            .sheet(item: $vm.taskDetail) { task in
-                TaskDetailView(task: task)
-            }
-
-            .sheet(item: $vm.bTaskDetail) { task in
-                BlendedTaskDetailView(blendedTask: task)
             }
         }
-
-
 
     }
 
@@ -274,7 +277,7 @@ struct TaskView: View {
                     LinearGradient(colors: [.faPurple, priorityAnimator ? .red : .faPurple], startPoint: .topLeading, endPoint: .bottomTrailing)
                         .animation(.easeInOut(duration: 2), value: priorityAnimator)
 
-                } else if task.blended {
+                } else if task.blendedTask != nil {
                     Color.darkPurple
                 } else {
                     Color.faPurple
@@ -297,12 +300,19 @@ struct TaskView: View {
             } label: {
                 Label("Delete", systemImage: "trash")
             }
-            if !task.blended {
+            if task.blendedTask == nil {
                 Button(action: {
                     vm.taskToEdit = task
                 }, label: {
                     Label("Edit", systemImage: "square.and.pencil")
                 })
+            } else if task.blendedTask != nil && task.isCompleted == true {
+                Button {
+                    task.isCompleted = false
+                } label: {
+                    Label("Refresh Task", systemImage: "arrow.circlepath")
+                }
+
             }
         }
         
@@ -374,62 +384,62 @@ struct TaskView: View {
 
     @ViewBuilder
     func BlendedTaskCell(blendedTask: BlendedTask) -> some View {
-        let task = blendedTask.toTask()
+        if let task = blendedTask.correspondingTask {
 
-        HStack(spacing: 20) {
-            Image(systemName: task.imageURL ?? "tornado")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 40, height: 40)
-                .foregroundStyle(.white)
-
-            VStack(alignment: .leading) {
-                Text(task.name)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white)
-                    .frame(alignment: .leading)
-                Text(task.duration.timeString())
-                    .foregroundStyle(.white)
-            }
-
-            Spacer()
-
-            if task.pomodoro {
-                Image(systemName: "repeat.circle")
+            HStack(spacing: 20) {
+                Image(systemName: task.imageURL ?? "tornado")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 20, height: 20)
+                    .frame(width: 40, height: 40)
                     .foregroundStyle(.white)
-                Text(String(task.pomodoroCounter!))
-                    .foregroundStyle(.white)
-            } else {
-                WeightingIndicator(weight: task.priority)
-                    .frame(alignment: .trailing)
-            }
 
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            vm.bTaskDetail = blendedTask
-        }
-        .listRowBackground(
-            ZStack {
-                Color.darkPurple
+                VStack(alignment: .leading) {
+                    Text(task.name)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.white)
+                        .frame(alignment: .leading)
+                    Text(task.duration.timeString())
+                        .foregroundStyle(.white)
+                }
+
+                Spacer()
+
+                if task.pomodoro {
+                    Image(systemName: "repeat.circle")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(.white)
+                    Text("\(task.pomodoroCounter!) completions")
+                        .foregroundStyle(.white)
+                } else {
+                    WeightingIndicator(weight: task.priority)
+                        .frame(alignment: .trailing)
+                }
+
             }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                vm.bTaskDetail = blendedTask
+            }
+            .listRowBackground(
+                ZStack {
+                    Color.darkPurple
+                }
 
 
-        )
-        .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 1.25, repeats: true) { timer in
-                priorityAnimator.toggle()
+            )
+            .onAppear {
+                Timer.scheduledTimer(withTimeInterval: 1.25, repeats: true) { timer in
+                    priorityAnimator.toggle()
+                }
             }
-        }
-        .swipeActions() {
-            Button(role: .destructive) { context.delete(blendedTask) } label: {
-                Label("Delete", systemImage: "trash")
+            .swipeActions() {
+                Button(role: .destructive) { context.delete(blendedTask) } label: {
+                    Label("Delete", systemImage: "trash")
+                }
             }
-
         }
     }
 }

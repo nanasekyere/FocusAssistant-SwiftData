@@ -29,16 +29,24 @@ struct FocusAssistantApp: App {
     @Environment(\.scenePhase) var phase
     @State var lastActiveTimeStamp: Date?
 
+    @AppStorage("isOnboarding") var isOnboarding: Bool = true
+
     var body: some Scene {
         WindowGroup {
-            FocusAssistantTabs()
-                .environment(activeTaskModel)
-                .environment(\.scenePhase, phase)
-                .onReceive(activeTaskModel.timer) { _ in
-                    if activeTaskModel.isStarted && !activeTaskModel.isShowing {
-                        activeTaskModel.updateTimer()
+            if isOnboarding {
+                OnboardingView()
+                    .environment(\.colorScheme, .dark)
+            } else {
+                FocusAssistantTabs()
+                    .environment(activeTaskModel)
+                    .environment(\.scenePhase, phase)
+                    .environment(\.colorScheme, .dark)
+                    .onReceive(activeTaskModel.timer) { _ in
+                        if activeTaskModel.isStarted && !activeTaskModel.isShowing {
+                            activeTaskModel.updateTimer()
+                        }
                     }
-                }
+            }
         }
         .modelContainer(sharedModelContainer)
         

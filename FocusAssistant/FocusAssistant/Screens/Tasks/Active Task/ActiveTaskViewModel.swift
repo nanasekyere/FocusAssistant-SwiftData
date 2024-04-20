@@ -65,8 +65,8 @@ import SwiftUI
     
     func startPomodoroBreak() {
         self.hour = 0
-        self.minutes = 5
-        self.seconds = 0
+        self.minutes = 0
+        self.seconds = 5
         
         startTimer()
     }
