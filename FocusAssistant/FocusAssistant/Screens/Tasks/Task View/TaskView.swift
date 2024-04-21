@@ -374,10 +374,10 @@ struct TaskView: View {
         .swipeActions() {
             Button(role: .destructive) {
                 activeVM.endTimer()
-                task.descheduleNotification()
-                context.delete(task)
+                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [activeVM.activeTask!.id.entityName])
+                activeVM.activeTask = nil
             } label: {
-                Label("Delete", systemImage: "trash")
+                Label("Stop", systemImage: "stop.circl")
             }
         }
 

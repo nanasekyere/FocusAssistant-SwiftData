@@ -114,6 +114,7 @@ struct AddTaskView: View {
                     .foregroundStyle(Color.white)
                     .listRowSpacing(10)
                     .scrollContentBackground(.hidden)
+                    .scrollDismissesKeyboard(.immediately)
                 }
             }
             .preferredColorScheme(.dark)
@@ -218,10 +219,13 @@ struct EditTaskView: View {
                     .foregroundStyle(Color.white)
                     .listRowSpacing(10)
                     .scrollContentBackground(.hidden)
+                    .scrollDismissesKeyboard(.immediately)
                 }
+
             }
             .preferredColorScheme(.dark)
             .navigationTitle("Edit Task")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
   

@@ -18,6 +18,7 @@ struct NewBlendedTaskView: View {
     @Bindable private var vm = NewBlendedTaskViewModel()
 
     @State private var isShowingDialog = false
+    @State private var isExpanded = false
 
     var body: some View {
         NavigationStack {
@@ -50,7 +51,6 @@ struct NewBlendedTaskView: View {
                     Section(header: Text("Preview")) {
                         Text("Task Name: \(vm.taskName)")
                         ForEach(vm.subtasks, id: \.self) { subtask in
-                            @State var isExpanded = false
                             DisclosureGroup("\(subtask.name)", isExpanded: $isExpanded) {
                                 ForEach(subtask.details, id: \.self) { detail in
                                     Text("Detail: \(detail.desc)")
@@ -63,6 +63,7 @@ struct NewBlendedTaskView: View {
                 .foregroundStyle(Color.white)
                 .tint(.activeFaPurple)
                 .scrollContentBackground(.hidden)
+                .scrollDismissesKeyboard(.interactively)
             }
 
 
@@ -115,7 +116,7 @@ struct DetailView: View {
     @Binding var detail: DummyDetail
 
     var body: some View {
-        TextField("Detail Description", text: $detail.desc)
+        TextField("Detail Description (min. 5 characters)", text: $detail.desc)
     }
 }
 
