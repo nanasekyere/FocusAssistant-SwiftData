@@ -33,13 +33,13 @@ struct HomeView: View {
                 .safeAreaInset(edge: .top,spacing: 0) {
                     HeaderView()
                 }
-                .fullScreenCover(item: $vm.taskToEdit, content: { task in
+                .sheet(item: $vm.taskToEdit, content: { task in
                     EditTaskView(task: task)
                 })
-                .fullScreenCover(isPresented: $vm.isDisplayingAddView, content: {
+                .sheet(isPresented: $vm.isDisplayingAddView, content: {
                     AddTaskView()
                 })
-                .fullScreenCover(item: $vm.taskDetails) { task in
+                .sheet(item: $vm.taskDetails) { task in
                     TaskDetailView(task: task)
                 }
                 
