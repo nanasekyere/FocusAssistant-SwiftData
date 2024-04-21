@@ -105,6 +105,12 @@ struct TaskView: View {
                 .sheet(item: $vm.bTaskDetail) { task in
                     BlendedTaskDetailView(blendedTask: task)
                 }
+
+                .sheet(isPresented: $vm.isShowingActiveView, content: {
+                    ActiveTaskView(task: activeVM.activeTask!)
+                })
+
+
             }
             .navigationTitle("Tasks")
             .toolbar {
@@ -374,7 +380,7 @@ struct TaskView: View {
         .swipeActions() {
             Button(role: .destructive) {
                 activeVM.endTimer()
-                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [activeVM.activeTask!.id.entityName])
+                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [activeVM.activeTask!.identity.uuidString])
                 activeVM.activeTask = nil
             } label: {
                 Label("Stop", systemImage: "stop.circl")

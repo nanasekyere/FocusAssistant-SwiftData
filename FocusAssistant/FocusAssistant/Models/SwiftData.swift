@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import UserNotifications
 
 @ModelActor
 public actor BackgroundSerialPersistenceActor {
@@ -67,6 +68,8 @@ public actor BackgroundSerialPersistenceActor {
         for task in tasks  {
             if task.startTime! < currentTime && !activeTaskIDs.contains(task.id) {
                 task.isExpired = true
+                
+                notifyExpiry(for: task)
             }
         }
 
@@ -208,4 +211,14 @@ func createTask(from dummyTask: DummyTask, modelContext: ModelContext) throws {
 
     modelContext.insert(blendedTask.toTask())
     blendedTask.correspondingTask = blendedTask.toTask()
+}
+
+func notifyExpiry(for task: UserTask) {
+    let content = UNMutableNotificationContent()
+    content.title = "Task Expired"
+    content.body = "You missed the start time for \(task.name)"
+    content.sound = UNNotificationSound.default
+    content.interruptionLevel = .active
+    let request = UNNotificationRequest(identifier: task.identity.uuidString, content: content, trigger: nil)
+    UNUserNotificationCenter.current().add(request)
 }

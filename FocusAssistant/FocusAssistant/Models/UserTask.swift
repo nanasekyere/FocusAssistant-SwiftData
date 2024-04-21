@@ -81,8 +81,8 @@ final class UserTask {
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: notificationTime.timeIntervalSinceNow, repeats: false)
         
-        let request = UNNotificationRequest(identifier: self.id.entityName, content: content, trigger: trigger)
-        
+        let request = UNNotificationRequest(identifier: self.identity.uuidString, content: content, trigger: trigger)
+
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Error scheduling notification: \(error.localizedDescription)")
@@ -96,7 +96,7 @@ final class UserTask {
             let notificationCenter = UNUserNotificationCenter.current()
             
             // Remove the notification request associated with the task ID
-            notificationCenter.removePendingNotificationRequests(withIdentifiers: [self.id.entityName])
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: [self.identity.uuidString])
         }
 }
 

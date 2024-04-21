@@ -102,7 +102,7 @@ struct FocusAssistantTabs: View {
        Button("Complete task", role: .destructive) {
            activeTaskModel.activeTask!.isCompleted = true
            updateTask(activeTaskModel.activeTask!)
-           UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [activeTaskModel.activeTask!.id.entityName])
+           UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [activeTaskModel.activeTask!.identity.uuidString])
            activeTaskModel.activeTask = nil
            activeTaskModel.endTimer()
            dismiss()
@@ -160,10 +160,11 @@ struct FocusAssistantTabs: View {
         content.body = "Your high priority task timer for \(task.name) has started."
         content.sound = UNNotificationSound.default
         content.interruptionLevel = .timeSensitive
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
+        let request = UNNotificationRequest(identifier: task.identity.uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
     }
-    
+
+
     private func updateTask(_ taskToUpdate: UserTask) {
         for var task in tasks {
             if taskToUpdate.id == task.id {
