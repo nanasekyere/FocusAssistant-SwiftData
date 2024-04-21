@@ -32,7 +32,7 @@ struct FocusAssistantTabs: View {
             BlenderChoiceView()
                 .tabItem { Label("Task Blender", systemImage: "tornado") }
 
-            HelpView()
+            SettingsView()
                 .tabItem { Label("Help & Settings", systemImage: "questionmark") }
 
         }
@@ -100,11 +100,11 @@ struct FocusAssistantTabs: View {
     @ViewBuilder
     func completeTaskButton() -> some View {
        Button("Complete task", role: .destructive) {
-           activeTaskModel.endTimer()
            activeTaskModel.activeTask!.isCompleted = true
            updateTask(activeTaskModel.activeTask!)
            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [activeTaskModel.activeTask!.id.entityName])
            activeTaskModel.activeTask = nil
+           activeTaskModel.endTimer()
            dismiss()
        }
    }

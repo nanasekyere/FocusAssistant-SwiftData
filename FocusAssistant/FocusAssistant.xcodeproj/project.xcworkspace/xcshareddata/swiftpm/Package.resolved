@@ -1,4 +1,5 @@
 {
+  "originHash" : "323729981b27092e9e62ba7db0235740921d2e9d095af53aacccb4659f5069fe",
   "pins" : [
     {
       "identity" : "swiftopenai",
@@ -19,5 +20,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

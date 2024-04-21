@@ -19,6 +19,7 @@
 		390FDFAE2BC4F7730064015C /* BlendedTaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FDFAC2BC4F7730064015C /* BlendedTaskDetailView.swift */; };
 		3924630B2BD45CFC00EAC4D0 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3924630A2BD45CFC00EAC4D0 /* Launch Screen.storyboard */; };
 		3924630E2BD46D9A00EAC4D0 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924630D2BD46D9A00EAC4D0 /* OnboardingView.swift */; };
+		392463102BD479E000EAC4D0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924630F2BD479E000EAC4D0 /* SettingsView.swift */; };
 		393DDFCC2BCAB9D8000285A6 /* SwiftData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393DDFCB2BCAB9D8000285A6 /* SwiftData.swift */; };
 		39A4D39D2BC2C83000E89C81 /* FocusAssistantApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */; };
 		39A4D3A32BC2C83100E89C81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39A4D3A22BC2C83100E89C81 /* Assets.xcassets */; };
@@ -48,7 +49,6 @@
 		39FC39B22BCC0667009110EE /* NewBlendedTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC39B02BCC0667009110EE /* NewBlendedTaskView.swift */; };
 		39FC39B32BCC0667009110EE /* NewBlendedTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC39B12BCC0667009110EE /* NewBlendedTaskViewModel.swift */; };
 		39FC39B52BCC1D60009110EE /* BlenderChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC39B42BCC1D60009110EE /* BlenderChoiceView.swift */; };
-		39FC39B82BCC22F6009110EE /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC39B72BCC22F6009110EE /* HelpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +64,7 @@
 		390FDFAC2BC4F7730064015C /* BlendedTaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendedTaskDetailView.swift; sourceTree = "<group>"; };
 		3924630A2BD45CFC00EAC4D0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		3924630D2BD46D9A00EAC4D0 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		3924630F2BD479E000EAC4D0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		393DDFCB2BCAB9D8000285A6 /* SwiftData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftData.swift; sourceTree = "<group>"; };
 		39A4D3992BC2C83000E89C81 /* FocusAssistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusAssistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAssistantApp.swift; sourceTree = "<group>"; };
@@ -94,7 +95,6 @@
 		39FC39B02BCC0667009110EE /* NewBlendedTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBlendedTaskView.swift; sourceTree = "<group>"; };
 		39FC39B12BCC0667009110EE /* NewBlendedTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBlendedTaskViewModel.swift; sourceTree = "<group>"; };
 		39FC39B42BCC1D60009110EE /* BlenderChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlenderChoiceView.swift; sourceTree = "<group>"; };
-		39FC39B72BCC22F6009110EE /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,7 +314,7 @@
 		39FC39B62BCC22D2009110EE /* Help and Settings */ = {
 			isa = PBXGroup;
 			children = (
-				39FC39B72BCC22F6009110EE /* HelpView.swift */,
+				3924630F2BD479E000EAC4D0 /* SettingsView.swift */,
 			);
 			path = "Help and Settings";
 			sourceTree = "<group>";
@@ -402,7 +402,6 @@
 				39FC39B52BCC1D60009110EE /* BlenderChoiceView.swift in Sources */,
 				39A4D3B72BC2CB0B00E89C81 /* FocusAssistantTabs.swift in Sources */,
 				390FDFAE2BC4F7730064015C /* BlendedTaskDetailView.swift in Sources */,
-				39FC39B82BCC22F6009110EE /* HelpView.swift in Sources */,
 				39A4D3CB2BC2D3DE00E89C81 /* Calendar++Ext.swift in Sources */,
 				39A4D3F52BC349A400E89C81 /* ActiveTaskView.swift in Sources */,
 				39A4D3DA2BC2D89D00E89C81 /* TaskDetailViewModel.swift in Sources */,
@@ -421,6 +420,7 @@
 				39A4D3D12BC2D56300E89C81 /* CustomModifiers.swift in Sources */,
 				39A4D3D82BC2D83F00E89C81 /* TaskDetailView.swift in Sources */,
 				3924630E2BD46D9A00EAC4D0 /* OnboardingView.swift in Sources */,
+				392463102BD479E000EAC4D0 /* SettingsView.swift in Sources */,
 				39A4D3F12BC2E56D00E89C81 /* AddTaskViewModel.swift in Sources */,
 				39A4D3F02BC2E56D00E89C81 /* AddTaskView.swift in Sources */,
 				39A4D3BA2BC2CB2300E89C81 /* TaskView.swift in Sources */,

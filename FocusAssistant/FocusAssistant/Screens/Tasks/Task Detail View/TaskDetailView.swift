@@ -53,6 +53,7 @@ struct TaskDetailView: View {
                     if task.blendedTask != nil  && task.isCompleted == true {
                         Button("Refresh Task") {
                             task.isCompleted = false
+                            task.pomodoroCounter = 0
                             dismiss()
                         }
                         .buttonStyle(.borderedProminent)

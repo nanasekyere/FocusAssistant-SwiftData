@@ -14,7 +14,6 @@ import SwiftData
 
     @Relationship(deleteRule: .cascade, inverse: \Subtask.blendedTask)
     var subtasks = [Subtask]()
-    var isCompleted = false
 
     @Relationship(deleteRule: .cascade, inverse: \UserTask.blendedTask)
     var correspondingTask: UserTask?
@@ -25,7 +24,7 @@ import SwiftData
     }
     
     func toTask() -> UserTask {
-        return UserTask(identity: identity, name: name, duration: 7, priority: .medium, pomodoro: true, pomodoroCounter: 0, blendedTask: self)
+        return UserTask(identity: identity, name: name, duration: UserDefaults.standard.integer(forKey: "taskTime"), priority: .medium, pomodoro: true, pomodoroCounter: 0, blendedTask: self)
     }
     
     

@@ -17,19 +17,9 @@ struct TaskView: View {
     var completedTasks: [UserTask]
 
     @Query(filter: #Predicate<UserTask> { task in
-        task.isCompleted && !task.isExpired && task.blendedTask != nil
-    })
-    var completedBlendedTasks: [UserTask]
-
-    @Query(filter: #Predicate<UserTask> { task in
         !task.isCompleted && !task.isExpired && task.blendedTask == nil
     }, sort: \.startTime)
     var availableTasks: [UserTask]
-
-    @Query(filter: #Predicate<BlendedTask> { task in
-        !((task.correspondingTask?.isCompleted) == nil)
-    })
-    var availableBlendedTasks: [BlendedTask]
 
     @Query(filter: #Predicate<UserTask> { task in
         task.isExpired
@@ -71,7 +61,7 @@ struct TaskView: View {
                                     weeklyTasksView()
                             }
                             Section("Blended Tasks (\(bTasks.count))", isExpanded: $vm.isShowingBlendedTasks) {
-                                ForEach(availableBlendedTasks) { task in
+                                ForEach(bTasks) { task in
                                     TaskCell(task: task.correspondingTask!)
                                 }
                             }
@@ -84,13 +74,6 @@ struct TaskView: View {
                                 }
                             }
 
-                            if !completedBlendedTasks.isEmpty {
-                                Section("Completed Tasks (\(completedBlendedTasks.count))", isExpanded: $vm.isShowingCompleted) {
-                                    ForEach(completedBlendedTasks) {task in
-                                        TaskCell(task: task)
-                                    }
-                                }
-                            }
 
                             if !expiredTasks.isEmpty {
                                 Section("Expired Tasks (\(expiredTasks.count))", isExpanded: $vm.isShowingExpiredTasks) {
@@ -236,11 +219,20 @@ struct TaskView: View {
     func TaskCell(task: UserTask) -> some View {
 
         HStack(spacing: 20) {
-            Image(systemName: task.imageURL ?? "note.text")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 40, height: 40)
-                .foregroundStyle(.white)
+            if task.blendedTask == nil {
+                Image(systemName: task.imageURL ?? "note.text")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 40, height: 40)
+                    .foregroundStyle(.white)
+            } else {
+                Image(systemName: "tornado")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 40, height: 40)
+                    .foregroundStyle(.white)
+            }
+
 
             VStack(alignment: .leading) {
                 Text(task.name)
@@ -278,7 +270,12 @@ struct TaskView: View {
                         .animation(.easeInOut(duration: 2), value: priorityAnimator)
 
                 } else if task.blendedTask != nil {
-                    Color.darkPurple
+                    if task.isCompleted == true {
+                        Color.gray
+                    } else {
+                        Color.darkPurple
+                    }
+
                 } else {
                     Color.faPurple
                 }
@@ -296,7 +293,11 @@ struct TaskView: View {
         .swipeActions() {
             Button(role: .destructive) {
                 task.descheduleNotification()
-                context.delete(task)
+                if task.blendedTask == nil {
+                    context.delete(task)
+                } else {
+                    context.delete(task.blendedTask!)
+                }
             } label: {
                 Label("Delete", systemImage: "trash")
             }
@@ -309,6 +310,7 @@ struct TaskView: View {
             } else if task.blendedTask != nil && task.isCompleted == true {
                 Button {
                     task.isCompleted = false
+                    task.pomodoroCounter = 0
                 } label: {
                     Label("Refresh Task", systemImage: "arrow.circlepath")
                 }
@@ -382,66 +384,6 @@ struct TaskView: View {
 
     }
 
-    @ViewBuilder
-    func BlendedTaskCell(blendedTask: BlendedTask) -> some View {
-        if let task = blendedTask.correspondingTask {
-
-            HStack(spacing: 20) {
-                Image(systemName: task.imageURL ?? "tornado")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 40, height: 40)
-                    .foregroundStyle(.white)
-
-                VStack(alignment: .leading) {
-                    Text(task.name)
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.white)
-                        .frame(alignment: .leading)
-                    Text(task.duration.timeString())
-                        .foregroundStyle(.white)
-                }
-
-                Spacer()
-
-                if task.pomodoro {
-                    Image(systemName: "repeat.circle")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 20, height: 20)
-                        .foregroundStyle(.white)
-                    Text("\(task.pomodoroCounter!) completions")
-                        .foregroundStyle(.white)
-                } else {
-                    WeightingIndicator(weight: task.priority)
-                        .frame(alignment: .trailing)
-                }
-
-            }
-            .contentShape(Rectangle())
-            .onTapGesture {
-                vm.bTaskDetail = blendedTask
-            }
-            .listRowBackground(
-                ZStack {
-                    Color.darkPurple
-                }
-
-
-            )
-            .onAppear {
-                Timer.scheduledTimer(withTimeInterval: 1.25, repeats: true) { timer in
-                    priorityAnimator.toggle()
-                }
-            }
-            .swipeActions() {
-                Button(role: .destructive) { context.delete(blendedTask) } label: {
-                    Label("Delete", systemImage: "trash")
-                }
-            }
-        }
-    }
 }
 
 #Preview {

@@ -55,13 +55,6 @@ struct BlenderChoiceView: View {
                     }
                     .padding()
 
-                    Button("add example task") {
-                        let actor = BackgroundSerialPersistenceActor(modelContainer: modelContext.container)
-                        Task {
-                            let _ = try! await actor.safeDecodeBlendedTask(from: serviceInfo.mockTask)
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
                 }
                 .frame(width: 300)
             }

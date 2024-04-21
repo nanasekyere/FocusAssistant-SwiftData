@@ -20,7 +20,9 @@ struct AddTaskView: View {
     @Bindable var vm = AddTaskViewModel()
     
     @State private var shake = false
-    
+
+    @AppStorage("taskTime") var taskTime: Int?
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -37,7 +39,7 @@ struct AddTaskView: View {
                                 .onChange(of: vm.pomodoro) { oldValue, newValue in
                                     if newValue == true {
                                         vm.pomodoroCounter = 0
-                                        vm.duration = 1500
+                                        vm.duration = taskTime ?? 1500
                                         vm.startTime = nil
                                     }
                                 }
@@ -131,7 +133,9 @@ struct EditTaskView: View {
     @Bindable var vm = AddTaskViewModel()
     @Bindable var task: UserTask
     @State private var shake = false
-    
+
+    @AppStorage("taskTime") var taskTime: Int?
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -147,7 +151,7 @@ struct EditTaskView: View {
                             
                                 .onChange(of: task.pomodoro) { oldValue, newValue in
                                     if newValue == true {
-                                        task.duration = 1500
+                                        task.duration = taskTime ?? 1500
                                         task.startTime = nil
                                     }
                                 }

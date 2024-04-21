@@ -17,7 +17,8 @@ struct HomeView: View {
     
     @State private var currentDay: Date = .init()
     @Bindable var vm = HomeViewModel()
-    
+    @AppStorage("userName") var userName: String?
+
     var body: some View {
         ZStack {
             Color.BG.ignoresSafeArea(.all)
@@ -181,7 +182,7 @@ struct HomeView: View {
                         .font(.largeTitle)
                         .fontWeight(.light)
                     
-                    Text("Welcome")
+                    Text(userName == nil ? "Welcome" : "Welcome, \(userName!)")
                         .font(.subheadline)
                         .fontWeight(.light)
                 }
