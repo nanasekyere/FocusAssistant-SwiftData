@@ -9,7 +9,8 @@ import SwiftUI
 
 struct TaskDetailView: View {
     @Environment(\.dismiss) private var dismiss
-    
+    @Environment(ActiveTaskViewModel.self) var activeVM
+
     @Bindable var task: UserTask
     @State var viewModel = TaskDetailViewModel()
     @State private var isAnimated = false
@@ -58,38 +59,43 @@ struct TaskDetailView: View {
                         }
                         .buttonStyle(.borderedProminent)
                     } else {
-                        Button("Start Task") {
-                            if task.pomodoro {
-                                viewModel.taskToActivate = task
-                            } else {
-                                switch task.priority {
-                                case .low:
+                        if let activeTask = activeVM.activeTask, activeTask.identity == task.identity {
+                            Button(activeVM.timerStringValue) {}
+                                .buttonStyle(.borderedProminent)
+                        } else {
+                            Button("Start Task") {
+                                if task.pomodoro {
                                     viewModel.taskToActivate = task
-                                case .medium:
-                                    if abs(task.startTime!.timeIntervalSince(Date.now)) > 600 {
-                                        withAnimation(.easeInOut(duration: 2)) {
-                                            viewModel.isDisplayingContext = true
-                                        }
-                                    } else {
-                                        viewModel.taskToActivate = task
-                                    }
-                                case .high:
-                                    withAnimation(.easeInOut) {
-                                        viewModel.isDisplayingContext = true
+                                } else {
+                                    switch task.priority {
+                                        case .low:
+                                            viewModel.taskToActivate = task
+                                        case .medium:
+                                            if abs(task.startTime!.timeIntervalSince(Date.now)) > 600 {
+                                                withAnimation(.easeInOut(duration: 2)) {
+                                                    viewModel.isDisplayingContext = true
+                                                }
+                                            } else {
+                                                viewModel.taskToActivate = task
+                                            }
+                                        case .high:
+                                            withAnimation(.easeInOut) {
+                                                viewModel.isDisplayingContext = true
+                                            }
                                     }
                                 }
                             }
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .popover(isPresented: $viewModel.isDisplayingContext, arrowEdge: .bottom) {
-                            VStack {
-                                Text(viewModel.taskStartContext ?? "")
-                                    .lineLimit(nil)
-                                    .multilineTextAlignment(.center)
-                                    .padding(.horizontal, 10)
+                            .buttonStyle(.borderedProminent)
+                            .popover(isPresented: $viewModel.isDisplayingContext, arrowEdge: .bottom) {
+                                VStack {
+                                    Text(viewModel.taskStartContext ?? "")
+                                        .lineLimit(nil)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 10)
+                                }
+                                .frame(maxWidth: .infinity, minHeight: 80)
+                                .presentationCompactAdaptation((.popover))
                             }
-                            .frame(maxWidth: .infinity, minHeight: 80)
-                            .presentationCompactAdaptation((.popover))
                         }
                     }
                 }

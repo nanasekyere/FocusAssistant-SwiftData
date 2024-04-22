@@ -46,7 +46,7 @@ struct TaskView: View {
 
                         List {
 
-                            if let activeTask = activeVM.activeTask, tasks.contains(activeTask) {
+                            if let activeTask = activeVM.activeTask, ((try? context.fetchIdentifiers(FetchDescriptor<UserTask>()).contains(activeTask.id)) != nil){
                                 Section("Active Task") {
                                     ActiveTaskCell(task: activeTask)
                                 }
@@ -163,7 +163,7 @@ struct TaskView: View {
     func allTasksView() -> some View {
         Section("To-do") {
             ForEach(availableTasks) { task in
-                if activeVM.activeTask != task {
+                if activeVM.activeTask?.identity != task.identity {
                     TaskCell(task: task)
                 }
             }
@@ -196,7 +196,7 @@ struct TaskView: View {
         ForEach(thisWeekTasksByDate, id: \.0) { date, tasksForDay in
             Section(header: Text("\(date, formatter: dateFormatter)")) {
                 ForEach(tasksForDay) { task in
-                    if activeVM.activeTask != task {
+                    if activeVM.activeTask?.identity != task.identity {
                         TaskCell(task: task)
                     }
                 }
@@ -214,7 +214,7 @@ struct TaskView: View {
                     return false
                 }
             }) { task in
-                if activeVM.activeTask != task {
+                if activeVM.activeTask?.identity != task.identity {
                     TaskCell(task: task)
                 }
             }
@@ -267,7 +267,9 @@ struct TaskView: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            vm.taskDetail = task
+            if !task.isCompleted {
+                vm.taskDetail = task
+            }
         }
         .listRowBackground(
             ZStack {

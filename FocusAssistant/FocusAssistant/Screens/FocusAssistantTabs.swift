@@ -15,10 +15,6 @@ struct FocusAssistantTabs: View {
     @Environment(ActiveTaskViewModel.self) var activeTaskModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) var context
-    
-    @State private var activeTaskIDs: Set<PersistentIdentifier> = []
-
-
 
     var body: some View {
         @Bindable var activeTaskModel = activeTaskModel
@@ -35,9 +31,6 @@ struct FocusAssistantTabs: View {
             SettingsView()
                 .tabItem { Label("Help & Settings", systemImage: "questionmark") }
 
-        }
-        .onAppear {
-            startBackgroundTask()
         }
         .onChange(of: activeTaskModel.isFinished) { oldValue, newValue in
             if newValue == true && !activeTaskModel.isBreak && activeTaskModel.isShowing == false {
@@ -126,43 +119,7 @@ struct FocusAssistantTabs: View {
        }
    }
 
-    private func startBackgroundTask() {
-        let actor = BackgroundSerialPersistenceActor(modelContainer: context.container)
-        DispatchQueue.global(qos: .background).async {
-            while true {
-                // Sleep for 15 seconds before checking again
-                Thread.sleep(forTimeInterval: 15)
-                Task {
-                    let count = try? await actor.fetchCount(fetchDescriptor: FetchDescriptor<UserTask>())
-                    if count != 0 {
-                        try? await actor.checkExpiredTasks(activeTaskIDs: activeTaskIDs)
-                        if let taskToActivate = try? await actor.checkHighPriorityTasks(activeTaskIDs: activeTaskIDs) {
-                            // Set the task as the active task
-                            activeTaskModel.setActiveTask(taskToActivate)
-                            activeTaskIDs.insert(taskToActivate.id)
-                            // Start the timer
-                            activeTaskModel.startTimer()
-                            // Notify the user
-                            notifyUser(for: taskToActivate)
-                        }
-                    }
-                }
-                
-                
-            }
-        }
-    }
-
-    
-    private func notifyUser(for task: UserTask) {
-        let content = UNMutableNotificationContent()
-        content.title = "High Priority Task Timer Started"
-        content.body = "Your high priority task timer for \(task.name) has started."
-        content.sound = UNNotificationSound.default
-        content.interruptionLevel = .timeSensitive
-        let request = UNNotificationRequest(identifier: task.identity.uuidString, content: content, trigger: nil)
-        UNUserNotificationCenter.current().add(request)
-    }
+ 
 
 
     private func updateTask(_ taskToUpdate: UserTask) {
