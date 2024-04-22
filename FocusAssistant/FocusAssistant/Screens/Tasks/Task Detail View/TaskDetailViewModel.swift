@@ -29,5 +29,7 @@ import Foundation
         }
         return nil
     }
-        
+
+    var showAlert = false
+
 }

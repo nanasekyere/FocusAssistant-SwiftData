@@ -12,7 +12,7 @@ struct TaskDetailView: View {
     @Environment(ActiveTaskViewModel.self) var activeVM
 
     @Bindable var task: UserTask
-    @State var viewModel = TaskDetailViewModel()
+    @State var vm = TaskDetailViewModel()
     @State private var isAnimated = false
     
     var body: some View {
@@ -64,31 +64,35 @@ struct TaskDetailView: View {
                                 .buttonStyle(.borderedProminent)
                         } else {
                             Button("Start Task") {
-                                if task.pomodoro {
-                                    viewModel.taskToActivate = task
-                                } else {
-                                    switch task.priority {
-                                        case .low:
-                                            viewModel.taskToActivate = task
-                                        case .medium:
-                                            if abs(task.startTime!.timeIntervalSince(Date.now)) > 600 {
-                                                withAnimation(.easeInOut(duration: 2)) {
-                                                    viewModel.isDisplayingContext = true
+                                if activeVM.activeTask == nil {
+                                    if task.pomodoro {
+                                        vm.taskToActivate = task
+                                    } else {
+                                        switch task.priority {
+                                            case .low:
+                                                vm.taskToActivate = task
+                                            case .medium:
+                                                if abs(task.startTime!.timeIntervalSince(Date.now)) > 600 {
+                                                    withAnimation(.easeInOut(duration: 2)) {
+                                                        vm.isDisplayingContext = true
+                                                    }
+                                                } else {
+                                                    vm.taskToActivate = task
                                                 }
-                                            } else {
-                                                viewModel.taskToActivate = task
-                                            }
-                                        case .high:
-                                            withAnimation(.easeInOut) {
-                                                viewModel.isDisplayingContext = true
-                                            }
+                                            case .high:
+                                                withAnimation(.easeInOut) {
+                                                    vm.isDisplayingContext = true
+                                                }
+                                        }
                                     }
+                                } else {
+                                    vm.showAlert = true
                                 }
                             }
                             .buttonStyle(.borderedProminent)
-                            .popover(isPresented: $viewModel.isDisplayingContext, arrowEdge: .bottom) {
+                            .popover(isPresented: $vm.isDisplayingContext, arrowEdge: .bottom) {
                                 VStack {
-                                    Text(viewModel.taskStartContext ?? "")
+                                    Text(vm.taskStartContext ?? "")
                                         .lineLimit(nil)
                                         .multilineTextAlignment(.center)
                                         .padding(.horizontal, 10)
@@ -113,10 +117,14 @@ struct TaskDetailView: View {
             
         }
         
-        .fullScreenCover(item: $viewModel.taskToActivate) { task in
+        .fullScreenCover(item: $vm.taskToActivate) { task in
             ActiveTaskView(task: task)
         }
-        
+        .alert("Can't start task, there is already an active task", isPresented: $vm.showAlert) {
+            Button("OK", role: .cancel) {
+
+            }
+        }
     }
 }
 
