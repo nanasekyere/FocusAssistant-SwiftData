@@ -8,14 +8,6 @@
 import Foundation
 
 extension Date {
-    var eighteenYearsAgo: Date {
-        Calendar.current.date(byAdding: .year, value: -18, to: Date())!
-    }
-    
-    var oneHundredYearsAgo: Date {
-        Calendar.current.date(byAdding: .year, value: -118, to: Date())!
-    }
-    
     func customFutureDate(daysAhead: Int) -> Date {
         Calendar.current.date(byAdding: .day, value: daysAhead, to: Date())!
     }

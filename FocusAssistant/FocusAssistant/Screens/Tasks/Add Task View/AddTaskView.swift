@@ -23,6 +23,7 @@ struct AddTaskView: View {
 
     @AppStorage("taskTime") var taskTime: Int?
 
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -91,19 +92,24 @@ struct AddTaskView: View {
                             Section {
                                 Button("Save changes") {
                                     if vm.isComplete {
-                                        let newTask = UserTask(name: vm.name, duration: vm.duration, startTime: vm.startTime, priority: vm.priority, imageURL: vm.imageURL, details: vm.details, pomodoro: vm.pomodoro, pomodoroCounter: vm.pomodoroCounter)
-                                        newTask.scheduleNotification()
-                                        context.insert(newTask)
-                                        
-                                        dismiss()
+                                        let actor = BackgroundSerialPersistenceActor(modelContainer: context.container)
+                                        let newTask = UserTask(name: vm.name.trimWhiteSpace(), duration: vm.duration, startTime: vm.startTime, priority: vm.priority, imageURL: vm.imageURL, details: vm.details, pomodoro: vm.pomodoro, pomodoroCounter: vm.pomodoroCounter)
+                                        Task {
+                                            if let clashingTask = try await actor.isTaskClashing(for: newTask) {
+                                                vm.clashingTask = clashingTask
+                                                vm.showClashAlert = true
+                                                shake = true
+                                            } else {
+                                                newTask.scheduleNotification()
+                                                context.insert(newTask)
+                                                dismiss()
+                                            }
+                                        }
                                     } else {
                                         shake = true
                                     }
-                                    
-                                    
                                 }
                                 .tint(.white)
-                                
                             }
                             .listRowBackground(Color.activeFaPurple)
                             .shake($shake)
@@ -117,17 +123,24 @@ struct AddTaskView: View {
                     .scrollDismissesKeyboard(.immediately)
                 }
             }
+            .alert("Task is clashing with \(vm.clashingTask?.name ?? "")", isPresented: $vm.showClashAlert, presenting: vm.clashingTask, actions: { clashingTask in
+                Button("OK") {
+                    vm.clashingTask = nil
+                }
+            }, message: { clashingTask in
+                Text("\(clashingTask.name) runs from \(clashingTask.startTime!.formatted(date: .omitted, time: .shortened)) to \(clashingTask.startTime!.addingTimeInterval(Double(clashingTask.duration)).formatted(date: .omitted, time: .shortened)) on \(clashingTask.startTime!.formatted(date: .numeric, time: .omitted)).\n\n Schedule the task at another time")
+            })
             .preferredColorScheme(.dark)
             .navigationTitle("New Task")
             .navigationBarTitleDisplayMode(.inline)
         }
+
     }
     
 }
 
 struct EditTaskView: View {
     @Query var tasks: [UserTask]
-    @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
     
     @FocusState private var isFocused: Bool
@@ -136,8 +149,16 @@ struct EditTaskView: View {
     @State private var shake = false
 
     @AppStorage("taskTime") var taskTime: Int?
+    var modelContext: ModelContext
+
+    init(taskID: PersistentIdentifier, in container: ModelContainer) {
+        modelContext = ModelContext(container)
+        modelContext.autosaveEnabled = false
+        task = modelContext.model(for: taskID) as? UserTask ?? UserTask()
+    }
 
     var body: some View {
+
         NavigationStack {
             ZStack {
                 Color.bgDark.ignoresSafeArea()
@@ -203,9 +224,19 @@ struct EditTaskView: View {
                             .focused($isFocused)
                             Section {
                                 Button("Save changes") {
-                                    task.descheduleNotification()
-                                    task.scheduleNotification()
-                                    dismiss()
+                                        let actor = BackgroundSerialPersistenceActor(modelContainer: modelContext.container)
+                                        Task {
+                                            if let clashingTask = try await actor.isTaskClashing(for: task) {
+                                                vm.clashingTask = clashingTask
+                                                vm.showClashAlert = true
+                                                shake = true
+                                            } else {
+                                                task.descheduleNotification()
+                                                task.scheduleNotification()
+                                                try? modelContext.save()
+                                                dismiss()
+                                            }
+                                        }
                                 }
                                 .tint(.white)
                                 
@@ -223,6 +254,13 @@ struct EditTaskView: View {
                 }
 
             }
+            .alert("Task is clashing with \(vm.clashingTask?.name ?? "")", isPresented: $vm.showClashAlert, presenting: vm.clashingTask, actions: { clashingTask in
+                Button("OK") {
+                    vm.clashingTask = nil
+                }
+            }, message: { clashingTask in
+                Text("\(clashingTask.name) runs from \(clashingTask.startTime!.formatted(date: .omitted, time: .shortened)) to \(clashingTask.startTime!.addingTimeInterval(Double(clashingTask.duration)).formatted(date: .omitted, time: .shortened)) on \(clashingTask.startTime!.formatted(date: .numeric, time: .omitted)).\n\n Schedule the task at another time")
+            })
             .preferredColorScheme(.dark)
             .navigationTitle("Edit Task")
             .navigationBarTitleDisplayMode(.inline)

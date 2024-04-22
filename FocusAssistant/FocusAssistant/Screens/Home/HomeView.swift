@@ -34,7 +34,7 @@ struct HomeView: View {
                     HeaderView()
                 }
                 .sheet(item: $vm.taskToEdit, content: { task in
-                    EditTaskView(task: task)
+                    EditTaskView(taskID: task.id, in: context.container)
                 })
                 .sheet(isPresented: $vm.isDisplayingAddView, content: {
                     AddTaskView()

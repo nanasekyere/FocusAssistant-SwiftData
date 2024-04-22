@@ -95,7 +95,7 @@ struct TaskView: View {
                 })
 
                 .sheet(item: $vm.taskToEdit) { task in
-                    EditTaskView(task: task)
+                    EditTaskView(taskID: task.id, in: context.container)
                 }
 
                 .sheet(item: $vm.taskDetail) { task in

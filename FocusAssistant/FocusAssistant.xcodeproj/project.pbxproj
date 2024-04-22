@@ -32,10 +32,8 @@
 		39A4D3BC2BC2CEF400E89C81 /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3BB2BC2CEF400E89C81 /* TaskViewModel.swift */; };
 		39A4D3BE2BC2D32800E89C81 /* ActiveTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3BD2BC2D32800E89C81 /* ActiveTaskViewModel.swift */; };
 		39A4D3C62BC2D3DE00E89C81 /* Optional+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3C02BC2D3DE00E89C81 /* Optional+Ext.swift */; };
-		39A4D3C72BC2D3DE00E89C81 /* Duration++Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3C12BC2D3DE00E89C81 /* Duration++Ext.swift */; };
 		39A4D3C82BC2D3DE00E89C81 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3C22BC2D3DE00E89C81 /* Date+Ext.swift */; };
 		39A4D3C92BC2D3DE00E89C81 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3C32BC2D3DE00E89C81 /* String+Ext.swift */; };
-		39A4D3CA2BC2D3DE00E89C81 /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3C42BC2D3DE00E89C81 /* UserDefaults+Ext.swift */; };
 		39A4D3CB2BC2D3DE00E89C81 /* Calendar++Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3C52BC2D3DE00E89C81 /* Calendar++Ext.swift */; };
 		39A4D3D12BC2D56300E89C81 /* CustomModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3CE2BC2D56300E89C81 /* CustomModifiers.swift */; };
 		39A4D3D22BC2D56300E89C81 /* DurationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D3CF2BC2D56300E89C81 /* DurationPicker.swift */; };
@@ -76,10 +74,8 @@
 		39A4D3BB2BC2CEF400E89C81 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
 		39A4D3BD2BC2D32800E89C81 /* ActiveTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveTaskViewModel.swift; sourceTree = "<group>"; };
 		39A4D3C02BC2D3DE00E89C81 /* Optional+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Optional+Ext.swift"; sourceTree = "<group>"; };
-		39A4D3C12BC2D3DE00E89C81 /* Duration++Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Duration++Ext.swift"; sourceTree = "<group>"; };
 		39A4D3C22BC2D3DE00E89C81 /* Date+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
 		39A4D3C32BC2D3DE00E89C81 /* String+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
-		39A4D3C42BC2D3DE00E89C81 /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
 		39A4D3C52BC2D3DE00E89C81 /* Calendar++Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Calendar++Ext.swift"; sourceTree = "<group>"; };
 		39A4D3CE2BC2D56300E89C81 /* CustomModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomModifiers.swift; sourceTree = "<group>"; };
 		39A4D3CF2BC2D56300E89C81 /* DurationPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationPicker.swift; sourceTree = "<group>"; };
@@ -225,10 +221,8 @@
 			isa = PBXGroup;
 			children = (
 				39A4D3C02BC2D3DE00E89C81 /* Optional+Ext.swift */,
-				39A4D3C12BC2D3DE00E89C81 /* Duration++Ext.swift */,
 				39A4D3C22BC2D3DE00E89C81 /* Date+Ext.swift */,
 				39A4D3C32BC2D3DE00E89C81 /* String+Ext.swift */,
-				39A4D3C42BC2D3DE00E89C81 /* UserDefaults+Ext.swift */,
 				39A4D3C52BC2D3DE00E89C81 /* Calendar++Ext.swift */,
 				39A4D3F22BC324AB00E89C81 /* Int+Ext.swift */,
 			);
@@ -414,9 +408,7 @@
 				39A4D3F32BC324AB00E89C81 /* Int+Ext.swift in Sources */,
 				390FDF852BC47E6C0064015C /* HomeView.swift in Sources */,
 				390FDF862BC47E6C0064015C /* HomeViewModel.swift in Sources */,
-				39A4D3CA2BC2D3DE00E89C81 /* UserDefaults+Ext.swift in Sources */,
 				390FDF942BC490060064015C /* OpenAI.swift in Sources */,
-				39A4D3C72BC2D3DE00E89C81 /* Duration++Ext.swift in Sources */,
 				39A4D3D12BC2D56300E89C81 /* CustomModifiers.swift in Sources */,
 				39A4D3D82BC2D83F00E89C81 /* TaskDetailView.swift in Sources */,
 				3924630E2BD46D9A00EAC4D0 /* OnboardingView.swift in Sources */,

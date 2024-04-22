@@ -22,8 +22,12 @@ import Observation
     var pomodoroCounter: Int?
     var isShowingIconPicker = false
     var showDurationPicker = false
-    
+    var showClashAlert = false
+    var clashingTask: UserTask?
+    var clashingNewTask: UserTask?
+
     var isComplete: Bool {
         if pomodoro { return name != "" && name != " "} else { return name != "" && name != " " && duration > 0 && startTime != nil }
     }
+
 }

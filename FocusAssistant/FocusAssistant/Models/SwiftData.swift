@@ -75,6 +75,24 @@ public actor BackgroundSerialPersistenceActor {
 
     }
 
+    func isTaskClashing(for newTask: UserTask) throws -> UserTask? {
+        if newTask.pomodoro {
+            return nil
+        }
+        
+        let availableTasks: [UserTask] = try fetchData(predicate: #Predicate<UserTask> { task in
+            !task.isCompleted && !task.isExpired && task.blendedTask == nil && !task.pomodoro
+        })
+
+        for task in availableTasks {
+            let endTime = task.startTime!.addingTimeInterval(Double(task.duration))
+            if newTask.startTime!.isDate(inRange: task.startTime!, endDate: endTime) {
+                return task
+            }
+        }
+        return nil
+    }
+
 
     func checkHighPriorityTasks(activeTaskIDs: Set<PersistentIdentifier>) throws -> UserTask? {
         let tasks = try modelContext.fetch(FetchDescriptor(predicate: #Predicate<UserTask> { task in
