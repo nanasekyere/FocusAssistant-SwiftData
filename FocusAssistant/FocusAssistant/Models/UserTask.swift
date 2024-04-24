@@ -66,6 +66,10 @@ final class UserTask {
     func scheduleNotification() {
         guard !self.pomodoro, let startTime = self.startTime, startTime > Date() else { return }
         
+        if self.priority == .high {
+            scheduleHighPriorityNotification()
+        }
+
         let timeDifference = startTime.timeIntervalSinceNow
         guard timeDifference >= 300 else {
             // If the start time is less than 5 minutes away, don't schedule the notification
@@ -91,7 +95,30 @@ final class UserTask {
             }
         }
     }
-    
+
+    func scheduleHighPriorityNotification() {
+        guard !self.pomodoro, self.priority == .high, let startTime = self.startTime, startTime > Date() else { return }
+
+        let notificationTime = startTime
+        let content = UNMutableNotificationContent()
+        content.title = "Task Starting"
+        content.body = "Your task \(self.name) is starting now!"
+        content.sound = UNNotificationSound.default
+        content.interruptionLevel = .timeSensitive
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: notificationTime.timeIntervalSinceNow, repeats: false)
+
+        let request = UNNotificationRequest(identifier: self.identity.uuidString, content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error.localizedDescription)")
+            } else {
+                print("Notification scheduled for task \(self.name) at \(notificationTime.formatted(date: .omitted, time: .shortened))")
+            }
+        }
+    }
+
     func descheduleNotification() {
             let notificationCenter = UNUserNotificationCenter.current()
             

@@ -22,7 +22,7 @@ struct WeightingIndicator: View {
 func getImageURL(_ weight: Priority) -> String {
     switch weight {
     case .low:
-        return "exclamationmark"
+        return ""
     case .medium:
         return "exclamationmark.circle"
     case .high:

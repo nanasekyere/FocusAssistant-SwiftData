@@ -21,4 +21,8 @@ extension Date {
     func isDate(inRange startDate: Date, endDate: Date) -> Bool {
         return startDate <= self && self <= endDate
     }
+
+    static func - (lhs: Date, rhs: Date) -> TimeInterval {
+        return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
+    }
 }

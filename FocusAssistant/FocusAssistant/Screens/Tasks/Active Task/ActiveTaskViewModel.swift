@@ -86,7 +86,22 @@ import SwiftUI
         addNewTimer = false
         addNotification()
     }
-    
+
+    func startInProgress(_ task: UserTask) {
+        guard !task.pomodoro, let startTime = task.startTime else { return }
+        
+        self.activeTask = task
+
+        let endTime = startTime.addingTimeInterval(Double(task.duration))
+        let remainingDuration = Int(endTime - Date.now)
+
+        self.hour = remainingDuration / 3600
+        self.minutes = (remainingDuration / 60)  % 60
+        self.seconds = remainingDuration % 60
+        
+        startTimer()
+    }
+
     func stopTimer() {
         withAnimation {
             isStarted = false

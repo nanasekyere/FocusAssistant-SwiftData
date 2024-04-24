@@ -58,7 +58,7 @@ public actor BackgroundSerialPersistenceActor {
         try modelContext.save()
     }
 
-    public func checkExpiredTasks(activeTaskIDs: Set<PersistentIdentifier>) throws {
+    public func checkExpiredTasks(activeTaskIDs: Set<UUID>) throws {
         let currentTime = Date.now
 
         let tasks = try modelContext.fetch(FetchDescriptor<UserTask>(predicate: #Predicate<UserTask> { task in
@@ -66,7 +66,7 @@ public actor BackgroundSerialPersistenceActor {
         }))
 
         for task in tasks  {
-            if task.startTime! < currentTime && !activeTaskIDs.contains(task.id) {
+            if task.startTime! < currentTime && !activeTaskIDs.contains(task.identity) {
                 task.isExpired = true
                 
                 notifyExpiry(for: task)
@@ -93,8 +93,28 @@ public actor BackgroundSerialPersistenceActor {
         return nil
     }
 
+    func startHighPriorityTasks(_ activeTaskIDs: Set<UUID>) throws -> UserTask? {
 
-    func checkHighPriorityTasks(activeTaskIDs: Set<PersistentIdentifier>) throws -> UserTask? {
+        let availableTasks: [UserTask] = try fetchData(predicate: #Predicate<UserTask> { task in
+            !task.isCompleted && !task.isExpired && task.blendedTask == nil && !task.pomodoro
+        })
+
+        for task in availableTasks {
+            if task.priority == .high {
+                let endTime = task.startTime!.addingTimeInterval(Double(task.duration))
+                if Date().isDate(inRange: task.startTime!, endDate: endTime) {
+                    if !activeTaskIDs.contains(task.identity) {
+                        print("Task \(task.name) Should start now")
+                        return task
+                    }
+                }
+            }
+        }
+        return nil
+    }
+
+
+    func checkHighPriorityTasks(_ activeTaskIDs: Set<UUID>) throws -> UserTask? {
         let tasks = try modelContext.fetch(FetchDescriptor(predicate: #Predicate<UserTask> { task in
             !task.isCompleted && !task.isExpired && !task.pomodoro
         }))
@@ -102,7 +122,7 @@ public actor BackgroundSerialPersistenceActor {
         for task in tasks {
             if task.priority == .high {
                 if let startTime = task.startTime, Calendar.current.isDate(Date(), equalTo: startTime, toGranularity: .minute) {
-                    if !activeTaskIDs.contains(task.id) {
+                    if !activeTaskIDs.contains(task.identity) {
                         print("Task \(task.name) Should start now")
                         return task
                     }

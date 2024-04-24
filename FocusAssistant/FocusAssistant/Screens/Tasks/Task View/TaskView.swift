@@ -309,7 +309,7 @@ struct TaskView: View {
             } label: {
                 Label("Delete", systemImage: "trash")
             }
-            if task.blendedTask == nil {
+            if task.blendedTask == nil && !task.isExpired {
                 Button(action: {
                     vm.taskToEdit = task
                 }, label: {
@@ -385,7 +385,7 @@ struct TaskView: View {
                 UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [activeVM.activeTask!.identity.uuidString])
                 activeVM.activeTask = nil
             } label: {
-                Label("Stop", systemImage: "stop.circl")
+                Label("Stop", systemImage: "stop.circle")
             }
         }
 
