@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@Observable final class ActiveTaskViewModel: NSObject, UNUserNotificationCenterDelegate {
+@Observable public final class ActiveTaskViewModel: NSObject, UNUserNotificationCenterDelegate {
     
     var progress = CGFloat(1)
     var timerStringValue = "00:00"
@@ -72,7 +72,7 @@ import SwiftUI
     }
     
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.sound, .banner])
     }
     

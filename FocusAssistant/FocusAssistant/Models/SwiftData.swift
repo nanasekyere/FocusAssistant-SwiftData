@@ -58,7 +58,7 @@ public actor BackgroundSerialPersistenceActor {
         try modelContext.save()
     }
 
-    public func checkExpiredTasks(activeTaskIDs: Set<UUID>) throws {
+    public func checkExpiredTasks(activeTaskIDs: Set<UUID>, activeModel: ActiveTaskViewModel) throws {
         let currentTime = Date.now
 
         let tasks = try modelContext.fetch(FetchDescriptor<UserTask>(predicate: #Predicate<UserTask> { task in
@@ -66,9 +66,8 @@ public actor BackgroundSerialPersistenceActor {
         }))
 
         for task in tasks  {
-            if task.startTime! < currentTime && !activeTaskIDs.contains(task.identity) {
+            if task.startTime! < currentTime && !activeTaskIDs.contains(task.identity) && activeModel.activeTask?.identity != task.identity {
                 task.isExpired = true
-                
                 notifyExpiry(for: task)
             }
         }

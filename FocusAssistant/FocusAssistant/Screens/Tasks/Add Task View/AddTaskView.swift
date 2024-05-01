@@ -42,6 +42,26 @@ struct AddTaskView: View {
                                         vm.pomodoroCounter = 0
                                         vm.duration = taskTime ?? 1500
                                         vm.startTime = nil
+                                        vm.isRecurring = false
+                                        vm.repeatEvery = nil
+                                    }
+
+                                    if newValue == false {
+                                        vm.pomodoroCounter = nil
+                                        vm.duration = 0
+                                    }
+                                }
+                            Toggle("Recurring Task?", isOn: $vm.isRecurring)
+
+                                .onChange(of: vm.isRecurring) { oldValue, newValue in
+                                    if newValue == true {
+                                        vm.pomodoro = false
+                                        vm.isRecurring = true
+                                        vm.repeatEvery = 0
+                                    }
+
+                                    if newValue == false {
+                                        vm.repeatEvery = nil
                                     }
                                 }
                             if !vm.pomodoro {
@@ -59,7 +79,20 @@ struct AddTaskView: View {
                                     
                                 }
                             }
-                            
+
+                            if vm.isRecurring {
+                                Button(vm.repeatEvery == 0 ? "Repeat Every:" : "Repeat Every: \(vm.repeatEvery?.timeString() ?? "")" ) {
+                                    vm.showRepetitionPicker = true
+                                }
+                                .tint(.white)
+
+                                .popover(isPresented: $vm.showRepetitionPicker, arrowEdge: .top) {
+                                    RepeatPicker(duration: $vm.repeatEvery.bound)
+                                        .padding()
+                                        .presentationCompactAdaptation(.popover)
+                                }
+                            }
+
                             Picker("Priority", selection: $vm.priority) {
                                 ForEach(Priority.allCases, id: \.self) { priority in
                                     Text(priority.rawValue.capitalized)
@@ -93,7 +126,7 @@ struct AddTaskView: View {
                                 Button("Save changes") {
                                     if vm.isComplete {
                                         let actor = BackgroundSerialPersistenceActor(modelContainer: context.container)
-                                        let newTask = UserTask(name: vm.name.trimWhiteSpace(), duration: vm.duration, startTime: vm.startTime, priority: vm.priority, imageURL: vm.imageURL, details: vm.details, pomodoro: vm.pomodoro, pomodoroCounter: vm.pomodoroCounter)
+                                        let newTask = UserTask(name: vm.name.trimWhiteSpace(), duration: vm.duration, startTime: vm.startTime, priority: vm.priority, imageURL: vm.imageURL, details: vm.details, pomodoro: vm.pomodoro, pomodoroCounter: vm.pomodoroCounter, isRecurring: vm.isRecurring, repeatEvery: vm.repeatEvery)
                                         Task {
                                             if let clashingTask = try await actor.isTaskClashing(for: newTask) {
                                                 vm.clashingTask = clashingTask
@@ -180,7 +213,7 @@ struct EditTaskView: View {
                             if !task.pomodoro {
                                 DatePicker("Start Time", selection: $task.startTime.bound, displayedComponents: [.date, .hourAndMinute])
                                 
-                                Button(task.duration == 0 ? "Choose Duration" : "Duration: \(task.duration.timeString())" ) {
+                                Button(task.duration == 0 ? "Choose Duration" : "Duration: \(task.duration.recurringTimeString())" ) {
                                     vm.showDurationPicker = true
                                 }
                                 .tint(.white)
@@ -270,7 +303,12 @@ struct EditTaskView: View {
 }
 
 #Preview {
-    
-    AddTaskView()
-        .modelContainer(for: [UserTask.self, BlendedTask.self], inMemory: true)
+    struct PreviewWrapper: View {
+        var body: some View {
+            AddTaskView()
+                .modelContainer(DataController.previewContainer)
+        }
+    }
+
+    return PreviewWrapper()
 }

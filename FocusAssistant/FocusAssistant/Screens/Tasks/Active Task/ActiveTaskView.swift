@@ -288,7 +288,7 @@ struct ActiveTaskView: View {
             }
             Button("Complete task", role: .destructive) {
                 vm.endTimer()
-                task.isCompleted = true
+                task.completeTask()
                 dismiss()
             }
         }
@@ -311,7 +311,7 @@ struct ActiveTaskView: View {
     func completeTaskButton() -> some View {
         Button("Complete task", role: .destructive) {
             vm.endTimer()
-            task.isCompleted = true
+            task.completeTask()
             vm.activeTask = nil
             dismiss()
         }
@@ -325,7 +325,7 @@ struct ActiveTaskView: View {
             }
             Button("Close", role: .destructive) {
                 vm.endTimer()
-                task.isCompleted = true
+                task.completeTask()
                 dismiss()
             }
         }

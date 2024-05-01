@@ -31,4 +31,29 @@ extension Int {
         
         return timeString
     }
+
+    func recurringTimeString() -> String {
+            let minutes = self / 60
+            let hours = minutes / 60
+            let days = hours / 24
+
+            let remainingHours = hours % 24
+            let remainingMinutes = minutes % 60
+
+            var timeString = ""
+
+            if days > 0 {
+                timeString += "\(days) day\(days == 1 ? "" : "s") "
+            }
+
+            if remainingHours > 0 {
+                timeString += "\(remainingHours) hour\(remainingHours == 1 ? "" : "s") "
+            }
+
+            if remainingMinutes > 0 || timeString.isEmpty { // Add minutes or default to "0 minutes" if the string is still empty
+                timeString += "\(remainingMinutes) minute\(remainingMinutes == 1 ? "" : "s")"
+            }
+
+            return timeString
+        }
 }

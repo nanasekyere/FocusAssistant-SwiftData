@@ -19,15 +19,24 @@ import Observation
     var details: String?
     var pomodoro = false
     var isExpired = false
+    var isRecurring = false
+    var repeatEvery: Int?
     var pomodoroCounter: Int?
-    var isShowingIconPicker = false
-    var showDurationPicker = false
     var showClashAlert = false
     var clashingTask: UserTask?
-    var clashingNewTask: UserTask?
+
+    var isShowingIconPicker = false
+    var showDurationPicker = false
+    var showRepetitionPicker = false
 
     var isComplete: Bool {
-        if pomodoro { return name != "" && name != " "} else { return name != "" && name != " " && duration > 0 && startTime != nil }
+        if pomodoro {
+            return name != "" && name != " "
+        } else if isRecurring {
+            return name != "" && name != " " && duration > 0 && startTime != nil && repeatEvery != nil
+        } else {
+            return name != "" && name != " " && duration > 0 && startTime != nil
+        }
     }
 
 }

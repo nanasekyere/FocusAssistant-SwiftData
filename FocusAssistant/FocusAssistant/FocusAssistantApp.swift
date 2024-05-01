@@ -117,7 +117,7 @@ struct FocusAssistantApp: App {
                             // Notify the user
                             notifyUser(for: taskToActivate)
                         }
-                        try? await actor.checkExpiredTasks(activeTaskIDs: activeTaskIDs)
+                        try? await actor.checkExpiredTasks(activeTaskIDs: activeTaskIDs, activeModel: activeTaskModel)
                     }
                 }
 

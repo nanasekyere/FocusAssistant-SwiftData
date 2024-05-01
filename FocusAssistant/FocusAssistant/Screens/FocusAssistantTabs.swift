@@ -93,7 +93,7 @@ struct FocusAssistantTabs: View {
     @ViewBuilder
     func completeTaskButton() -> some View {
        Button("Complete task", role: .destructive) {
-           activeTaskModel.activeTask!.isCompleted = true
+           activeTaskModel.activeTask!.completeTask()
            updateTask(activeTaskModel.activeTask!)
            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [activeTaskModel.activeTask!.identity.uuidString])
            activeTaskModel.activeTask = nil
@@ -111,7 +111,7 @@ struct FocusAssistantTabs: View {
            }
            Button("Close", role: .destructive) {
                activeTaskModel.endTimer()
-               activeTaskModel.activeTask!.isCompleted = true
+               activeTaskModel.activeTask!.completeTask()
                updateTask(activeTaskModel.activeTask!)
                activeTaskModel.activeTask = nil
                dismiss()

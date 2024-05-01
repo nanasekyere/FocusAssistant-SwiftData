@@ -10,7 +10,7 @@ import SwiftData
 import UserNotifications
 
 @Model
-final class UserTask {
+class UserTask {
     var identity = UUID()
 
     var name = ""
@@ -23,6 +23,8 @@ final class UserTask {
     var isCompleted = false
     var pomodoroCounter: Int?
     var isExpired = false
+    var isRecurring = false
+    var repeatEvery: Int? = nil
 
     var blendedTask: BlendedTask?
 
@@ -36,9 +38,17 @@ final class UserTask {
             }
         }
     }
-    
+
+    func completeTask() {
+        if self.isRecurring, let startTime = self.startTime, let repeatEvery = self.repeatEvery {
+            self.startTime = Date(timeInterval: TimeInterval(repeatEvery), since: startTime)
+        } else {
+            self.isCompleted = true
+        }
+    }
+
     init(name: String = "", duration: Int = 0, startTime: Date? = nil, priority: Priority = .low, 
-         imageURL: String? = nil, details: String? = nil, pomodoro: Bool = false,  pomodoroCounter: Int? = nil) {
+         imageURL: String? = nil, details: String? = nil, pomodoro: Bool = false,  pomodoroCounter: Int? = nil, isRecurring: Bool = false, repeatEvery: Int? = nil) {
         self.name = name
         self.duration = duration
         self.startTime = startTime
@@ -47,6 +57,8 @@ final class UserTask {
         self.details = details
         self.pomodoro = pomodoro
         self.pomodoroCounter = pomodoroCounter
+        self.isRecurring = isRecurring
+        self.repeatEvery = repeatEvery
     }
     
     init(identity: UUID, name: String = "", duration: Int = 0, startTime: Date? = nil, priority: Priority = .low,

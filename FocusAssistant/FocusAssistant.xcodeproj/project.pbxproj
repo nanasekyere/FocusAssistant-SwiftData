@@ -21,6 +21,7 @@
 		3924630E2BD46D9A00EAC4D0 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924630D2BD46D9A00EAC4D0 /* OnboardingView.swift */; };
 		392463102BD479E000EAC4D0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924630F2BD479E000EAC4D0 /* SettingsView.swift */; };
 		393DDFCC2BCAB9D8000285A6 /* SwiftData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393DDFCB2BCAB9D8000285A6 /* SwiftData.swift */; };
+		399820E72BDC43180010AEC1 /* RepeatPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399820E62BDC43180010AEC1 /* RepeatPicker.swift */; };
 		39A4D39D2BC2C83000E89C81 /* FocusAssistantApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */; };
 		39A4D3A32BC2C83100E89C81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39A4D3A22BC2C83100E89C81 /* Assets.xcassets */; };
 		39A4D3A62BC2C83100E89C81 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39A4D3A52BC2C83100E89C81 /* Preview Assets.xcassets */; };
@@ -64,6 +65,7 @@
 		3924630D2BD46D9A00EAC4D0 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		3924630F2BD479E000EAC4D0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		393DDFCB2BCAB9D8000285A6 /* SwiftData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftData.swift; sourceTree = "<group>"; };
+		399820E62BDC43180010AEC1 /* RepeatPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatPicker.swift; sourceTree = "<group>"; };
 		39A4D3992BC2C83000E89C81 /* FocusAssistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusAssistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39A4D39C2BC2C83000E89C81 /* FocusAssistantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAssistantApp.swift; sourceTree = "<group>"; };
 		39A4D3A22BC2C83100E89C81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				39A4D3CF2BC2D56300E89C81 /* DurationPicker.swift */,
 				39A4D3D02BC2D56300E89C81 /* WeightingIndicator.swift */,
 				390FDFA62BC4A04C0064015C /* XDismissButton.swift */,
+				399820E62BDC43180010AEC1 /* RepeatPicker.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -414,6 +417,7 @@
 				3924630E2BD46D9A00EAC4D0 /* OnboardingView.swift in Sources */,
 				392463102BD479E000EAC4D0 /* SettingsView.swift in Sources */,
 				39A4D3F12BC2E56D00E89C81 /* AddTaskViewModel.swift in Sources */,
+				399820E72BDC43180010AEC1 /* RepeatPicker.swift in Sources */,
 				39A4D3F02BC2E56D00E89C81 /* AddTaskView.swift in Sources */,
 				39A4D3BA2BC2CB2300E89C81 /* TaskView.swift in Sources */,
 				39A4D3C92BC2D3DE00E89C81 /* String+Ext.swift in Sources */,
