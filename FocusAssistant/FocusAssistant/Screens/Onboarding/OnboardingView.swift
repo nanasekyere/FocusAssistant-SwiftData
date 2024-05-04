@@ -54,7 +54,7 @@ struct OnboardingPage: View {
                 Button("Continue to app") {
                     isOnboarding = false
                     UserDefaults.standard.setValue(1500, forKey: "taskTime")
-                    UserDefaults.standard.setValue(5, forKey: "breakTime")
+                    UserDefaults.standard.setValue(300, forKey: "breakTime")
                 }
                 .disabled(name.count < 3)
                 .buttonStyle(.borderedProminent)
