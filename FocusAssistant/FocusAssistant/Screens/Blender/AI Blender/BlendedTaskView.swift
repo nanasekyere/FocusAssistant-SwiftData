@@ -30,7 +30,7 @@ struct BlendedTaskView: View {
                     .padding(.horizontal, 5)
                 
                 List {
-                    ForEach(Array(blendedTask.subtasks.enumerated()), id: \.1.id) { index, subtask in
+                    ForEach(Array(blendedTask.sortedSubtasks.enumerated()), id: \.1.id) { index, subtask in
                         SubtaskListItem(subtask: subtask, taskNo: index + 1)
                             .transition(AnyTransition.slide)
                             .animation(Animation.easeInOut.delay(Double(index) * 0.1), value: isAnimated)
@@ -97,7 +97,7 @@ struct BlendedTaskView: View {
                 
                 if isExpanded {
                     
-                    ForEach(subtask.details) { detail in
+                    ForEach(subtask.sortedDetails) { detail in
                         VStack(alignment: .leading, spacing: 5) {
                             Text(detail.desc)
                                 .padding(.horizontal, 10)

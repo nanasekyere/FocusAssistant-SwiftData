@@ -11,6 +11,19 @@ import SwiftUI
 import SwiftData
 import SwiftOpenAI
 
+ var service: OpenAIService {
+    #if DEBUG && targetEnvironment(simulator)
+    return OpenAIServiceFactory.service(
+        aiproxyPartialKey: "v1|3af3250e|1|ihchDO25XUMdu1zc",
+        aiproxyDeviceCheckBypass: "4832550d-b2c7-43fa-a16b-512f0072fd9e"
+    )
+    #else
+    return OpenAIServiceFactory.service(
+        aiproxyPartialKey: "v1|3af3250e|1|ihchDO25XUMdu1zc"
+    )
+    #endif
+}
+
 struct BlenderView: View {
     @Environment(\.modelContext) var context
     private let service: OpenAIService
@@ -105,7 +118,7 @@ struct BlenderView: View {
 
 
 #Preview {
-    BlenderView(service: OpenAIServiceFactory.service(apiKey: serviceInfo.APIKey))
+    BlenderView(service: service)
         .modelContainer(for: [UserTask.self, BlendedTask.self], inMemory: true)
 }
 

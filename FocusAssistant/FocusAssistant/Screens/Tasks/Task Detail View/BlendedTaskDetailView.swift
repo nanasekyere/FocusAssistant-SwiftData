@@ -24,33 +24,33 @@ struct BlendedTaskDetailView: View {
                 Color.BG.ignoresSafeArea()
                 if let bTask = bTasks.first(where: {$0.id == blendedTask.id}) {
                     List {
-                        ForEach(bTask.subtasks.indices, id: \.self) { i  in
+                        ForEach(bTask.sortedSubtasks.indices, id: \.self) { i  in
                             VStack(alignment: .center) {
-                                Text("Task: \(bTask.subtasks[i].name)")
+                                Text("Task: \(bTask.sortedSubtasks[i].name)")
                                     .font(.headline)
                                     .foregroundStyle(.white)
                                 
-                                ForEach(bTask.subtasks[i].details.indices, id: \.self) { j in
+                                ForEach(bTask.sortedSubtasks[i].sortedDetails.indices, id: \.self) { j in
                                     HStack {
                                         VStack(alignment: .leading) {
-                                            Text(bTask.subtasks[i].details[j].desc)
+                                            Text(bTask.sortedSubtasks[i].sortedDetails[j].desc)
                                         }
                                         Spacer()
                                         
                                         Button(action: {
                                             withAnimation {
-                                                print("-view OLD: \(bTask.subtasks[i].details[j].isCompleted)")
-                                                bTask.subtasks[i].details[j].isCompleted.toggle()
-                                                print("-view NEW: \(bTask.subtasks[i].details[j].isCompleted)")
+                                                print("-view OLD: \(bTask.sortedSubtasks[i].sortedDetails[j].isCompleted)")
+                                                bTask.sortedSubtasks[i].sortedDetails[j].isCompleted.toggle()
+                                                print("-view NEW: \(bTask.sortedSubtasks[i].sortedDetails[j].isCompleted)")
                                             }
                                         }, label: {
-                                            Image(systemName: bTask.subtasks[i].details[j].isCompleted ? "checkmark.circle.fill" : "circle")
+                                            Image(systemName: bTask.sortedSubtasks[i].sortedDetails[j].isCompleted ? "checkmark.circle.fill" : "circle")
                                                 .contentTransition(.symbolEffect(.replace))
                                             
                                         })
                                         .frame(width: 35, height: 35)
-                                        .foregroundStyle(bTask.subtasks[i].details[j].isCompleted ? .green : .white)
-                                        
+                                        .foregroundStyle(bTask.sortedSubtasks[i].sortedDetails[j].isCompleted ? .green : .white)
+
                                     }
                                     .padding(.vertical, 5)
                                     .padding(.horizontal, 10)

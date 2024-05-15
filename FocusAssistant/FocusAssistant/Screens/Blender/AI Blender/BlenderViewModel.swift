@@ -62,15 +62,14 @@ import SwiftData
                 blendedTask.correspondingTask = blendedTask.toTask()
                 var subtasks = [Subtask]()
                 
-                
-                for subtask in dummyTask.subtasks.reversed() {
+                for (index, subtask) in dummyTask.subtasks.enumerated() {
                     var details = [Detail]()
-                    let newSubtask = Subtask(from: subtask)
+                    let newSubtask = Subtask(from: subtask, index: index)
                     modelContext.insert(newSubtask)
                     newSubtask.blendedTask = blendedTask
-                    
-                    for detail in subtask.details.reversed() {
-                        let newDetail = Detail(from: detail)
+
+                    for (index, detail) in subtask.details.enumerated() {
+                        let newDetail = Detail(from: detail, index: index)
                         modelContext.insert(newDetail)
                         newDetail.subtask = newSubtask
                         details.append(newDetail)

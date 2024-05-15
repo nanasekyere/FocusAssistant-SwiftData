@@ -267,8 +267,10 @@ struct TaskView: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            if !task.isCompleted {
+            if task.blendedTask == nil && !task.isCompleted{
                 vm.taskDetail = task
+            } else {
+                vm.bTaskDetail = task.blendedTask!
             }
         }
         .listRowBackground(

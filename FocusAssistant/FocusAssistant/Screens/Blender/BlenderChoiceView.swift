@@ -11,6 +11,19 @@ import SwiftData
 
 struct BlenderChoiceView: View {
     @Environment(\.modelContext) var modelContext
+    
+    private var service: OpenAIService {
+        #if DEBUG && targetEnvironment(simulator)
+        return OpenAIServiceFactory.service(
+            aiproxyPartialKey: "v1|3af3250e|1|ihchDO25XUMdu1zc",
+            aiproxyDeviceCheckBypass: "4832550d-b2c7-43fa-a16b-512f0072fd9e"
+        )
+        #else
+        return OpenAIServiceFactory.service(
+            aiproxyPartialKey: "v1|3af3250e|1|ihchDO25XUMdu1zc"
+        )
+        #endif
+    }
 
     var body: some View {
         NavigationStack {
@@ -39,7 +52,7 @@ struct BlenderChoiceView: View {
                     Divider()
 
                     NavigationLink {
-                        BlenderView(service: OpenAIServiceFactory.service(apiKey: serviceInfo.APIKey))
+                        BlenderView(service: service)
                     } label: {
                         VStack {
                             Image(systemName: "wand.and.stars.inverse")

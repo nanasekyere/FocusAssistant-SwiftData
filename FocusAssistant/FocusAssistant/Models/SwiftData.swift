@@ -139,16 +139,16 @@ public actor BackgroundSerialPersistenceActor {
         var subtasks = [Subtask]()
 
 
-        for subtask in dummyTask.subtasks {
+        for (index, subtask) in dummyTask.subtasks.enumerated() {
             var details = [Detail]()
 
-            let newSubtask = Subtask(from: subtask)
+            let newSubtask = Subtask(from: subtask, index: index)
             modelContext.insert(newSubtask)
             //Assign the relationship after inserting into context
             newSubtask.blendedTask = blendedTask
 
-            for detail in subtask.details {
-                let newDetail = Detail(from: detail)
+            for (index, detail) in subtask.details.enumerated() {
+                let newDetail = Detail(from: detail, index: index)
                 modelContext.insert(newDetail)
                 //Assign the relationship after inserting into context
                 newDetail.subtask = newSubtask
@@ -195,16 +195,16 @@ func decodeBlendedTask(from JSONString: String, modelContext: ModelContext) thro
     var subtasks = [Subtask]()
     
     
-    for subtask in dummyTask.subtasks {
+    for (index, subtask) in dummyTask.subtasks.enumerated() {
         var details = [Detail]()
         
-        let newSubtask = Subtask(from: subtask)
+        let newSubtask = Subtask(from: subtask, index: index)
         modelContext.insert(newSubtask)
         //Assign the relationship after inserting into context
         newSubtask.blendedTask = blendedTask
         
-        for detail in subtask.details {
-            let newDetail = Detail(from: detail)
+        for (index, detail) in subtask.details.enumerated() {
+            let newDetail = Detail(from: detail, index: index)
             modelContext.insert(newDetail)
             //Assign the relationship after inserting into context
             newDetail.subtask = newSubtask
@@ -225,16 +225,16 @@ func createTask(from dummyTask: DummyTask, modelContext: ModelContext) throws {
     var subtasks = [Subtask]()
 
 
-    for subtask in dummyTask.subtasks.reversed() {
+    for (index, subtask) in dummyTask.subtasks.enumerated() {
         var details = [Detail]()
 
-        let newSubtask = Subtask(from: subtask)
+        let newSubtask = Subtask(from: subtask, index: index)
         modelContext.insert(newSubtask)
         //Assign the relationship after inserting into context
         newSubtask.blendedTask = blendedTask
 
-        for detail in subtask.details.reversed() {
-            let newDetail = Detail(from: detail)
+        for (index, detail) in subtask.details.enumerated() {
+            let newDetail = Detail(from: detail, index: index)
             modelContext.insert(newDetail)
             //Assign the relationship after inserting into context
             newDetail.subtask = newSubtask

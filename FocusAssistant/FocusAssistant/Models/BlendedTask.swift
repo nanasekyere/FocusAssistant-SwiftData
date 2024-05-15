@@ -14,6 +14,10 @@ import SwiftData
 
     @Relationship(deleteRule: .cascade, inverse: \Subtask.blendedTask)
     var subtasks = [Subtask]()
+    
+    var sortedSubtasks: [Subtask] {
+        return subtasks.sorted(by: {$0.index < $1.index})
+    }
 
     @Relationship(deleteRule: .cascade, inverse: \UserTask.blendedTask)
     var correspondingTask: UserTask?
@@ -39,16 +43,21 @@ import SwiftData
     var name: String
     @Relationship(deleteRule: .cascade, inverse: \Detail.subtask)
     var details = [Detail]()
+    var sortedDetails: [Detail] {
+        return details.sorted(by: {$0.index < $1.index})
+    }
+    var index: Int
     var blendedTask: BlendedTask?
-    
-    init(name: String, details: [Detail]) {
+    init(name: String, details: [Detail], index: Int) {
         self.name = name
         self.details = details
+        self.index = index
     }
-    
-    init(from dummySubtask: DummySubtask) {
+
+    init(from dummySubtask: DummySubtask, index: Int) {
         self.name = dummySubtask.name
         self.details = []
+        self.index = index
     }
     
 }
@@ -57,15 +66,18 @@ import SwiftData
     var desc: String
     var isCompleted: Bool
     var subtask: Subtask?
-    
-    init(desc: String, isCompleted: Bool) {
+    var index: Int = 0
+
+    init(desc: String, isCompleted: Bool, index: Int) {
         self.desc = desc
         self.isCompleted = isCompleted
+        self.index = index
     }
     
-    init(from dummyDetail: DummyDetail) {
+    init(from dummyDetail: DummyDetail, index: Int) {
         self.desc = dummyDetail.desc
         self.isCompleted = dummyDetail.isCompleted
+        self.index = index
     }
 }
 
@@ -159,7 +171,7 @@ struct DummyDetail: Codable, Equatable, Hashable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         desc = try container.decode(String.self, forKey: .desc)
-        isCompleted = try container.decode(Bool.self, forKey: .isCompleted)
+        isCompleted = false
     }
     
     func encode(to encoder: Encoder) throws {
