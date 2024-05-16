@@ -9,26 +9,30 @@ import SwiftUI
 import SwiftData
 
 struct TaskView: View {
+    // Querying tasks from the database
     @Query var tasks: [UserTask]
     @Query var bTasks: [BlendedTask]
+    // Querying completed tasks excluding blended tasks
     @Query(filter: #Predicate<UserTask> { task in
         task.isCompleted && !task.isExpired && task.blendedTask == nil
     })
     var completedTasks: [UserTask]
-
+    // Querying available tasks excluding completed and blended tasks, sorted by start time
     @Query(filter: #Predicate<UserTask> { task in
         !task.isCompleted && !task.isExpired && task.blendedTask == nil
     }, sort: \.startTime)
     var availableTasks: [UserTask]
-
+    // Querying expired tasks
     @Query(filter: #Predicate<UserTask> { task in
         task.isExpired
     })
     var expiredTasks: [UserTask]
 
+    // Environment variables
     @Environment(\.modelContext) var context
     @Environment(ActiveTaskViewModel.self) var activeVM
 
+    // State variables
     @State var vm = TaskViewModel()
     @State private var currentDay: Date = .init()
     @State var activeAnimator = true
@@ -37,21 +41,24 @@ struct TaskView: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                // Background color
                 Color.BG
                     .ignoresSafeArea()
                 VStack {
                     if tasks.isEmpty && bTasks.isEmpty {
+                        // If there are no tasks, display content unavailable view
                         ContentUnavailableView("No Tasks", systemImage: "tag.slash.fill", description: Text("You don't have any tasks currently, press the button to create one"))
                     } else {
-
+                        // Display tasks
                         List {
-
+                            // Active task section
                             if let activeTask = activeVM.activeTask, ((try? context.fetchIdentifiers(FetchDescriptor<UserTask>()).contains(activeTask.id)) != nil){
                                 Section("Active Task") {
                                     ActiveTaskCell(task: activeTask)
                                 }
                             }
 
+                            // Switch statement based on view model status
                             switch vm.status {
                                 case .showAll:
                                     allTasksView()
@@ -60,12 +67,15 @@ struct TaskView: View {
                                 case .showWeekly:
                                     weeklyTasksView()
                             }
+
+                            // Blended tasks section
                             Section("Blended Tasks (\(bTasks.count))", isExpanded: $vm.isShowingBlendedTasks) {
                                 ForEach(bTasks) { task in
                                     TaskCell(task: task.correspondingTask!)
                                 }
                             }
 
+                            // Completed tasks section
                             if !completedTasks.isEmpty {
                                 Section("Completed Tasks (\(completedTasks.count))", isExpanded: $vm.isShowingCompleted) {
                                     ForEach(completedTasks) {task in
@@ -74,7 +84,7 @@ struct TaskView: View {
                                 }
                             }
 
-
+                            // Expired tasks section
                             if !expiredTasks.isEmpty {
                                 Section("Expired Tasks (\(expiredTasks.count))", isExpanded: $vm.isShowingExpiredTasks) {
                                     ForEach(expiredTasks) {task in
@@ -83,7 +93,6 @@ struct TaskView: View {
                                 }
                             }
                         }
-
                         .listRowSpacing(10)
                         .scrollContentBackground(.hidden)
 
@@ -115,6 +124,7 @@ struct TaskView: View {
             .navigationTitle("Tasks")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
+                    // Add button
                     Button("Add", systemImage: "plus") {
                         vm.isDisplayingAddView = true
                     }
@@ -122,6 +132,7 @@ struct TaskView: View {
                 }
 
                 ToolbarItem(placement: .secondaryAction) {
+                    // Filters menu
                     Menu("Filters", content: {
                         Button("Show All tasks", action: {
                             vm.status = .showAll
@@ -159,6 +170,7 @@ struct TaskView: View {
 
     }
 
+    // View for displaying all tasks
     @ViewBuilder
     func allTasksView() -> some View {
         Section("To-do") {
@@ -171,7 +183,7 @@ struct TaskView: View {
         }
     }
 
-
+    // View for displaying weekly tasks
     @ViewBuilder
     func weeklyTasksView() -> some View {
         let dateFormatter: DateFormatter = {
@@ -204,6 +216,7 @@ struct TaskView: View {
         }
     }
 
+    // View for displaying daily tasks
     @ViewBuilder
     func dailyTasksView() -> some View {
         Section("Today's Tasks") {
@@ -221,6 +234,7 @@ struct TaskView: View {
         }
     }
 
+    // View for individual task cell
     @ViewBuilder
     func TaskCell(task: UserTask) -> some View {
 
@@ -263,7 +277,7 @@ struct TaskView: View {
                 WeightingIndicator(weight: task.priority)
                     .frame(alignment: .trailing)
             }
-            
+
         }
         .contentShape(Rectangle())
         .onTapGesture {
@@ -327,9 +341,10 @@ struct TaskView: View {
 
             }
         }
-        
+
     }
 
+    // View for active task cell
     @ViewBuilder
     func ActiveTaskCell(task: UserTask) -> some View {
 

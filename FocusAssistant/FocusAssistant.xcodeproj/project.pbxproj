@@ -197,9 +197,9 @@
 		39A4D3B52BC2CAF400E89C81 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				3924630C2BD4680100EAC4D0 /* Onboarding */,
 				3924630A2BD45CFC00EAC4D0 /* Launch Screen.storyboard */,
 				39A4D3B62BC2CB0B00E89C81 /* FocusAssistantTabs.swift */,
+				3924630C2BD4680100EAC4D0 /* Onboarding */,
 				390FDF812BC47E330064015C /* Home */,
 				39A4D3B82BC2CB1B00E89C81 /* Tasks */,
 				390FDF822BC47E400064015C /* Blender */,

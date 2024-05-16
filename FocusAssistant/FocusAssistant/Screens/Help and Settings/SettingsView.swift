@@ -7,18 +7,24 @@
 
 import SwiftUI
 
+/// View for adjusting Pomodoro task settings and providing feedback.
 struct SettingsView: View {
+    // AppStorage properties for storing task and break times
     @AppStorage("taskTime") private var storedTaskTime: Int = UserDefaults.standard.integer(forKey: "taskTime") / 60
     @AppStorage("breakTime") private var storedBreakTime: Int = UserDefaults.standard.integer(forKey: "breakTime") / 60
     @AppStorage("isOnboarding") var isOnboarding: Bool?
 
+    // State properties for task and break times
     @State private var taskTime: Int
     @State private var breakTime: Int
 
+    // Range of task time values
     let taskTimeRange: [Int] = Array(10...45)
 
+    // Range of break time values
     let breakTimeRange: [Int] = Array(3...15)
 
+    // Initialize state properties with stored values
     init() {
         _taskTime = State(initialValue: UserDefaults.standard.integer(forKey: "taskTime") / 60)
         _breakTime = State(initialValue: UserDefaults.standard.integer(forKey: "breakTime") / 60)
@@ -31,29 +37,35 @@ struct SettingsView: View {
 
                 VStack {
                     Form {
+                        // Section for Pomodoro task settings
                         Section("Pomodoro Task Settings") {
+                            // Picker for selecting task time
                             Picker("Pomodoro Task Time (rec. 25)", selection: $taskTime) {
                                 ForEach(taskTimeRange, id: \.self) { number in
                                     Text("\(number) mins")
                                 }
                             }
-                            .onChange(of: taskTime) { oldValue, newValue in
+                            // Save selected task time to UserDefaults
+                            .onChange(of: taskTime) { _, newValue in
                                 UserDefaults.standard.set(newValue * 60, forKey: "taskTime")
                             }
 
+                            // Picker for selecting break time
                             Picker("Pomodoro Break Time (rec. 5)", selection: $breakTime) {
                                 ForEach(breakTimeRange, id: \.self) { number in
                                     Text("\(number) mins")
                                 }
                             }
-                            .onChange(of: breakTime) { oldValue, newValue in
+                            // Save selected break time to UserDefaults
+                            .onChange(of: breakTime) { _, newValue in
                                 UserDefaults.standard.set(newValue * 60, forKey: "breakTime")
                             }
-
                         }
                         .listRowBackground(Color.darkPurple)
 
+                        // Section for providing feedback
                         Section("Feedback") {
+                            // Link to open feedback form in browser
                             Link("Open Feedback form", destination: URL(string: "https://forms.office.com/e/BQQejzDnNt")!)
                         }
                         .listRowBackground(Color.darkPurple)
@@ -61,6 +73,7 @@ struct SettingsView: View {
                     }
                     .scrollContentBackground(.hidden)
 
+                    // Button to display help (onboarding)
                     Button("Display Help") {
                         isOnboarding = true
                     }
@@ -69,11 +82,12 @@ struct SettingsView: View {
 
                 }
             }
-            .navigationTitle("Settings")
+            .navigationTitle("Settings") // Set navigation title
         }
     }
 }
 
+// Preview for SettingsView
 #Preview {
     SettingsView()
 }

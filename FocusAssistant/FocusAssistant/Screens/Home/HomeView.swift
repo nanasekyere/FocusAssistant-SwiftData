@@ -1,5 +1,4 @@
 //
-//  
 //  HomeView.swift
 //  FocusAssistant
 //
@@ -11,26 +10,36 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
+    // Query for fetching user tasks
     @Query var tasks: [UserTask]
-    
+
+    // Environment object for accessing model context
     @Environment(\.modelContext) var context
-    
+
+    // State variable for current day and home view model
     @State private var currentDay: Date = .init()
     @Bindable var vm = HomeViewModel()
+
+    // App storage for user name
     @AppStorage("userName") var userName: String?
 
     var body: some View {
         ZStack {
+            // Background color
             Color.BG.ignoresSafeArea(.all)
-            
+
+            // Check if tasks are empty
             if tasks.isEmpty {
+                // Show content unavailable view
                 ContentUnavailableView("No Tasks", systemImage: "tag.slash.fill", description: Text("You don't have any tasks currently, head to the tasks tab to create one"))
             } else {
+                // Show timeline view
                 ScrollView(.vertical, showsIndicators: false) {
                     TimelineView()
                         .padding(15)
                 }
                 .safeAreaInset(edge: .top,spacing: 0) {
+                    // Show header view
                     HeaderView()
                 }
                 .sheet(item: $vm.taskToEdit, content: { task in
@@ -42,13 +51,11 @@ struct HomeView: View {
                 .sheet(item: $vm.taskDetails) { task in
                     TaskDetailView(task: task)
                 }
-                
-                
             }
         }
     }
-    
-    /// - Timeline View
+
+    /// Timeline View
     @ViewBuilder
     func TimelineView()->some View{
         ScrollViewReader { proxy in
@@ -64,10 +71,10 @@ struct HomeView: View {
                 proxy.scrollTo(midHour)
             }
         }
-        
+
     }
-    
-    /// - Timeline View Row
+
+    /// Timeline View Row
     @ViewBuilder
     func TimelineViewRow(_ date: Date)->some View{
         HStack(alignment: .top) {
@@ -75,8 +82,8 @@ struct HomeView: View {
                 .font(.system(size: 16))
                 .fontWeight(.regular)
                 .frame(width: 45,alignment: .leading)
-            
-            /// - Filtering Tasks
+
+            // Filtering Tasks
             let calendar = Calendar.current
             let filteredTasks = tasks.filter{
                 if let hour = calendar.dateComponents([.hour], from: date).hour,
@@ -87,14 +94,14 @@ struct HomeView: View {
                 }
                 return false
             }
-            
+
             if filteredTasks.isEmpty{
                 Rectangle()
                     .stroke(.gray.opacity(0.5), style: StrokeStyle(lineWidth: 0.5, lineCap: .butt, lineJoin: .bevel, dash: [5], dashPhase: 5))
                     .frame(height: 0.5)
                     .offset(y: 10)
             }else{
-                /// - Task View
+                // Task View
                 VStack(spacing: 10){
                     ForEach(filteredTasks){task in
                         TaskRow(task)
@@ -105,15 +112,15 @@ struct HomeView: View {
                                 Button("Show Details") {
                                     vm.taskDetails = task
                                 }
-                                
+
                                 Button("Edit Task") {
                                     vm.taskToEdit = task
                                 }
-                                
+
                                 Button("Delete Task", role: .destructive) {
                                     context.delete(task)
                                 }
-                                
+
                             }
                     }
                 }
@@ -122,8 +129,8 @@ struct HomeView: View {
         .hAlign(.leading)
         .padding(.vertical,15)
     }
-    
-    /// - Task Row
+
+    /// Task Row
     @ViewBuilder
     func TaskRow(_ task: UserTask)->some View{
         var highP: Bool {
@@ -131,7 +138,7 @@ struct HomeView: View {
                 false
             } else { true }
         }
-        
+
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 if let taskImage = task.imageURL {
@@ -141,14 +148,14 @@ struct HomeView: View {
                         .frame(width: 22, height: 22)
                         .foregroundStyle(highP ? .faPurple : .red)
                 }
-                
+
                 Text(task.name.uppercased())
                     .font(.system(size: 16))
                     .fontWeight(.regular)
                     .foregroundStyle(highP ? .faPurple : .red)
                     .lineLimit(1)
-                
-                
+
+
                 if task.details != nil {
                     Text(task.details!)
                         .font(.system(size: 14))
@@ -165,14 +172,14 @@ struct HomeView: View {
                 Rectangle()
                     .fill(highP ? .faPurple : .red)
                     .frame(width: 4)
-                
+
                 Rectangle()
                     .fill(highP ? .faPurple.opacity(0.25) : .red.opacity(0.25))
             }
         }
     }
-    
-    /// - Header View
+
+    /// Header View
     @ViewBuilder
     func HeaderView()->some View{
         VStack{
@@ -181,13 +188,13 @@ struct HomeView: View {
                     Text("Today")
                         .font(.largeTitle)
                         .fontWeight(.light)
-                    
+
                     Text(userName == nil ? "Welcome" : "Welcome, \(userName!)")
                         .font(.subheadline)
                         .fontWeight(.light)
                 }
                 .hAlign(.leading)
-                
+
                 Button {
                     vm.isDisplayingAddView = true
                 } label: {
@@ -197,21 +204,21 @@ struct HomeView: View {
                     }
                 } .buttonStyle(.borderedProminent)
             }
-            
-            /// - Today Date in String
+
+            // Today Date in String
             Text(Date().toString("MMM YYYY"))
                 .hAlign(.leading)
                 .padding(.top,15)
-            
-            /// - Current Week Row
+
+            // Current Week Row
             WeekRow()
         }
         .padding(15)
         .background {
             VStack(spacing: 0) {
                 Color.BG
-                
-                /// - Gradient Opacity Background
+
+                // Gradient Opacity Background
                 Rectangle()
                     .fill(.linearGradient(colors: [
                         .BG,
@@ -222,8 +229,8 @@ struct HomeView: View {
             .ignoresSafeArea()
         }
     }
-    
-    /// - Week Row
+
+    /// Week Row
     @ViewBuilder
     func WeekRow()->some View{
         HStack(spacing: 0){
@@ -259,17 +266,20 @@ struct HomeView: View {
     }
 }
 
+// Preview of the HomeView
 #Preview {
     HomeView()
         .modelContainer(DataController.previewContainer)
 }
 
+// Extension to align view horizontally
 extension View {
     func hAlign(_ alignment: Alignment)->some View{
         self
             .frame(maxWidth: .infinity,alignment: alignment)
     }
-    
+
+    // Extension to align view vertically
     func vAlign(_ alignment: Alignment)->some View{
         self
             .frame(maxHeight: .infinity,alignment: alignment)

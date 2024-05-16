@@ -1,8 +1,8 @@
 //
-//  ActiveTaskView.swift
-//  FocusAssistant
+// ActiveTaskView.swift
+// FocusAssistant
 //
-//  Created by Nana Sekyere on 07/04/2024.
+// Created by Nana Sekyere on 07/04/2024.
 //
 
 import SwiftUI
@@ -10,46 +10,54 @@ import AVFoundation
 import SwiftData
 
 struct ActiveTaskView: View {
+    // Query to fetch tasks
     @Query var tasks: [UserTask]
+    // Environment object for the ActiveTaskViewModel
     @Environment(ActiveTaskViewModel.self) var vm
+    // Dismissal environment variable
     @Environment(\.dismiss) private var dismiss
-    
+
+    // Bindable task property
     @Bindable var task: UserTask
+    // State property to track whether it's break time
     @State var isBreak: Bool = false
-    
+
     var body: some View {
+        // Main view body
         @Bindable var vm = vm
         NavigationStack {
             VStack {
+                // Task name
                 Text(task.name)
                     .font(.title2.bold())
-                
+
+                // Circular progress view
                 GeometryReader { proxy in
                     VStack(spacing: 15) {
                         ZStack{
                             Circle()
                                 .fill(.white.opacity(0.03))
                                 .padding(-40)
-                            
+
                             Circle()
                                 .trim(from: 0, to: vm.progress)
                                 .stroke(.white.opacity(0.03), lineWidth: 80)
-                            
+
                             Circle()
                                 .stroke(Color(.faPurple), lineWidth: 5)
                                 .blur(radius: 15)
                                 .padding(-2)
-                            
+
                             Circle()
                                 .fill(Color(.BG))
-                            
+
                             Circle()
                                 .trim(from: 0, to: vm.progress)
                                 .stroke(Color(.faPurple).opacity(0.7), lineWidth: 10)
-                            
+
                             GeometryReader { proxy in
                                 let size = proxy.size
-                                
+
                                 Circle()
                                     .fill(Color(.faPurple))
                                     .frame(width: 30, height: 30)
@@ -62,20 +70,21 @@ struct ActiveTaskView: View {
                                     .offset(x: size.height /  2)
                                     .rotationEffect(.init(degrees: vm.progress * 360))
                             }
-                            
+
                             Text(vm.timerStringValue)
                                 .font(.system(size: 45, weight: .light))
                                 .rotationEffect(.init(degrees: 90))
                                 .animation(.none, value: vm.progress)
-                            
-                            
+
+
                         }
                         .padding(60)
                         .frame(height: proxy.size.width)
                         .rotationEffect(.init(degrees: -90))
                         .animation(.easeInOut, value: vm.progress)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                        
+
+                        // Start/stop button
                         Button {
                             if vm.isStarted {
                                 vm.stopTimer()
@@ -98,7 +107,7 @@ struct ActiveTaskView: View {
                                 }
                                 .shadow(color: .faPurple, radius: 8, x: 0, y: 0)
                         }
-                        
+
                     }
                     .onTapGesture(perform: {
                         vm.progress = 0.5
@@ -115,7 +124,7 @@ struct ActiveTaskView: View {
             }
             .background(.BG)
         }
-        
+
         .padding()
         .background(.BG)
         .overlay(content: {
@@ -145,7 +154,7 @@ struct ActiveTaskView: View {
                 vm.updateTimer()
             }
         }
-        
+
         .onChange(of: vm.isFinished) { oldValue, newValue in
             if newValue == true && !vm.isBreak {
                 task.increaseCounter()
@@ -165,11 +174,13 @@ struct ActiveTaskView: View {
             }
         }
     }
-    
+
+    // Helper method to determine if it's time for a break
     func shouldStartBreak() -> Bool {
         return task.pomodoroCounter! < 4 && !vm.isBreak
     }
-    
+
+    // View for the new timer input
     @ViewBuilder
     func NewTimerView() -> some View {
         VStack(spacing: 15){
@@ -177,9 +188,9 @@ struct ActiveTaskView: View {
                 .font(.title2.bold())
                 .foregroundStyle(Color.white)
                 .padding(.top, 10)
-            
+
             HStack(spacing: 15) {
-                
+
                 Menu {
                     ContextMenuOptions(maxValue: 12, hint: "hr") { value in
                         vm.hour = value
@@ -196,7 +207,7 @@ struct ActiveTaskView: View {
                                 .fill(.white.opacity(0.07))
                         }
                 }
-                
+
                 Menu {
                     ContextMenuOptions(maxValue: 60, hint: "min") { value in
                         vm.minutes = value
@@ -213,7 +224,7 @@ struct ActiveTaskView: View {
                                 .fill(.white.opacity(0.07))
                         }
                 }
-                
+
                 Menu {
                     ContextMenuOptions(maxValue: 60, hint: "sec") { value in
                         vm.seconds = value
@@ -230,10 +241,10 @@ struct ActiveTaskView: View {
                                 .fill(.white.opacity(0.07))
                         }
                 }
-                
+
             }
             .padding(.top, 20)
-            
+
             Button {
                 vm.startTimer()
             } label: {
@@ -259,24 +270,22 @@ struct ActiveTaskView: View {
                 .fill(Color.BG)
                 .ignoresSafeArea()
         }
-        
-        
-        
     }
-    
+
+    // View for context menu options
     @ViewBuilder
     func ContextMenuOptions(maxValue: Int, hint: String, onClick: @escaping (Int)->()) -> some View {
-        
+        // Context menu options
         ForEach(0...maxValue,id: \.self){ value in
             Button("\(value) \(hint)"){
                 onClick(value)
             }
         }
     }
-    
-    
-    
+
+    // Buttons and actions for starting a break
     func startBreakButtons() -> some View {
+        // Buttons for starting a break
         Group {
             Button("Start Break", role: .cancel) {
                 vm.isBreak = true
@@ -293,8 +302,10 @@ struct ActiveTaskView: View {
             }
         }
     }
-    
+
+    // Buttons and actions for starting a task
     func startTaskButtons() -> some View {
+        // Buttons for starting a task
         Group {
             Button("Start Task", role: .cancel) {
                 vm.isBreak = false
@@ -307,8 +318,10 @@ struct ActiveTaskView: View {
             }
         }
     }
-    
+
+    // Button and action for completing a task
     func completeTaskButton() -> some View {
+        // Button for completing a task
         Button("Complete task", role: .destructive) {
             vm.endTimer()
             task.completeTask()
@@ -316,8 +329,10 @@ struct ActiveTaskView: View {
             dismiss()
         }
     }
-    
+
+    // Buttons and actions for starting a new task
     func startNewTaskButtons() -> some View {
+        // Buttons for starting a new task
         Group {
             Button("Start New", role: .cancel) {
                 vm.endTimer()
@@ -330,8 +345,6 @@ struct ActiveTaskView: View {
             }
         }
     }
-    
-    
 }
 
 #Preview {

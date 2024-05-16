@@ -1,20 +1,19 @@
 //
-//  
-//  NewBlendedTaskView.swift
-//  FocusAssistant
+// NewBlendedTaskView.swift
+// FocusAssistant
 //
-//  Created by Nana Sekyere on 14/04/2024.
-//
+// Created by Nana Sekyere on 14/04/2024.
 //
 
 import SwiftUI
 import SwiftData
 
-
+/// View for creating a new blended task.
 struct NewBlendedTaskView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) var dismiss
 
+    // ViewModel for creating a new blended task
     @Bindable private var vm = NewBlendedTaskViewModel()
 
     @State private var isShowingDialog = false
@@ -23,13 +22,16 @@ struct NewBlendedTaskView: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                // Background color
                 Color.BG.ignoresSafeArea()
+                // Form for input fields
                 Form {
                     Section(header: Text("Task Name")) {
                         TextField("Task Name", text: $vm.taskName)
                     }
                     .listRowBackground(Color.darkPurple)
 
+                    // Iterate through subtasks
                     ForEach(vm.subtasks.indices, id: \.self) { index in
                         Section(header: Text(vm.subtasks[index].name == "" ? "Subtask" : "Subtask: \(vm.subtasks[index].name)")) {
                             TextField("Subtask Name", text: $vm.subtasks[index].name)
@@ -39,6 +41,7 @@ struct NewBlendedTaskView: View {
                     }
                     .listRowBackground(Color.darkPurple)
 
+                    // Button to add new subtask
                     Section {
                         Button(action: {
                             vm.subtasks.append(DummySubtask(name: ""))
@@ -48,6 +51,7 @@ struct NewBlendedTaskView: View {
                     }
                     .listRowBackground(Color.darkPurple)
 
+                    // Preview section
                     Section(header: Text("Preview")) {
                         Text("Task Name: \(vm.taskName)")
                         ForEach(vm.subtasks, id: \.self) { subtask in
@@ -69,11 +73,14 @@ struct NewBlendedTaskView: View {
 
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
+                    // Button to create the task
                     Button("Create") { isShowingDialog = true }
                     .disabled(!vm.isComplete())
                 }
             }
+            // Confirmation dialog for creating the task
             .confirmationDialog("Are you satisfied with this task?", isPresented: $isShowingDialog, actions: {
+                // Button to confirm task creation
                 Button("Create task") {
                     do {
                         let dummyTask = DummyTask(name: vm.taskName, subtasks: vm.subtasks)
@@ -84,6 +91,7 @@ struct NewBlendedTaskView: View {
                     }
                 }
 
+                // Button to cancel task creation
                 Button("Cancel", role: .destructive) {
                     isShowingDialog = false
                 }
@@ -96,14 +104,17 @@ struct NewBlendedTaskView: View {
     }
 }
 
+/// View for displaying and editing subtasks.
 struct SubtaskView: View {
     @Binding var subtask: DummySubtask
 
     var body: some View {
+        // Iterate through details of the subtask
         ForEach(subtask.details.indices, id: \.self) { index in
             DetailView(detail: $subtask.details[index])
         }
 
+        // Button to add a new detail to the subtask
         Button(action: {
             subtask.details.append(DummyDetail(desc: ""))
         }, label: {
@@ -112,6 +123,7 @@ struct SubtaskView: View {
     }
 }
 
+/// View for displaying and editing details of a subtask.
 struct DetailView: View {
     @Binding var detail: DummyDetail
 

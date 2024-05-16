@@ -1,16 +1,15 @@
 //
-//  
-//  AddTaskViewModel.swift
-//  FocusAssistant
+// AddTaskViewModel.swift
+// FocusAssistant
 //
-//  Created by Nana Sekyere on 07/04/2024.
-//
+// Created by Nana Sekyere on 07/04/2024.
 //
 
 import Foundation
 import Observation
 
 @Observable class AddTaskViewModel {
+    // Properties
     var name = ""
     var duration: Int = 0
     var startTime: Date?
@@ -25,10 +24,12 @@ import Observation
     var showClashAlert = false
     var clashingTask: UserTask?
 
+    // UI State
     var isShowingIconPicker = false
     var showDurationPicker = false
     var showRepetitionPicker = false
 
+    // Computed Property
     var isComplete: Bool {
         if pomodoro {
             return name != "" && name != " "
