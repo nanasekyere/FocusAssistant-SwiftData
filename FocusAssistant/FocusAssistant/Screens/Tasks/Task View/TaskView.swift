@@ -100,7 +100,7 @@ struct TaskView: View {
 
                 }
                 .sheet(isPresented: $vm.isDisplayingAddView, content: {
-                    AddTaskView()
+                    TaskMapperView()
                 })
 
                 .sheet(item: $vm.taskToEdit) { task in

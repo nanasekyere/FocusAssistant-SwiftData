@@ -25,7 +25,6 @@ struct AddTaskView: View {
     // App storage for task time
     @AppStorage("taskTime") var taskTime: Int?
 
-
     var body: some View {
         NavigationStack {
             ZStack {
@@ -314,6 +313,24 @@ struct EditTaskView: View {
         }
     }
 
+}
+
+extension AddTaskView {
+    init(from mappedTask: TaskMap){
+        self.vm = AddTaskViewModel()
+        vm.name = mappedTask.name
+
+        switch mappedTask.mapping {
+            case 1:
+                vm.priority = .high
+            case 2:
+                vm.priority = .medium
+            case 3:
+                vm.priority = .low
+            default:
+                vm.priority = .low
+        }
+    }
 }
 
 #Preview {

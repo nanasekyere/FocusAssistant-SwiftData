@@ -9,19 +9,7 @@ import SwiftUI
 import SwiftData
 import SwiftOpenAI
 
-/// Service for interacting with the OpenAI API.
-var service: OpenAIService {
-    #if DEBUG && targetEnvironment(simulator)
-    return OpenAIServiceFactory.service(
-        aiproxyPartialKey: "v1|3af3250e|1|ihchDO25XUMdu1zc",
-        aiproxyDeviceCheckBypass: "4832550d-b2c7-43fa-a16b-512f0072fd9e"
-    )
-    #else
-    return OpenAIServiceFactory.service(
-        aiproxyPartialKey: "v1|3af3250e|1|ihchDO25XUMdu1zc"
-    )
-    #endif
-}
+
 
 /// View for blending tasks using AI.
 struct BlenderView: View {
@@ -34,6 +22,9 @@ struct BlenderView: View {
     @FocusState private var isFocused: Bool
     @State var blendedTask: BlendedTask?
     @State var reset = false
+    @State var showError = false
+    @State private var apiError: APIError = .timeOutError
+
 
     /// Initializes the BlenderView with the given OpenAIService.
     /// - Parameter service: The OpenAIService for interacting with the OpenAI API.
@@ -58,14 +49,19 @@ struct BlenderView: View {
                         withAnimation(.easeInOut(duration: 1)) {
                             isFocused = false
                             blendingTask = Task {
-                                await vm.blendTask()
+                                do {
+                                    try await vm.blendTask()
+                                } catch {
+                                    apiError = vm.error
+                                    showError = true
+                                }
                             }
                         }
                     }
                     .padding()
                     .disabled(vm.isLoading ?? false)
 
-                    Button("Cancel blend", role: .destructive) {
+                    Button("Cancel", role: .destructive) {
                         blendingTask?.cancel()
                         vm.isLoading = false
                     }
@@ -77,8 +73,6 @@ struct BlenderView: View {
                         if isLoading {
                             ProgressView("Blending...")
                         }
-                    } else {
-                        Text("Blender Ready to start")
                     }
 
                 }
@@ -95,6 +89,11 @@ struct BlenderView: View {
         }
         .buttonStyle(.borderedProminent)
         .animation(.bouncy, value: isShowingTask)
+        .alert(isPresented: $showError, error: apiError) { error in
+
+        } message: { error in
+            Text(error.displayDescription)
+        }
         .fullScreenCover(item: $vm.completedTask, onDismiss: {
             vm.isLoading = nil
             vm.userPrompt = ""
@@ -106,4 +105,9 @@ struct BlenderView: View {
                 .presentationBackground(Color.white.opacity(0))
         }
     }
+}
+
+#Preview {
+    BlenderView(service: APIService)
+        .modelContainer(for: [UserTask.self, BlendedTask.self], inMemory: true)
 }

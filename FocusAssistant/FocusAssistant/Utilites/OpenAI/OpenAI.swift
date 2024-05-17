@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftOpenAI
 
 enum serviceInfo {
     static var mockTask: String {
@@ -41,4 +42,18 @@ enum serviceInfo {
         }
         return value
     }
+}
+
+/// Service for interacting with the OpenAI API.
+var APIService: OpenAIService {
+    #if DEBUG && targetEnvironment(simulator)
+    return OpenAIServiceFactory.service(
+        aiproxyPartialKey: "v1|3af3250e|1|ihchDO25XUMdu1zc",
+        aiproxyDeviceCheckBypass: "4832550d-b2c7-43fa-a16b-512f0072fd9e"
+    )
+    #else
+    return OpenAIServiceFactory.service(
+        aiproxyPartialKey: "v1|3af3250e|1|ihchDO25XUMdu1zc"
+    )
+    #endif
 }

@@ -46,7 +46,7 @@ struct HomeView: View {
                     EditTaskView(taskID: task.id, in: context.container)
                 })
                 .sheet(isPresented: $vm.isDisplayingAddView, content: {
-                    AddTaskView()
+                    TaskMapperView()
                 })
                 .sheet(item: $vm.taskDetails) { task in
                     TaskDetailView(task: task)
