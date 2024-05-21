@@ -30,9 +30,6 @@ import SwiftData
     /// Indicates whether a blending task is in progress.
     var isLoading: Bool?
 
-    /// The model context for interacting with the database.
-    var context: ModelContext?
-
     init(service: OpenAIService) {
         self.service = service
     }
@@ -44,17 +41,12 @@ import SwiftData
     /// This function orchestrates the entire process of blending a task using the OpenAI service.
     /// - Note: This function is marked with `@MainActor` to ensure that it runs on the main actor,
     ///   allowing it to safely interact with UI elements.
+    @MainActor
     func blendTask() async throws -> String {
         // Indicate that the blending task is in progress, enabling UI changes.
         isLoading = true
         // Extract the user prompt from the view model.
         let prompt = userPrompt
-        
-        // Ensure that a valid model context is available for storing the blended task.
-        guard let modelContext = context else {
-            error = APIError.requestFailed(description: "Could not find model context")
-            throw error
-        }
 
         // Retrieve the assistant object from the OpenAI service.
         guard (try await getAssistant()) != nil else {
@@ -98,7 +90,7 @@ import SwiftData
         // Ensure that the response data is available.
         guard let data = response else { throw APIError.jsonDecodingFailure(description: "Could not get response from AI") }
         // Provide haptic feedback to indicate successful completion.
-        await UINotificationFeedbackGenerator().notificationOccurred(.success)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
         // Indicate that the blending task has completed.
         isLoading = false
 

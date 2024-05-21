@@ -12,6 +12,7 @@ import Observation
 @Observable final class TaskViewModel {
     // State properties
     var isDisplayingAddView = false
+    var isDisplayingMapper = false
     var isShowingCompleted = false
     var isShowingAllTasks = false
     var isShowingDailyTasks = false

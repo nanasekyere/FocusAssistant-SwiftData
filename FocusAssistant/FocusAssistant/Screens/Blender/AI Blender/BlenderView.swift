@@ -86,9 +86,6 @@ struct BlenderView: View {
             }
             .navigationTitle("AI Blender")
         }
-        .onAppear {
-            vm.context = context
-        }
         .buttonStyle(.borderedProminent)
         .animation(.bouncy, value: isShowingTask)
         .alert(isPresented: $showError, error: apiError) { error in

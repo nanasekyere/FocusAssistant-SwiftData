@@ -100,6 +100,9 @@ struct TaskView: View {
 
                 }
                 .sheet(isPresented: $vm.isDisplayingAddView, content: {
+                    AddTaskView()
+                })
+                .sheet(isPresented: $vm.isDisplayingMapper, content: {
                     TaskMapperView()
                 })
 
@@ -124,16 +127,27 @@ struct TaskView: View {
             .navigationTitle("Tasks")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    // Add button
-                    Button("Add", systemImage: "plus") {
-                        vm.isDisplayingAddView = true
+                    Menu {
+                        // Add button
+                        Button("Add new task Manually") {
+                            vm.isDisplayingAddView = true
+                        }
+                        // Mapper button
+                        Button("Map to Eisenhower Matrix") {
+                            vm.isDisplayingMapper = true
+                        }
+                        .tint(.activeFaPurple)
+
+
+                    } label: {
+                        Image(systemName: "plus")
+                            .tint(.activeFaPurple)
                     }
-                    .tint(.activeFaPurple)
                 }
 
-                ToolbarItem(placement: .secondaryAction) {
+                ToolbarItem(placement: .topBarLeading) {
                     // Filters menu
-                    Menu("Filters", content: {
+                    Menu {
                         Button("Show All tasks", action: {
                             vm.status = .showAll
                         })
@@ -160,9 +174,9 @@ struct TaskView: View {
                             })
                         }
                         .disabled(completedTasks.count < 1)
-                    })
-                    .padding(.horizontal, 20)
-                    .padding(.top, 5)
+                    } label: {
+                        Image(systemName: "line.3.horizontal.decrease")
+                    }
 
                 }
             }

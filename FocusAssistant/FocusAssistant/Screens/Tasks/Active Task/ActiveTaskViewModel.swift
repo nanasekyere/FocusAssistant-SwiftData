@@ -102,6 +102,7 @@ import SwiftUI
 
     // Start the timer.
     func startTimer() {
+        isFinished = false
         withAnimation(.easeIn(duration: 0.25)) {
             isStarted = true
         }
@@ -195,6 +196,7 @@ import SwiftUI
             content.title = "Task Timer"
             content.subtitle = "Task time for task \(task.name) finished"
             content.sound = UNNotificationSound.default
+            content.interruptionLevel = .timeSensitive
 
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(staticTotalSeconds), repeats: false))
 
