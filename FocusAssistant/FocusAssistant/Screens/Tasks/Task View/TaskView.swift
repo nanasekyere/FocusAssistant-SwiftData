@@ -320,7 +320,9 @@ struct TaskView: View {
                 if task.blendedTask == nil {
                     context.delete(task)
                 } else {
-                    context.delete(task.blendedTask!)
+                    if let bTask = bTasks.first(where: { $0.identity == task.identity}) {
+                        context.delete(bTask)
+                    }
                 }
             } label: {
                 Label("Delete", systemImage: "trash")

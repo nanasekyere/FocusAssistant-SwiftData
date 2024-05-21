@@ -94,6 +94,7 @@ struct FocusAssistantTabs: View {
                activeTaskModel.startTimer()
            }
            Button("Close", role: .destructive) {
+               activeTaskModel.activeTask = nil
                activeTaskModel.endTimer()
                dismiss()
            }

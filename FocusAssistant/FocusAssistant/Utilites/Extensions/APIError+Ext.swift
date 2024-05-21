@@ -8,6 +8,12 @@
 import Foundation
 import SwiftOpenAI
 
-extension APIError: LocalizedError{
+extension APIError: LocalizedError {
+    public var localizedDescription: String {
+        return self.displayDescription
+    }
 
+    public var errorDescription: String? {
+        return self.displayDescription
+    }
 }

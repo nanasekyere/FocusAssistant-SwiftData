@@ -44,7 +44,7 @@ import SwiftData
     /// This function orchestrates the entire process of blending a task using the OpenAI service.
     /// - Note: This function is marked with `@MainActor` to ensure that it runs on the main actor,
     ///   allowing it to safely interact with UI elements.
-    func blendTask() async throws {
+    func blendTask() async throws -> String {
         // Indicate that the blending task is in progress, enabling UI changes.
         isLoading = true
         // Extract the user prompt from the view model.
@@ -55,6 +55,7 @@ import SwiftData
             error = APIError.requestFailed(description: "Could not find model context")
             throw error
         }
+
         // Retrieve the assistant object from the OpenAI service.
         guard (try await getAssistant()) != nil else {
             error = APIError.dataCouldNotBeReadMissingData(description: "Could Not Retrieve AI Assistant. Contact the developer")
@@ -96,58 +97,13 @@ import SwiftData
 
         // Ensure that the response data is available.
         guard let data = response else { throw APIError.jsonDecodingFailure(description: "Could not get response from AI") }
-
-        // Parse the response data into a dummy task object.
-        let dummyTask = try DummyTask(data)
-        // Convert the dummy task into a blended task object.
-        let blendedTask = BlendedTask(from: dummyTask)
-
-        // Insert the blended task into the model context for persistence.
-        modelContext.insert(blendedTask)
-        // Associate the blended task with its corresponding task.
-        blendedTask.correspondingTask = blendedTask.toTask()
-
-        // Initialize an array to store subtasks extracted from the dummy task.
-        var subtasks = [Subtask]()
-
-        // Iterate over each subtask in the dummy task.
-        for (index, subtask) in dummyTask.subtasks.enumerated() {
-            // Initialize an array to store details extracted from the subtask.
-            var details = [Detail]()
-            // Create a new subtask object based on the dummy subtask.
-            let newSubtask = Subtask(from: subtask, index: index)
-            // Insert the new subtask into the model context.
-            modelContext.insert(newSubtask)
-            // Associate the new subtask with the blended task.
-            newSubtask.blendedTask = blendedTask
-
-            // Iterate over each detail in the subtask.
-            for (index, detail) in subtask.details.enumerated() {
-                // Create a new detail object based on the dummy detail.
-                let newDetail = Detail(from: detail, index: index)
-                // Insert the new detail into the model context.
-                modelContext.insert(newDetail)
-                // Associate the new detail with the current subtask.
-                newDetail.subtask = newSubtask
-                // Append the new detail to the details array.
-                details.append(newDetail)
-            }
-            // Set the details of the new subtask.
-            newSubtask.details = details
-            // Append the new subtask to the subtasks array.
-            subtasks.append(newSubtask)
-        }
-
-        // Set the subtasks of the blended task.
-        blendedTask.subtasks = subtasks
-
-        // Update the view model's completed task property with the blended task.
-        completedTask = blendedTask
-
         // Provide haptic feedback to indicate successful completion.
         await UINotificationFeedbackGenerator().notificationOccurred(.success)
         // Indicate that the blending task has completed.
         isLoading = false
+
+        // Return the blended task JSON String.
+        return data
     }
 
     // MARK: - OpenAI Service Functions

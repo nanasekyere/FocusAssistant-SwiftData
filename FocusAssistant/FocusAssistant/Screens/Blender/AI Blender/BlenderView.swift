@@ -50,7 +50,9 @@ struct BlenderView: View {
                             isFocused = false
                             blendingTask = Task {
                                 do {
-                                    try await vm.blendTask()
+                                    let actor = BackgroundSerialPersistenceActor(modelContainer: context.container)
+                                    let taskJSON = try await vm.blendTask()
+                                    vm.completedTask = try await actor.safeDecodeBlendedTask(from: taskJSON)
                                 } catch {
                                     apiError = vm.error
                                     showError = true
