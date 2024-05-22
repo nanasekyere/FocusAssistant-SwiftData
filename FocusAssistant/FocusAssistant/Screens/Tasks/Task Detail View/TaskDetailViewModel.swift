@@ -26,7 +26,6 @@ import Foundation
             if task.priority == .high {
                 return "High priority tasks start automatically at their start time"
             }
-
             if task.priority == .low {
                 return nil
             }

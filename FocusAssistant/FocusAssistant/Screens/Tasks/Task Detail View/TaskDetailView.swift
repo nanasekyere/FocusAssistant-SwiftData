@@ -84,6 +84,7 @@ struct TaskDetailView: View {
                                             case .medium:
                                                 if abs(task.startTime!.timeIntervalSince(Date.now)) > 600 {
                                                     withAnimation(.easeInOut(duration: 2)) {
+                                                        vm.selectedTask = task
                                                         vm.isDisplayingContext = true
                                                     }
                                                 } else {
@@ -91,6 +92,7 @@ struct TaskDetailView: View {
                                                 }
                                             case .high:
                                                 withAnimation(.easeInOut) {
+                                                    vm.selectedTask = task
                                                     vm.isDisplayingContext = true
                                                 }
                                         }

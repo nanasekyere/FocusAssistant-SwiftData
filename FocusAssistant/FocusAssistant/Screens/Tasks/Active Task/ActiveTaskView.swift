@@ -94,7 +94,11 @@ struct ActiveTaskView: View {
                                 if vm.activeTask == nil {
                                     vm.setActiveTask(task)
                                     vm.startTimer()
-                                } else { vm.addNewTimer = true }
+                                } else {
+                                    vm.activeTask = nil
+                                    vm.isStarted = false
+                                    vm.stopTimer()
+                                }
                             }
                         } label: {
                             Image(systemName: !vm.isStarted ? "timer" : "stop.fill")
