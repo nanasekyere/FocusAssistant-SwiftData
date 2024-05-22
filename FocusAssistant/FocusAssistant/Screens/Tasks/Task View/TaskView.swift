@@ -297,7 +297,7 @@ struct TaskView: View {
         .onTapGesture {
             if task.blendedTask == nil && !task.isCompleted{
                 vm.taskDetail = task
-            } else {
+            } else if task.blendedTask != nil {
                 vm.bTaskDetail = task.blendedTask!
             }
         }
@@ -341,13 +341,13 @@ struct TaskView: View {
             } label: {
                 Label("Delete", systemImage: "trash")
             }
-            if task.blendedTask == nil && !task.isExpired {
+            if task.blendedTask == nil && !task.isExpired && !task.isCompleted {
                 Button(action: {
                     vm.taskToEdit = task
                 }, label: {
                     Label("Edit", systemImage: "square.and.pencil")
                 })
-            } else if task.blendedTask != nil && task.isCompleted == true {
+            } else if task.pomodoro && task.isCompleted == true {
                 Button {
                     task.isCompleted = false
                     task.pomodoroCounter = 0

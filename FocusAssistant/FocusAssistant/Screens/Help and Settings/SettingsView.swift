@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// View for adjusting Pomodoro task settings and providing feedback.
 struct SettingsView: View {
@@ -14,10 +15,15 @@ struct SettingsView: View {
     @AppStorage("breakTime") private var storedBreakTime: Int = UserDefaults.standard.integer(forKey: "breakTime") / 60
     @AppStorage("isOnboarding") var isOnboarding: Bool?
 
+    @Query(filter: #Predicate<UserTask> { task in
+        task.pomodoro
+    })
+    var pTasks: [UserTask]
+
     // State properties for task and break times
     @State private var taskTime: Int
     @State private var breakTime: Int
-
+    @State private var demonstration: Bool = false
     // Range of task time values
     let taskTimeRange: [Int] = Array(10...45)
 
@@ -48,6 +54,7 @@ struct SettingsView: View {
                             // Save selected task time to UserDefaults
                             .onChange(of: taskTime) { _, newValue in
                                 UserDefaults.standard.set(newValue * 60, forKey: "taskTime")
+                                updateDuration(duration: newValue * 60)
                             }
 
                             // Picker for selecting break time
@@ -83,6 +90,12 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings") // Set navigation title
+        }
+    }
+
+    func updateDuration(duration: Int) {
+        for task in pTasks {
+            task.duration = duration
         }
     }
 }

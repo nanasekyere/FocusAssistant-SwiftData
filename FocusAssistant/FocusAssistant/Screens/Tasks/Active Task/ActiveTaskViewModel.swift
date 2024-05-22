@@ -198,7 +198,7 @@ import SwiftUI
             content.sound = UNNotificationSound.default
             content.interruptionLevel = .timeSensitive
 
-            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(staticTotalSeconds), repeats: false))
+            let request = UNNotificationRequest(identifier: task.identity.uuidString, content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(staticTotalSeconds), repeats: false))
 
             UNUserNotificationCenter.current().add(request)
         }

@@ -50,13 +50,25 @@ struct FocusAssistantTabs: View {
                     if activeTask.pomodoro {
                         if shouldStartBreak() {
                             startBreakButtons()
+                                .onAppear {
+                                    activeTaskModel.isStarted = false
+                                }
                         } else if activeTaskModel.isBreak {
                             startTaskButtons()
+                                .onAppear {
+                                    activeTaskModel.isStarted = false
+                                }
                         } else {
                             completeTaskButton()
+                                .onAppear {
+                                    activeTaskModel.isStarted = false
+                                }
                         }
                     } else {
                         startNewTaskButtons()
+                            .onAppear {
+                                activeTaskModel.isStarted = false
+                            }
                     }
                 }
             }
